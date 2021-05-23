@@ -269,7 +269,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
 
 
                     <tbody>
-                      <?php while($data = mysqli_fetch_assoc($data_barang)){ 
+                      <?php $i=0; while($data = mysqli_fetch_assoc($data_barang)){ 
                         $kategori = GetKategoriDetiail($data['id_kategori'],$conn);
                         $brand = GetBrandDetiail($data['id_brand'],$conn);
                         $supplier = GetSupplierDetiail($data['id_supplier'],$conn);
@@ -285,9 +285,76 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                         <td><?php echo $supplier['nama_supplier'] ?></td>
                         <td><?php echo $brand['nama_brand'] ?></td>
                         <td><?php echo $data['create_date'] ?></td>
-                        <td>asdasd</td>
+                        <td><button  style="background-color:grey;" type="button" class="btn btn-lg" data-toggle="modal" data-dismiss="modal" data-target="#update<?php echo $i?>"><i class="fa fa-edit"></i></button></td>
                       </tr>
-                    <?php } ?>
+          <!------------------ Modal UPDATE----------------------->
+          <div class="modal fade" id="update<?php echo $i?>" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Tambah Barang</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <?php 
+              $data_supp = GetDataSupplier($conn);
+              $data_brand = GetDataBrand($conn);
+              $data_kat = GetDataKategori($conn);
+              ?>
+              <div class="modal-body">
+	      							<div class="x_content">
+	      								<!-- start form for validation -->
+	      								<form action="../model/user.php" method="post" enctype="multipart/form-data">
+                          <label>Upload Gambar :</label>
+                          <input type="file" name="img" class="form-control"/>
+	      									<label>Nama Barang :</label>
+	      									<input type="text" name="nama" value="<?php echo $data['nama_barang'] ?>" class="form-control" required />
+                          <label>Kode Barang :</label>
+                          <input type="text" name="kode" value="<?php echo $data['kode_barang'] ?>" class="form-control" required />
+                          <!-- <label>Stock Barang :</label>
+	      									<input type="number" name="stock" class="form-control" required /> -->
+                          <label>Deskripsi :</label>
+	      									<input type="text" name="deskripsi" value="<?php echo $data['deskripsi'] ?>" class="form-control" required />
+	      									<label>Harga Barang :</label>
+	      									<input type="number" name="harga" value="<?php echo $data['harga_barang'] ?>" class="form-control" required />
+                          <!-- <label>Nomor Faktur :</label>
+	      									<input type="text" name="faktur" value="<?php echo $data['nama_barang'] ?>" class="form-control" required /> -->
+                          <label>Tempo Kadaluarsa :</label>
+                          <input type="date" name="tanggal" value="<?php echo $data['create_date'] ?>" class="form-control" required />
+                          <label>Supplier :</label>
+                          <select class="form-control" name="supplier">
+                          <?php while($supplier = mysqli_fetch_assoc($data_supp)){?>
+													<option value="<?php echo $supplier['id_supplier'] ?>"><?php echo $supplier['nama_supplier'] ?></option>
+                          <?php } ?>
+												  </select>
+                          <label >Brand :</label>
+                          <select class="form-control" name="brand">
+                          <?php while($brand = mysqli_fetch_assoc($data_brand)){?>
+                          <option value="<?php echo $brand['id_brand'] ?>"><?php echo $brand['nama_brand'] ?></option>
+                          <?php } ?>
+												  </select>
+                          <label >Kategori :</label>
+                          <select class="form-control" name="kategori">
+                          <?php while($kategori = mysqli_fetch_assoc($data_kat)){?>
+                          <option value="<?php echo $kategori['id_kategori'] ?>"><?php echo $kategori['nama_kategori'] ?></option>
+                          <?php } ?>
+												  </select>
+	      											<br />
+                          <button type="submit" class="btn btn-primary" name="tmbhbarang" >Tambah</button>
+                          <button type="submit" class="btn btn-danger" name="hapusbarang" >Hapus Barang</button>
+	      								</form>
+	      								<!-- end form for validations -->
+	      							</div>
+	      						</div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Modal -->
+                    <?php  $i+=1; }  ?>
                     </tbody>
                   </table>
                 </div>
@@ -297,8 +364,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
         </div>
       </div>
     </div>
-                <!------------------ Modal----------------------->
-                <div class="modal fade" id="myModal" role="dialog">
+          <!------------------ Modal----------------------->
+          <div class="modal fade" id="myModal" role="dialog">
+          <?php 
+          $data_supp = GetDataSupplier($conn);
+          $data_brand = GetDataBrand($conn);
+          $data_kat = GetDataKategori($conn);
+          ?>
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">

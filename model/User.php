@@ -40,10 +40,14 @@ if (isset($_POST['deletesupp'])) {
    DeleteSupplier($conn);
 }
 
-// masuk //
+// index //
 if (isset($_POST['tmbhbarang'])) {
    InsertBarang($conn);
 }
+if (isset($_POST['hapusbarang'])) {
+   DeleteBarang($conn);
+}
+
 // keluar //
 if (isset($_POST['krngbarang'])) {
    KeluarBarang($conn);
@@ -104,7 +108,7 @@ function GetDataBarangKeluar($conn)
 
 function GetDataBarang($conn)
 {
-   $sql = "SELECT * FROM tbl_barang ";
+   $sql = "SELECT * FROM tbl_barang where status = 'ACTIVE'";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
@@ -325,7 +329,7 @@ function InsertBarang($conn)
          if ($ukuran < 4044070) {        // max 4 mb
             move_uploaded_file($file_tmp, '../admin/images/barang/' . $id_item . $nama);
 
-            $sql = "INSERT INTO `tbl_barang` ( `id_item`,`id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`, `create_date`) VALUES ('".$id_item."','".$_POST['kategori']."', '".$_POST['supplier']."', '".$_POST['brand']."', '".$_POST['kode']."', '".$_POST['nama']."', '".$_POST['stock']."', '". $id_item.$nama."', '3121231', '".$_POST['deskripsi']."', '".$_POST['harga']."', '".$_POST['tanggal']."')";
+            $sql = "INSERT INTO `tbl_barang` ( `id_item`,`id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`, `create_date`, `status`) VALUES ('".$id_item."','".$_POST['kategori']."', '".$_POST['supplier']."', '".$_POST['brand']."', '".$_POST['kode']."', '".$_POST['nama']."', '".$_POST['stock']."', '". $id_item.$nama."', '3121231', '".$_POST['deskripsi']."', '".$_POST['harga']."', '".$_POST['tanggal']."','ACTIVE')";
             $result = mysqli_query($conn, $sql);
             $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('".$id_item."', '".$_SESSION['id_petugas']."','".$_POST['stock']."','".$_POST['faktur']."', now()) ";
             $result = mysqli_query($conn, $sql);
