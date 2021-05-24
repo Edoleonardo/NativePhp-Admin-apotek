@@ -368,7 +368,7 @@ function UpdateBarang($conn)
          if ($ukuran < 4044070) {        // max 4 mb
             move_uploaded_file($file_tmp, '../admin/images/barang/' . $id_item . $nama);
 
-            $sql = "UPDATE tbl_barang setgambar_barang= '".$id_item.$nama."',nama_barang = '".$_POST['nama']."',kode_barang = '".$_POST['kode']."',deskripsi = '".$_POST['deskripsi']."',harga_barang = '".$_POST['harga']."',create_date = '".$_POST['tanggal']."',id_kategori = '".$_POST['kategori']."',id_supplier = '".$_POST['supplier']."',id_brand = '".$_POST['brand']."' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
+            $sql = "UPDATE tbl_barang set gambar_barang= '".$id_item.$nama."',nama_barang = '".$_POST['nama']."',kode_barang = '".$_POST['kode']."',deskripsi = '".$_POST['deskripsi']."',harga_barang = '".$_POST['harga']."',create_date = '".$_POST['tanggal']."',id_kategori = '".$_POST['kategori']."',id_supplier = '".$_POST['supplier']."',id_brand = '".$_POST['brand']."' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
             $result = mysqli_query($conn, $sql);
 
             // $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('".$id_item."', '".$_SESSION['id_petugas']."','".$_POST['stock']."','".$_POST['faktur']."', now()) ";
