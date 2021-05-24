@@ -47,6 +47,9 @@ if (isset($_POST['tmbhbarang'])) {
 if (isset($_POST['hapusbarang'])) {
    DeleteBarang($conn);
 }
+if (isset($_POST['updatebarang'])) {
+   UpdateBarang($conn);
+}
 
 // keluar //
 if (isset($_POST['krngbarang'])) {
@@ -348,6 +351,66 @@ function InsertBarang($conn)
          msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin');
       }
 }
+
+function UpdateBarang($conn)
+{
+   $img = $_FILES['img']['name'];
+   if($img){
+      date_default_timezone_set("Asia/Bangkok");
+      $id_item = date("his") . date("Ymd");
+      $nama = $_FILES['img']['name'];
+      $ekstensi_diperbolehkan = array('png', 'jpg', 'jpeg');
+      $x = explode('.', $nama);   // dpt nama tanpa ekstensi file
+      $ekstensi = strtolower(end($x));    // jdiin hruf kecil ekstensinya
+      $ukuran    = $_FILES['img']['size'];   //ukuran brp
+      $file_tmp = $_FILES['img']['tmp_name'];    //temp filenya apa
+      if (in_array($ekstensi, $ekstensi_diperbolehkan) === true) {    // kalau ekstensinya bener
+         if ($ukuran < 4044070) {        // max 4 mb
+            move_uploaded_file($file_tmp, '../admin/images/barang/' . $id_item . $nama);
+
+            $sql = "UPDATE tbl_barang setgambar_barang= '".$id_item.$nama."',nama_barang = '".$_POST['nama']."',kode_barang = '".$_POST['kode']."',deskripsi = '".$_POST['deskripsi']."',harga_barang = '".$_POST['harga']."',create_date = '".$_POST['tanggal']."',id_kategori = '".$_POST['kategori']."',id_supplier = '".$_POST['supplier']."',id_brand = '".$_POST['brand']."' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
+            $result = mysqli_query($conn, $sql);
+
+            // $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('".$id_item."', '".$_SESSION['id_petugas']."','".$_POST['stock']."','".$_POST['faktur']."', now()) ";
+            // $result = mysqli_query($conn, $sql);
+
+
+
+            if ($result) {
+               msg('Data berhasil diubah!!', '../admin');
+            } else {
+               msg('Gagal menambah data!!', '../admin');
+            }
+         } else {
+            msg('Ukuran file max 4mb!!', '../admin');
+         }
+      } else {
+         msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin');
+      }
+   }else{
+      $sql = "UPDATE tbl_barang set nama_barang = '".$_POST['nama']."',kode_barang = '".$_POST['kode']."',deskripsi = '".$_POST['deskripsi']."',harga_barang = '".$_POST['harga']."',create_date = '".$_POST['tanggal']."',id_kategori = '".$_POST['kategori']."',id_supplier = '".$_POST['supplier']."',id_brand = '".$_POST['brand']."' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
+      $result = mysqli_query($conn, $sql);
+
+      if ($result) {
+         msg('Data berhasil diubah!!', '../admin');
+      } else {
+         msg('Gagal diubah data!!', '../admin');
+      }
+   }
+}
+
+function DeleteBarang($conn){
+
+   $sql = "UPDATE tbl_barang set status = 'IN-ACTIVE' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
+   $result = mysqli_query($conn, $sql);
+
+   if ($result) {
+      msg('Berhasil di Delete', '../admin/index.php');
+   } else {
+      msg('Gagal Delete data!!', '../admin/index.php');
+   }
+}
+
 
 
 

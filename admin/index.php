@@ -299,6 +299,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
               $data_supp = GetDataSupplier($conn);
               $data_brand = GetDataBrand($conn);
               $data_kat = GetDataKategori($conn);
+              $data_supp_detail = GetDetailSupplier($conn);
+              $data_brand_detail = GetDetailBrand($conn);
+              $data_kat_detail = GetDetailKategori($conn);
               ?>
               <div class="modal-body">
 	      							<div class="x_content">
@@ -321,25 +324,27 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                           <label>Tempo Kadaluarsa :</label>
                           <input type="date" name="tanggal" value="<?php echo $data['create_date'] ?>" class="form-control" required />
                           <label>Supplier :</label>
-                          <select class="form-control" name="supplier">
+                          <select class="form-control" name="supplier" value="<?php echo $data['id_supplier'] ?>">
+                          <option value="<?php echo $data['id_supplier'] ?>" selected><?php echo $supplier['nama_supplier'] ?></option>
                           <?php while($supplier = mysqli_fetch_assoc($data_supp)){?>
 													<option value="<?php echo $supplier['id_supplier'] ?>"><?php echo $supplier['nama_supplier'] ?></option>
                           <?php } ?>
 												  </select>
                           <label >Brand :</label>
-                          <select class="form-control" name="brand">
+                          <select class="form-control" name="brand" value="<?php echo $data['id_brand'] ?>">
                           <?php while($brand = mysqli_fetch_assoc($data_brand)){?>
                           <option value="<?php echo $brand['id_brand'] ?>"><?php echo $brand['nama_brand'] ?></option>
                           <?php } ?>
 												  </select>
                           <label >Kategori :</label>
-                          <select class="form-control" name="kategori">
+                          <select class="form-control" name="kategori" value="<?php echo $data['id_kategori']?>" >
                           <?php while($kategori = mysqli_fetch_assoc($data_kat)){?>
                           <option value="<?php echo $kategori['id_kategori'] ?>"><?php echo $kategori['nama_kategori'] ?></option>
                           <?php } ?>
 												  </select>
 	      											<br />
-                          <button type="submit" class="btn btn-primary" name="tmbhbarang" >Tambah</button>
+                          <input Type="hidden" name="id_barang" value="<?php echo $data['id_barang']?>"/>
+                          <button type="submit" class="btn btn-primary" name="updatebarang" >Ubah</button>
                           <button type="submit" class="btn btn-danger" name="hapusbarang" >Hapus Barang</button>
 	      								</form>
 	      								<!-- end form for validations -->
