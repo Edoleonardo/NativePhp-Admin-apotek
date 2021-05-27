@@ -198,7 +198,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                         <th>Supplier</th>
                         <th>Brand</th>
                         <th>Tempo Kadaluarsa</th>
-                        <th>Aksi</th>
                       </tr>
                     </thead>
 
@@ -220,7 +219,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                         <td><?php echo $supplier['nama_supplier'] ?></td>
                         <td><?php echo $brand['nama_brand'] ?></td>
                         <td><?php echo $data['create_date'] ?></td>
-                        <td><button  style="background-color:grey;" type="button" class="btn btn-lg" data-toggle="modal" data-dismiss="modal" data-target="#update<?php echo $i?>"><i class="fa fa-edit"></i></button></td>
                       </tr>
           <!------------------ Modal UPDATE----------------------->
           <div class="modal fade" id="update<?php echo $i?>" role="dialog">
