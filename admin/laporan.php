@@ -89,7 +89,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                     </ul>
                   </li>
                   <li>
-                  <a href="index.php"> Download Laporan </a>
+                  <a href="laporan.php"> Download Laporan </a>
                   </li>
                 </ul>
               </div>
@@ -170,40 +170,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <!-- top tiles -->
-            <div class="row" style="display: inline-block;">
-            <div class="row">
-              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
-                <div class="tile-stats">
-                  <div class="count" style="text-align: center;"><?php echo $count[0]?></div>
-                  <p>Total Barang</p>
-                </div>
-              </div>
-              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
-                <div class="tile-stats">
-                  <div class="count" style="text-align: center;"><?php echo $count[1]?></div>
-                  <p>Total Barang Masuk</p>
-                </div>
-              </div>
-              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
-                <div class="tile-stats">
-                  <div class="count" style="text-align: center;"><?php echo $count[2]?></div>
-                  <p>Total Barang Keluar</p>
-                </div>
-              </div>
-              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
-                <div class="tile-stats">
-                  <div class="count" style="text-align: center;"><?php echo $count[3]?></div>
-                  <p>Total Supplier</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /top tiles -->
-
           <br />
           <div class="row" style="display: inline-block;">
-            <h3>Barang</h3>
+            <h3>Download Laporan Barang</h3>
           </div>
           <div class="row">
             <div class="col-md-12 col-sm-12 ">

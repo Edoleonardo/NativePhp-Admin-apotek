@@ -86,7 +86,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                     </ul>
                   </li>
                   <li>
-                  <a href="index.php"> Download Laporan </a>
+                  <a href="laporan.php"> Download Laporan </a>
                   </li>
                 </ul>
               </div>
