@@ -1,6 +1,5 @@
 <?php
-require('../connect/conn.php');
-require('../session/session.php');
+require('../model/User.php');
 if (isset($_POST['btnlogin'])) {
 
     $email = strtoupper($_POST['email']);
@@ -17,6 +16,7 @@ if (isset($_POST['btnlogin'])) {
             $user = mysqli_fetch_array($result);
                 // msukin data yg login ke session
                 $_SESSION['id_petugas'] = $user['id_petugas'];
+                CheckStock($conn);
 
                 msg('Login Berhasil!!', '../admin/'); 
         } else {
@@ -25,14 +25,5 @@ if (isset($_POST['btnlogin'])) {
     } 
 }
 
-function msg($pesan, $url)
-{
-?>
-   <script type="text/javascript">
-      alert('<?php echo $pesan ?>');
-      window.location = '<?php echo $url ?>';
-   </script>
-<?php
-}
 
 ?>

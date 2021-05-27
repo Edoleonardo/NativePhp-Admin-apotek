@@ -2,6 +2,8 @@
 require('../model/User.php');
 checklogin();
 $data_brand = GetDataBrand($conn);
+$pesan = GetDataPesan($conn);
+$totalpesan = GetCountPesan($conn);
 $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
 
 ?>
@@ -122,79 +124,39 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                 <li class="nav-item dropdown open" style="padding-left: 15px;">
                   <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                     <img src="images/img.jpg" alt=""><?php echo $now['nama_petugas']?>
-                  </a>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item"  href="javascript:;"> Profile</a>
-                      <a class="dropdown-item"  href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                  <a class="dropdown-item"  href="javascript:;">Help</a>
                     <a class="dropdown-item"  href="../login_admin/logout_admin.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                   </div>
                 </li>
-
                 <li role="presentation" class="nav-item dropdown open">
                   <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                     <i class="fa fa-envelope-o"></i>
-                    <span class="badge bg-green">6</span>
+                    <?php if ($totalpesan['total'] != 0){ ?>
+                    <span class="badge bg-green"><?php echo $totalpesan['total']?></span>
+                    <?php } ?>
                   </a>
                   <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-                    <li class="nav-item">
+                  <?php while($data_pesan = mysqli_fetch_assoc($pesan)){?>
+                    <li class="nav-item" onclick="myFunction()">
                       <a class="dropdown-item">
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
+                        <span class="image"><img src="../admin/images/barang/<?php echo $data_pesan['img'] ?>" alt="Profile Image" /></span>
                         <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
+                          <span id="namabarang">Barang <?php echo $data_pesan['nama_barang'] ?></span>
+                          <span class="time"><?php echo $data_pesan['create_date'] ?></span>
                         </span>
                         <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
+                          Stock hampir habis, sisah <?php echo $data_pesan['stock'] ?>
                         </span>
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a class="dropdown-item">
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="dropdown-item">
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="dropdown-item">
-                        <span class="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                        <span>
-                          <span>John Smith</span>
-                          <span class="time">3 mins ago</span>
-                        </span>
-                        <span class="message">
-                          Film festivals used to be do-or-die moments for movie makers. They were where...
-                        </span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
+                    <?php } ?>
+                    <form action="../model/user.php" method="post">
                       <div class="text-center">
-                        <a class="dropdown-item">
-                          <strong>See All Alerts</strong>
-                          <i class="fa fa-angle-right"></i>
-                        </a>
+                          <button  class="dropdown-item" type="submit" name="hapuspesan">Hapus Semua Pesan</button>
                       </div>
+                    </form>
                     </li>
                   </ul>
                 </li>
