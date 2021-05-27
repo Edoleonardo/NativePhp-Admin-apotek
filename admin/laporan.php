@@ -1,13 +1,15 @@
 <?php
 require('../model/User.php');
 checklogin();
+$count = Getcount($conn);
+$data_supp = GetDataSupplier($conn);
 $data_brand = GetDataBrand($conn);
+$data_kat = GetDataKategori($conn);
+$data_barang = GetDataBarang($conn);
 $pesan = GetDataPesan($conn);
 $totalpesan = GetCountPesan($conn);
 $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -44,9 +46,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
     <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
-    <!-- Modall -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
 
   <body class="nav-md">
@@ -81,7 +80,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="index.php">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                       <li><a href="barang_masuk.php">Barang Masuk</a></li>
                       <li><a href="barang_keluar.php">Barang Keluar</a></li>
                       <li><a href="supplier.php">Supplier</a></li>
@@ -108,7 +107,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
               <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="../login_admin/logout_admin.php">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
@@ -172,19 +171,46 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
         <!-- page content -->
         <div class="right_col" role="main">
           <!-- top tiles -->
-          <div class="row" style="display: inline-block;">
-            <h3>Brand</h3>
+            <div class="row" style="display: inline-block;">
+            <div class="row">
+              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                <div class="tile-stats">
+                  <div class="count" style="text-align: center;"><?php echo $count[0]?></div>
+                  <p>Total Barang</p>
+                </div>
+              </div>
+              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                <div class="tile-stats">
+                  <div class="count" style="text-align: center;"><?php echo $count[1]?></div>
+                  <p>Total Barang Masuk</p>
+                </div>
+              </div>
+              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                <div class="tile-stats">
+                  <div class="count" style="text-align: center;"><?php echo $count[2]?></div>
+                  <p>Total Barang Keluar</p>
+                </div>
+              </div>
+              <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
+                <div class="tile-stats">
+                  <div class="count" style="text-align: center;"><?php echo $count[3]?></div>
+                  <p>Total Supplier</p>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- /top tiles -->
 
           <br />
-
+          <div class="row" style="display: inline-block;">
+            <h3>Barang</h3>
+          </div>
           <div class="row">
             <div class="col-md-12 col-sm-12 ">
               <div class="x_panel">
                 <div class="x_title">
                   <div class="clearfix"></div>
-                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Brand</button>
+                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Barang</button>
                 </div>
                 <div class="x_content">
                     <div class="row">
@@ -193,57 +219,112 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                   <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                       <tr>
-                        <th>Nama Brand</th>
-                        <th>Tanggal</th>
+                        <th>Gambar</th>
+                        <th>Kode Barang</th>
+                        <th>Nama Barang</th>
+                        <th>Stock</th>
+                        <th>Deskripsi</th>
+                        <th>Harga Barang</th>
+                        <th>Kategori</th>
+                        <th>Supplier</th>
+                        <th>Brand</th>
+                        <th>Tempo Kadaluarsa</th>
                         <th>Aksi</th>
                       </tr>
                     </thead>
+
+
                     <tbody>
-                    <?php 
-                    $i=0; 
-                    while($data = mysqli_fetch_assoc($data_brand)){?>
+                      <?php $i=0; while($data = mysqli_fetch_assoc($data_barang)){ 
+                        $kategori = GetKategoriDetiail($data['id_kategori'],$conn);
+                        $brand = GetBrandDetiail($data['id_brand'],$conn);
+                        $supplier = GetSupplierDetiail($data['id_supplier'],$conn);
+                        ?>
                       <tr>
-                        <td><?php echo $data['nama_brand'] ?></td>
+                        <td><img width="100px" class="responsive" src="../admin/images/barang/<?php echo $data['gambar_barang'] ?>" alt=""></td>
+                        <td><?php echo $data['kode_barang'] ?></td>
+                        <td><?php echo $data['nama_barang'] ?></td>
+                        <td><?php echo $data['stock_barang'] ?></td>
+                        <td><?php echo $data['deskripsi'] ?></td>
+                        <td><?php echo $data['harga_barang'] ?></td>
+                        <td><?php echo $kategori['nama_kategori'] ?></td>
+                        <td><?php echo $supplier['nama_supplier'] ?></td>
+                        <td><?php echo $brand['nama_brand'] ?></td>
                         <td><?php echo $data['create_date'] ?></td>
-                        <td>										
-                          <form action="../model/User.php" method="post">
-											      <input type="hidden" name="id" value="<?php echo $data['id_brand'] ?>">
-											      <button style="background-color:red;" type="submit" name="deletesupp" class="btn cart_quantity_delete"><i class="fa fa-times"></i></button>
-											      <button  style="background-color:grey;" type="button" class="btn btn-lg" data-toggle="modal" data-dismiss="modal" data-target="#update_alamat<?php echo $i?>"><i class="fa fa-edit"></i></button>
-										      </form> 
-                      </td>
+                        <td><button  style="background-color:grey;" type="button" class="btn btn-lg" data-toggle="modal" data-dismiss="modal" data-target="#update<?php echo $i?>"><i class="fa fa-edit"></i></button></td>
                       </tr>
-                      <div class="modal fade" id="update_alamat<?php echo $i?>" role="dialog">
-									        <div class="modal-dialog">
-									        	<!-- Modal content-->
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                  <h4 class="modal-title">Edit Data Brand</h4>
-                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
-                                <div class="modal-body">
-			                        					<div class="x_content">
+          <!------------------ Modal UPDATE----------------------->
+          <div class="modal fade" id="update<?php echo $i?>" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Tambah Barang</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <?php 
+              $data_supp = GetDataSupplier($conn);
+              $data_brand = GetDataBrand($conn);
+              $data_kat = GetDataKategori($conn);
+              // $data_supp_detail = GetDetailSupplier($conn);
+              // $data_brand_detail = GetDetailBrand($conn);
+              // $data_kat_detail = GetDetailKategori($conn);
+              ?>
+              <div class="modal-body">
+	      							<div class="x_content">
+	      								<!-- start form for validation -->
+	      								<form action="../model/user.php" method="post" enctype="multipart/form-data">
+                          <label>Upload Gambar :</label>
+                          <input type="file" name="img" class="form-control"/>
+	      									<label>Nama Barang :</label>
+	      									<input type="text" name="nama" value="<?php echo $data['nama_barang'] ?>" class="form-control" required />
+                          <label>Kode Barang :</label>
+                          <input type="text" name="kode" value="<?php echo $data['kode_barang'] ?>" class="form-control" required />
+                          <!-- <label>Stock Barang :</label>
+	      									<input type="number" name="stock" class="form-control" required /> -->
+                          <label>Deskripsi :</label>
+	      									<input type="text" name="deskripsi" value="<?php echo $data['deskripsi'] ?>" class="form-control" required />
+	      									<label>Harga Barang :</label>
+	      									<input type="number" name="harga" value="<?php echo $data['harga_barang'] ?>" class="form-control" required />
+                          <!-- <label>Nomor Faktur :</label>
+	      									<input type="text" name="faktur" value="<?php echo $data['nama_barang'] ?>" class="form-control" required /> -->
+                          <label>Tempo Kadaluarsa :</label>
+                          <input type="date" name="tanggal" value="<?php echo $data['create_date'] ?>" class="form-control" required />
+                          <label>Supplier :</label>
+                          <select class="form-control" name="supplier">
+                          <?php while($supplier = mysqli_fetch_assoc($data_supp)){?>
+													<option value="<?php echo $supplier['id_supplier'] ?>"><?php echo $supplier['nama_supplier'] ?></option>
+                          <?php } ?>
+												  </select>
+                          <label >Brand :</label>
+                          <select class="form-control" name="brand">
+                          <?php while($brand = mysqli_fetch_assoc($data_brand)){?>
+                          <option value="<?php echo $brand['id_brand'] ?>"><?php echo $brand['nama_brand'] ?></option>
+                          <?php } ?>
+												  </select>
+                          <label >Kategori :</label>
+                          <select class="form-control" name="kategori">
+                          <?php while($kategori = mysqli_fetch_assoc($data_kat)){?>
+                          <option value="<?php echo $kategori['id_kategori'] ?>"><?php echo $kategori['nama_kategori'] ?></option>
+                          <?php } ?>
+												  </select>
+	      											<br />
+                          <input Type="hidden" name="id_barang" value="<?php echo $data['id_barang']?>"/>
+                          <button type="submit" class="btn btn-primary" name="updatebarang" >Ubah</button>
+                          <button type="submit" class="btn btn-danger" name="hapusbarang" >Hapus Barang</button>
+	      								</form>
+	      								<!-- end form for validations -->
+	      							</div>
+	      						</div>
 
-			                        						<!-- start form for validation -->
-			                        						<form action="../model/user.php" method="post" >
-			                        							<label for="fullname">Nama Brand :</label>
-			                        							<input type="text" name="nama" class="form-control" value="<?php echo $data['nama_brand'] ?>" required />
-			                        									<br />
-			                        							<input type="hidden" name="id" class="form-control" value="<?php echo $data['id_brand'] ?>" required />
-                                            <button type="submit" class="btn btn-primary" name="editbrand" >Edit</button>
-			                        						</form>
-			                        						<!-- end form for validations -->
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
 
-			                        					</div>
-			                        				</div>
-
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                              </div>
-									        </div>
-								      </div>
-                    <?php  $i+=1; }?>
+          </div>
+        </div>
+        <!-- Modal -->
+                    <?php  $i+=1; }  ?>
                     </tbody>
                   </table>
                 </div>
@@ -253,38 +334,73 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
         </div>
       </div>
     </div>
-    <!------------------ Modal----------------------->
-    <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Tambah Brand</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <!------------------ Modal----------------------->
+          <div class="modal fade" id="myModal" role="dialog">
+          <?php 
+          $data_supp = GetDataSupplier($conn);
+          $data_brand = GetDataBrand($conn);
+          $data_kat = GetDataKategori($conn);
+          ?>
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Tambah Barang</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+	      							<div class="x_content">
+	      								<!-- start form for validation -->
+	      								<form action="../model/user.php" method="post" enctype="multipart/form-data">
+                          <label>Upload Gambar :</label>
+                          <input type="file" name="img" class="form-control"/>
+	      									<label>Nama Barang :</label>
+	      									<input type="text" name="nama" class="form-control" required />
+                          <label>Kode Barang :</label>
+                          <input type="text" name="kode" class="form-control" required />
+                          <label>Stock Barang :</label>
+	      									<input type="number" name="stock" class="form-control" required />
+                          <label>Deskripsi :</label>
+	      									<input type="text" name="deskripsi" class="form-control" required />
+	      									<label>Harga Barang :</label>
+	      									<input type="number" name="harga" class="form-control" required />
+                          <label>Nomor Faktur :</label>
+	      									<input type="text" name="faktur" class="form-control" required />
+                          <label>Tempo Kadaluarsa :</label>
+                          <input type="date" name="tanggal" class="form-control" required />
+                          <label>Supplier :</label>
+                          <select class="form-control" name="supplier">
+                          <?php while($supplier = mysqli_fetch_assoc($data_supp)){?>
+													<option value="<?php echo $supplier['id_supplier'] ?>"><?php echo $supplier['nama_supplier'] ?></option>
+                          <?php } ?>
+												  </select>
+                          <label >Brand :</label>
+                          <select class="form-control" name="brand">
+                          <?php while($brand = mysqli_fetch_assoc($data_brand)){?>
+                          <option value="<?php echo $brand['id_brand'] ?>"><?php echo $brand['nama_brand'] ?></option>
+                          <?php } ?>
+												  </select>
+                          <label >Kategori :</label>
+                          <select class="form-control" name="kategori">
+                          <?php while($kategori = mysqli_fetch_assoc($data_kat)){?>
+                          <option value="<?php echo $kategori['id_kategori'] ?>"><?php echo $kategori['nama_kategori'] ?></option>
+                          <?php } ?>
+												  </select>
+	      											<br />
+                          <button type="submit" class="btn btn-primary" name="tmbhbarang" >Tambah</button>
+	      								</form>
+	      								<!-- end form for validations -->
+
+	      							</div>
+	      						</div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+
+          </div>
         </div>
-        <div class="modal-body">
-								<div class="x_content">
-
-									<!-- start form for validation -->
-									<form action="../model/user.php" method="post" >
-										<label for="fullname">Nama Brand :</label>
-										<input type="text" name="nama" class="form-control" required />
-
-												<br />
-                    <button type="submit" class="btn btn-primary" name="tmbhbrand" >Tambah</button>
-									</form>
-									<!-- end form for validations -->
-
-								</div>
-							</div>
-   
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-      
-    </div>
-  </div>
-  <!-- Modal -->
+        <!-- Modal -->
         </div>
         <!-- /page content -->
 
@@ -299,6 +415,14 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
       </div>
     </div>
 
+    <script type="text/javascript">
+    // function myFunction() {
+    //   const barang = document.getElementById("namabarang").innerHTML.substring(7);
+    //   var table = $('#example').DataTable();
+
+    //   console.log(barang);
+    // }
+    </script>
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->

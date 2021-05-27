@@ -88,6 +88,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                       <li><a href="brand.php">Brand</a></li>
                     </ul>
                   </li>
+                  <li>
+                  <a href="index.php"><i class="fa-dwonload"></i> Download Laporan </a>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -413,11 +416,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
     </div>
 
     <script type="text/javascript">
-    function myFunction() {
-      const barang = document.getElementById("namabarang").innerHTML.substring(7);
-      
-      console.log(barang);
-    }
+    // function myFunction() {
+    //   const barang = document.getElementById("namabarang").innerHTML.substring(7);
+    //   var table = $('#example').DataTable();
+
+    //   console.log(barang);
+    // }
     </script>
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
