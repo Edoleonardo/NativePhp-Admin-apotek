@@ -5,7 +5,11 @@ $count = Getcount($conn);
 $data_supp = GetDataSupplier($conn);
 $data_brand = GetDataBrand($conn);
 $data_kat = GetDataKategori($conn);
-$data_barang = GetDataBarang($conn);
+if(isset($_GET['bln'])){
+  $data_barang = Laporan($_GET['bln'],$conn);
+}else{
+  $data_barang = GetDataBarang($conn);
+}
 $pesan = GetDataPesan($conn);
 $totalpesan = GetCountPesan($conn);
 $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
@@ -18,11 +22,11 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-    <title>Gentelella Alela! | </title>
+    <title>Apotek</title>
 
     <!-- Bootstrap -->
+    <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
     <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -30,20 +34,14 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
     <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- iCheck -->
     <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-	
-    <!-- bootstrap-progressbar -->
-    <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <!-- Datatables -->
-
+    
     <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
+
     <!-- Custom Theme Style -->
     <link href="../build/css/custom.min.css" rel="stylesheet">
   </head>
@@ -107,7 +105,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
               <a data-toggle="tooltip" data-placement="top" title="Lock">
                 <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
               </a>
-              <a data-toggle="tooltip" data-placement="top" title="Logout" href="../login_admin/logout_admin.php">
+              <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
                 <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
               </a>
             </div>
@@ -170,25 +168,29 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
 
         <!-- page content -->
         <div class="right_col" role="main">
-          <br />
-          <div class="row" style="display: inline-block;">
-            <h3>Download Laporan Barang</h3>
-          </div>
-          <div class="row">
-            <div class="col-md-12 col-sm-12 ">
-              <div class="x_panel">
-                <div class="x_title">
-                  <div class="clearfix"></div>
-                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Barang</button>
-                </div>
-                <div class="x_content">
-                    <div class="row">
-                        <div class="col-sm-12">
-                          <div class="card-box table-responsive">
-                  <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+          <div class="">
+            <div class="page-title">
+              <div class="title_left">
+                <h3>Laporan Bulanan</h3>
+              </div>
+
+            <div class="clearfix"></div>
+              <div class="col-md-12 col-sm-12 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                  <form action="../model/user.php" method="post">
+                  <input type="month" id="start" name="bln">
+                  <button type="submit" class="btn btn-primary" name="laporan" >Pilih Bulan</button>
+                  </form>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                      <div class="row">
+                          <div class="col-sm-12">
+                            <div class="card-box table-responsive">
+                    <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
                     <thead>
                       <tr>
-                        <th>Gambar</th>
                         <th>Kode Barang</th>
                         <th>Nama Barang</th>
                         <th>Stock</th>
@@ -200,16 +202,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                         <th>Tempo Kadaluarsa</th>
                       </tr>
                     </thead>
-
-
                     <tbody>
-                      <?php $i=0; while($data = mysqli_fetch_assoc($data_barang)){ 
+                      <?php while($data = mysqli_fetch_assoc($data_barang)){ 
                         $kategori = GetKategoriDetiail($data['id_kategori'],$conn);
                         $brand = GetBrandDetiail($data['id_brand'],$conn);
                         $supplier = GetSupplierDetiail($data['id_supplier'],$conn);
                         ?>
                       <tr>
-                        <td><img width="100px" class="responsive" src="../admin/images/barang/<?php echo $data['gambar_barang'] ?>" alt=""></td>
                         <td><?php echo $data['kode_barang'] ?></td>
                         <td><?php echo $data['nama_barang'] ?></td>
                         <td><?php echo $data['stock_barang'] ?></td>
@@ -220,154 +219,20 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                         <td><?php echo $brand['nama_brand'] ?></td>
                         <td><?php echo $data['create_date'] ?></td>
                       </tr>
-          <!------------------ Modal UPDATE----------------------->
-          <div class="modal fade" id="update<?php echo $i?>" role="dialog">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Tambah Barang</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-              <?php 
-              $data_supp = GetDataSupplier($conn);
-              $data_brand = GetDataBrand($conn);
-              $data_kat = GetDataKategori($conn);
-              // $data_supp_detail = GetDetailSupplier($conn);
-              // $data_brand_detail = GetDetailBrand($conn);
-              // $data_kat_detail = GetDetailKategori($conn);
-              ?>
-              <div class="modal-body">
-	      							<div class="x_content">
-	      								<!-- start form for validation -->
-	      								<form action="../model/user.php" method="post" enctype="multipart/form-data">
-                          <label>Upload Gambar :</label>
-                          <input type="file" name="img" class="form-control"/>
-	      									<label>Nama Barang :</label>
-	      									<input type="text" name="nama" value="<?php echo $data['nama_barang'] ?>" class="form-control" required />
-                          <label>Kode Barang :</label>
-                          <input type="text" name="kode" value="<?php echo $data['kode_barang'] ?>" class="form-control" required />
-                          <!-- <label>Stock Barang :</label>
-	      									<input type="number" name="stock" class="form-control" required /> -->
-                          <label>Deskripsi :</label>
-	      									<input type="text" name="deskripsi" value="<?php echo $data['deskripsi'] ?>" class="form-control" required />
-	      									<label>Harga Barang :</label>
-	      									<input type="number" name="harga" value="<?php echo $data['harga_barang'] ?>" class="form-control" required />
-                          <!-- <label>Nomor Faktur :</label>
-	      									<input type="text" name="faktur" value="<?php echo $data['nama_barang'] ?>" class="form-control" required /> -->
-                          <label>Tempo Kadaluarsa :</label>
-                          <input type="date" name="tanggal" value="<?php echo $data['create_date'] ?>" class="form-control" required />
-                          <label>Supplier :</label>
-                          <select class="form-control" name="supplier">
-                          <?php while($supplier = mysqli_fetch_assoc($data_supp)){?>
-													<option value="<?php echo $supplier['id_supplier'] ?>"><?php echo $supplier['nama_supplier'] ?></option>
-                          <?php } ?>
-												  </select>
-                          <label >Brand :</label>
-                          <select class="form-control" name="brand">
-                          <?php while($brand = mysqli_fetch_assoc($data_brand)){?>
-                          <option value="<?php echo $brand['id_brand'] ?>"><?php echo $brand['nama_brand'] ?></option>
-                          <?php } ?>
-												  </select>
-                          <label >Kategori :</label>
-                          <select class="form-control" name="kategori">
-                          <?php while($kategori = mysqli_fetch_assoc($data_kat)){?>
-                          <option value="<?php echo $kategori['id_kategori'] ?>"><?php echo $kategori['nama_kategori'] ?></option>
-                          <?php } ?>
-												  </select>
-	      											<br />
-                          <input Type="hidden" name="id_barang" value="<?php echo $data['id_barang']?>"/>
-                          <button type="submit" class="btn btn-primary" name="updatebarang" >Ubah</button>
-                          <button type="submit" class="btn btn-danger" name="hapusbarang" >Hapus Barang</button>
-	      								</form>
-	      								<!-- end form for validations -->
-	      							</div>
-	      						</div>
-
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <!-- Modal -->
-                    <?php  $i+=1; }  ?>
-                    </tbody>
-                  </table>
+                      <?php }  ?>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+              </div>
+            </div>
                 </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-          <!------------------ Modal----------------------->
-          <div class="modal fade" id="myModal" role="dialog">
-          <?php 
-          $data_supp = GetDataSupplier($conn);
-          $data_brand = GetDataBrand($conn);
-          $data_kat = GetDataKategori($conn);
-          ?>
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Tambah Barang</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
-              <div class="modal-body">
-	      							<div class="x_content">
-	      								<!-- start form for validation -->
-	      								<form action="../model/user.php" method="post" enctype="multipart/form-data">
-                          <label>Upload Gambar :</label>
-                          <input type="file" name="img" class="form-control"/>
-	      									<label>Nama Barang :</label>
-	      									<input type="text" name="nama" class="form-control" required />
-                          <label>Kode Barang :</label>
-                          <input type="text" name="kode" class="form-control" required />
-                          <label>Stock Barang :</label>
-	      									<input type="number" name="stock" class="form-control" required />
-                          <label>Deskripsi :</label>
-	      									<input type="text" name="deskripsi" class="form-control" required />
-	      									<label>Harga Barang :</label>
-	      									<input type="number" name="harga" class="form-control" required />
-                          <label>Nomor Faktur :</label>
-	      									<input type="text" name="faktur" class="form-control" required />
-                          <label>Tempo Kadaluarsa :</label>
-                          <input type="date" name="tanggal" class="form-control" required />
-                          <label>Supplier :</label>
-                          <select class="form-control" name="supplier">
-                          <?php while($supplier = mysqli_fetch_assoc($data_supp)){?>
-													<option value="<?php echo $supplier['id_supplier'] ?>"><?php echo $supplier['nama_supplier'] ?></option>
-                          <?php } ?>
-												  </select>
-                          <label >Brand :</label>
-                          <select class="form-control" name="brand">
-                          <?php while($brand = mysqli_fetch_assoc($data_brand)){?>
-                          <option value="<?php echo $brand['id_brand'] ?>"><?php echo $brand['nama_brand'] ?></option>
-                          <?php } ?>
-												  </select>
-                          <label >Kategori :</label>
-                          <select class="form-control" name="kategori">
-                          <?php while($kategori = mysqli_fetch_assoc($data_kat)){?>
-                          <option value="<?php echo $kategori['id_kategori'] ?>"><?php echo $kategori['nama_kategori'] ?></option>
-                          <?php } ?>
-												  </select>
-	      											<br />
-                          <button type="submit" class="btn btn-primary" name="tmbhbarang" >Tambah</button>
-	      								</form>
-	      								<!-- end form for validations -->
-
-	      							</div>
-	      						</div>
-
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
               </div>
             </div>
-
           </div>
-        </div>
-        <!-- Modal -->
         </div>
         <!-- /page content -->
 
@@ -382,69 +247,35 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
       </div>
     </div>
 
-    <script type="text/javascript">
-    // function myFunction() {
-    //   const barang = document.getElementById("namabarang").innerHTML.substring(7);
-    //   var table = $('#example').DataTable();
-
-    //   console.log(barang);
-    // }
-    </script>
     <!-- jQuery -->
     <script src="../vendors/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <!-- FastClick -->
     <script src="../vendors/fastclick/lib/fastclick.js"></script>
     <!-- NProgress -->
     <script src="../vendors/nprogress/nprogress.js"></script>
-    <!-- Chart.js -->
-    <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
-    <!-- gauge.js -->
-    <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
-    <!-- bootstrap-progressbar -->
-    <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
     <!-- iCheck -->
     <script src="../vendors/iCheck/icheck.min.js"></script>
-    <!-- Skycons -->
-    <script src="../vendors/skycons/skycons.js"></script>
-    <!-- Flot -->
-    <script src="../vendors/Flot/jquery.flot.js"></script>
-    <script src="../vendors/Flot/jquery.flot.pie.js"></script>
-    <script src="../vendors/Flot/jquery.flot.time.js"></script>
-    <script src="../vendors/Flot/jquery.flot.stack.js"></script>
-    <script src="../vendors/Flot/jquery.flot.resize.js"></script>
-    <!-- Flot plugins -->
-    <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-    <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-    <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
-    <!-- DateJS -->
-    <script src="../vendors/DateJS/build/date.js"></script>
-    <!-- JQVMap -->
-    <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
-    <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-    <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-    <!-- bootstrap-daterangepicker -->
-    <script src="../vendors/moment/min/moment.min.js"></script>
-    <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-        <!-- Datatables -->
-        <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-        <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-        <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-        <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-        <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-        <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-        <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-        <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-        <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-        <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-        <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-        <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-        <script src="../vendors/jszip/dist/jszip.min.js"></script>
-        <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
-        <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+    <!-- Datatables -->
+    <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+    <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+    <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+    <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+    <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+    <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+    <script src="../vendors/jszip/dist/jszip.min.js"></script>
+    <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+    <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+
     <!-- Custom Theme Scripts -->
     <script src="../build/js/custom.min.js"></script>
-	
+
   </body>
 </html>
