@@ -145,7 +145,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'],$conn);
                           <span class="time"><?php echo $data_pesan['create_date'] ?></span>
                         </span>
                         <span class="message">
-                          Stock hampir habis, sisah <?php echo $data_pesan['stock'] ?>
+                          <?php echo $data_pesan['desc'] ?>, Sisah Stock <?php echo $data_pesan['stock'] ?>
                         </span>
                       </a>
                     </li>

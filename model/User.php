@@ -356,7 +356,7 @@ function InsertBarang($conn)
          if ($ukuran < 4044070) {        // max 4 mb
             move_uploaded_file($file_tmp, '../admin/images/barang/' . $id_item . $nama);
 
-            $sql = "INSERT INTO `tbl_barang` ( `id_item`,`id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`, `create_date`, `status`) VALUES ('".$id_item."','".$_POST['kategori']."', '".$_POST['supplier']."', '".$_POST['brand']."', '".$_POST['kode']."', '".$_POST['nama']."', '".$_POST['stock']."', '". $id_item.$nama."', '3121231', '".$_POST['deskripsi']."', '".$_POST['harga']."', '".$_POST['tanggal']."','ACTIVE')";
+            $sql = "INSERT INTO `tbl_barang` ( `id_item`,`id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`,`tempo_barang`, `create_date`, `status`) VALUES ('".$id_item."','".$_POST['kategori']."', '".$_POST['supplier']."', '".$_POST['brand']."', '".$_POST['kode']."', '".$_POST['nama']."', '".$_POST['stock']."', '". $id_item.$nama."', '3121231', '".$_POST['deskripsi']."', '".$_POST['harga']."', '".$_POST['tanggal']."',now(),'ACTIVE')";
             $result = mysqli_query($conn, $sql);
             $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('".$id_item."', '".$_SESSION['id_petugas']."','".$_POST['stock']."','".$_POST['faktur']."', now()) ";
             $result = mysqli_query($conn, $sql);
@@ -443,12 +443,21 @@ function CheckStock($conn){
    $data = mysqli_fetch_assoc($item);
    if($data){
    while ($data = mysqli_fetch_assoc($insert)){
-      $sql = "INSERT INTO `tbl_pesan` (`id_barang`, `nama_barang`, `img`, `stock`, `create_date`) VALUES ('".$data['id_barang']."', '".$data['nama_barang']."', '".$data['gambar_barang']."', '".$data['stock_barang']."', now()) ";
+      $sql = "INSERT INTO `tbl_pesan` (`id_barang`, `nama_barang`, `img`, `stock`,`desc`, `create_date`) VALUES ('".$data['id_barang']."', '".$data['nama_barang']."', '".$data['gambar_barang']."', '".$data['stock_barang']."','Stock barang hampir habis', now()) ";
+      $result = mysqli_query($conn, $sql);
+   }
+   }
+   $sql = "SELECT * FROM tbl_barang where status = 'ACTIVE' AND create_date <= now() ";
+   $item = mysqli_query($conn, $sql);
+   $insert = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+   if($data){
+   while ($data = mysqli_fetch_assoc($insert)){
+      $sql = "INSERT INTO `tbl_pesan` (`id_barang`, `nama_barang`, `img`, `stock`,`desc`, `create_date`) VALUES ('".$data['id_barang']."', '".$data['nama_barang']."', '".$data['gambar_barang']."', '".$data['stock_barang']."','Barang Kadaluarsa', now()) ";
       $result = mysqli_query($conn, $sql);
    }
    }
 }
-
 
 
 

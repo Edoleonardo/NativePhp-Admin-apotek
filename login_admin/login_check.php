@@ -17,7 +17,6 @@ if (isset($_POST['btnlogin'])) {
                 // msukin data yg login ke session
                 $_SESSION['id_petugas'] = $user['id_petugas'];
                 CheckStock($conn);
-
                 msg('Login Berhasil!!', '../admin/'); 
         } else {
             msg('Maaf, username / password yang dimasukan salah, silahkan coba kembali.', '../login_admin/login_admin.php'); 
