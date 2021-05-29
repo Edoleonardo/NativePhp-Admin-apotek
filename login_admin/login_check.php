@@ -14,15 +14,14 @@ if (isset($_POST['btnlogin'])) {
         // get nmbr of result
         if ($numrows == 1) {   // kalau hasilnya ktmu dan 1
             $user = mysqli_fetch_array($result);
-                // msukin data yg login ke session
-                $_SESSION['id_petugas'] = $user['id_petugas'];
-                CheckStock($conn);
-                msg('Login Berhasil!!', '../admin/'); 
+            // msukin data yg login ke session
+            $_SESSION['id_petugas'] = $user['id_petugas'];
+            CheckStock($conn);
+            msg('Login Berhasil!!', '../admin/');
         } else {
-            msg('Maaf, username / password yang dimasukan salah, silahkan coba kembali.', '../login_admin/login_admin.php'); 
+            msg('Maaf, username / password yang dimasukan salah, silahkan coba kembali.', '../login_admin/login_admin.php');
         }
-    } 
+    } else {
+        msg('Maaf, username / password yang dimasukan salah, silahkan coba kembali.', '../login_admin/login_admin.php');
+    }
 }
-
-
-?>

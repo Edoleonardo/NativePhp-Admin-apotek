@@ -2,8 +2,9 @@
 require('../connect/conn.php');
 require('../session/session.php');
 
-function checklogin(){
-   if (!isset($_SESSION['id_petugas'])){
+function checklogin()
+{
+   if (!isset($_SESSION['id_petugas'])) {
       header("location: ../login_admin/login_admin.php");
    }
 }
@@ -62,42 +63,47 @@ if (isset($_POST['krngbarang'])) {
 if (isset($_POST['tmbhstock'])) {
    MasukBarang($conn);
 }
+//stok saat ini 
+if (isset($_POST['stok_now'])) {
+   stokNow($conn);
+}
+
 // Laporan//
 if (isset($_POST['laporan'])) {
    LaporanRoute($conn);
 }
 
-function GetKategoriDetiail($id ,$conn)
+function GetKategoriDetiail($id, $conn)
 {
-   $sql = "SELECT * FROM tbl_kategori where id_kategori = '".$id."' ";
+   $sql = "SELECT * FROM tbl_kategori where id_kategori = '" . $id . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    return $data;
 }
-function GetBrandDetiail($id ,$conn)
+function GetBrandDetiail($id, $conn)
 {
-   $sql = "SELECT * FROM tbl_brand where id_brand = '".$id."' ";
+   $sql = "SELECT * FROM tbl_brand where id_brand = '" . $id . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    return $data;
 }
-function GetDataPetugas($id ,$conn)
+function GetDataPetugas($id, $conn)
 {
-   $sql = "SELECT * FROM tbl_petugas where id_petugas = '".$id."' ";
+   $sql = "SELECT * FROM tbl_petugas where id_petugas = '" . $id . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    return $data;
 }
-function GetDetailBarang($id ,$conn)
+function GetDetailBarang($id, $conn)
 {
-   $sql = "SELECT * FROM tbl_barang where id_item = '".$id."' ";
+   $sql = "SELECT * FROM tbl_barang where id_item = '" . $id . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    return $data;
 }
-function GetSupplierDetiail($id ,$conn)
+function GetSupplierDetiail($id, $conn)
 {
-   $sql = "SELECT * FROM tbl_supplier where id_supplier = '".$id."' ";
+   $sql = "SELECT * FROM tbl_supplier where id_supplier = '" . $id . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    return $data;
@@ -123,6 +129,13 @@ function GetDataBarang($conn)
    return $item;
 }
 
+function GetStokDataBarang($conn)
+{
+   $sql = "SELECT * FROM tbl_barang where status = 'ACTIVE'";
+   $item = mysqli_query($conn, $sql);
+   return $item;
+}
+
 function GetDataBrand($conn)
 {
    $sql = "SELECT * FROM tbl_brand ";
@@ -132,7 +145,7 @@ function GetDataBrand($conn)
 
 function GetDataKategori($conn)
 {
-   $sql = "SELECT * FROM tbl_Kategori ";
+   $sql = "SELECT * FROM tbl_Kategori order by create_date desc";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
@@ -145,40 +158,42 @@ function GetCountPesan($conn)
    return $data;
 }
 
-function GetDataPesan($conn){
+function GetDataPesan($conn)
+{
    $sql = "SELECT * FROM tbl_pesan ";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
 
-function Getcount($conn){
-$arr = [];
+function Getcount($conn)
+{
+   $arr = [];
 
-$sql = "SELECT count(id_barang) as total FROM tbl_barang ";
-$item = mysqli_query($conn, $sql);
-$data = mysqli_fetch_assoc($item);
-$arr[0] = $data['total'];
+   $sql = "SELECT count(id_barang) as total FROM tbl_barang ";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+   $arr[0] = $data['total'];
 
-$sql = "SELECT count(id_masuk) as total FROM tbl_barang_masuk ";
-$item = mysqli_query($conn, $sql);
-$data = mysqli_fetch_assoc($item);
-$arr[1] = $data['total'];
+   $sql = "SELECT count(id_masuk) as total FROM tbl_barang_masuk where create_date = CURDATE()";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+   $arr[1] = $data['total'];
 
-$sql = "SELECT count(id_keluar) as total FROM tbl_barang_keluar ";
-$item = mysqli_query($conn, $sql);
-$data = mysqli_fetch_assoc($item);
-$arr[2] = $data['total'];
+   $sql = "SELECT count(id_keluar) as total FROM tbl_barang_keluar where date = CURDATE()";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+   $arr[2] = $data['total'];
 
-$sql = "SELECT count(id_supplier) as total FROM tbl_supplier ";
-$item = mysqli_query($conn, $sql);
-$data = mysqli_fetch_assoc($item);
-$arr[3] = $data['total'];
+   $sql = "SELECT count(id_supplier) as total FROM tbl_supplier ";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+   $arr[3] = $data['total'];
 
-return $arr;
-
+   return $arr;
 }
 
-function EditBrand($conn){
+function EditBrand($conn)
+{
    $sql = "UPDATE tbl_brand SET nama_brand = '" . $_POST['nama'] . "' WHERE id_brand = '" . $_POST['id'] . "' ";
    $result = mysqli_query($conn, $sql);
 
@@ -189,29 +204,30 @@ function EditBrand($conn){
    }
 }
 
-function HapusPesan($conn){
+function HapusPesan($conn)
+{
    $sql = "truncate tbl_pesan";
    $result = mysqli_query($conn, $sql);
 
    header("location: ../admin/index.php");
-
 }
 
 
-function KeluarBarang($conn){
-   $sql = "SELECT * FROM tbl_barang where id_item = '".$_POST['id_item']."' ";
+function KeluarBarang($conn)
+{
+   $sql = "SELECT * FROM tbl_barang where id_item = '" . $_POST['id_item'] . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
 
-   if($data['stock_barang'] >= $_POST['stock']){
+   if ($data['stock_barang'] >= $_POST['stock']) {
 
-      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`, `date`) VALUES ('".$_SESSION['id_petugas']."', '".$_POST['id_item']."', '" . $_POST['stock'] . "', now()) ";
+      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`, `date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "', now()) ";
       $result = mysqli_query($conn, $sql);
 
       $stock = $data['stock_barang'] - $_POST['stock'];
-      $sql = "UPDATE tbl_barang SET stock_barang = '" .$stock . "' WHERE id_item = '" . $_POST['id_item'] . "' ";
+      $sql = "UPDATE tbl_barang SET stock_barang = '" . $stock . "' WHERE id_item = '" . $_POST['id_item'] . "' ";
       $result = mysqli_query($conn, $sql);
-   }else{
+   } else {
       msg('Stock Kurang', '../admin/barang_keluar.php');
    }
 
@@ -222,17 +238,18 @@ function KeluarBarang($conn){
    }
 }
 
-function MasukBarang($conn){
-   $sql = "SELECT * FROM tbl_barang where id_item = '".$_POST['id_item']."' ";
+function MasukBarang($conn)
+{
+   $sql = "SELECT * FROM tbl_barang where id_item = '" . $_POST['id_item'] . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
 
-      $sql = "INSERT INTO `tbl_barang_masuk` ( `id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('" . $_POST['id_item'] . "', '".$_SESSION['id_petugas']."', '" . $_POST['stock'] . "', '" . $_POST['faktur'] . "', now())  ";
-      $result = mysqli_query($conn, $sql);
+   $sql = "INSERT INTO `tbl_barang_masuk` ( `id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('" . $_POST['id_item'] . "', '" . $_SESSION['id_petugas'] . "', '" . $_POST['stock'] . "', '" . $_POST['faktur'] . "', now())  ";
+   $result = mysqli_query($conn, $sql);
 
-      $stock = $data['stock_barang'] + $_POST['stock'];
-      $sql = "UPDATE tbl_barang SET stock_barang = '" .$stock . "' WHERE id_item = '" . $_POST['id_item'] . "' ";
-      $result = mysqli_query($conn, $sql);
+   $stock = $data['stock_barang'] + $_POST['stock'];
+   $sql = "UPDATE tbl_barang SET stock_barang = '" . $stock . "' WHERE id_item = '" . $_POST['id_item'] . "' ";
+   $result = mysqli_query($conn, $sql);
 
 
    if ($result) {
@@ -242,7 +259,16 @@ function MasukBarang($conn){
    }
 }
 
-function Deletebrand($conn){
+function stokNow($conn)
+{
+   $sql = "SELECT * FROM tbl_barang where id_item = '" . $_POST['id'] . "' ";
+   $result = mysqli_query($conn, $sql);
+   $result = mysqli_fetch_assoc($result);
+   echo json_encode($result);
+}
+
+function Deletebrand($conn)
+{
 
    $sql = "DELETE FROM tbl_brand WHERE tbl_brand.id_brand = " . $_POST['id'] . "";
    $result = mysqli_query($conn, $sql);
@@ -253,7 +279,8 @@ function Deletebrand($conn){
       msg('Gagal Delete data!!', '../admin/brand.php');
    }
 }
-function InsertBrand($conn){
+function InsertBrand($conn)
+{
 
    $sql = "INSERT INTO tbl_brand ( nama_brand , create_date) 
      VALUES ( '" . $_POST['nama'] . "', now())";
@@ -266,7 +293,8 @@ function InsertBrand($conn){
 }
 
 
-function EditKategori($conn){
+function EditKategori($conn)
+{
    $sql = "UPDATE tbl_Kategori SET nama_kategori = '" . $_POST['nama'] . "', kode_rak = '" . $_POST['kode'] . "' WHERE id_kategori = '" . $_POST['id'] . "' ";
    $result = mysqli_query($conn, $sql);
 
@@ -277,7 +305,8 @@ function EditKategori($conn){
    }
 }
 
-function DeleteKategori($conn){
+function DeleteKategori($conn)
+{
 
    $sql = "DELETE FROM tbl_Kategori WHERE tbl_Kategori.id_kategori = " . $_POST['id'] . "";
    $result = mysqli_query($conn, $sql);
@@ -289,7 +318,8 @@ function DeleteKategori($conn){
    }
 }
 
-function InsertKategori($conn){
+function InsertKategori($conn)
+{
 
    $sql = "INSERT INTO tbl_kategori ( nama_kategori ,kode_rak, create_date) 
      VALUES ( '" . $_POST['nama'] . "','" . $_POST['kode'] . "', now())";
@@ -309,7 +339,8 @@ function GetDataSupplier($conn)
 }
 
 
-function EditSupplier($conn){
+function EditSupplier($conn)
+{
    $sql = "UPDATE tbl_supplier SET nama_supplier = '" . $_POST['nama'] . "', alamat_supplier = '" . $_POST['alamat'] . "', kontak_supplier = '" . $_POST['nohp'] . "' WHERE id_supplier = '" . $_POST['id'] . "' ";
    $result = mysqli_query($conn, $sql);
 
@@ -320,7 +351,8 @@ function EditSupplier($conn){
    }
 }
 
-function DeleteSupplier($conn){
+function DeleteSupplier($conn)
+{
 
    $sql = "DELETE FROM tbl_supplier WHERE tbl_supplier.id_supplier = " . $_POST['id'] . "";
    $result = mysqli_query($conn, $sql);
@@ -332,7 +364,8 @@ function DeleteSupplier($conn){
    }
 }
 
-function InsertSupplier($conn){
+function InsertSupplier($conn)
+{
 
    $sql = "INSERT INTO tbl_supplier ( nama_supplier ,alamat_supplier, kontak_supplier, create_date) 
      VALUES ( '" . $_POST['nama'] . "','" . $_POST['alamat'] . "','" . $_POST['nohp'] . "', now())";
@@ -348,42 +381,42 @@ function InsertBarang($conn)
 {
 
    $img = $_FILES['img']['name'];
-      date_default_timezone_set("Asia/Bangkok");
-      $id_item = date("his") . date("Ymd");
-      $nama = $_FILES['img']['name'];
-      $ekstensi_diperbolehkan = array('png', 'jpg', 'jpeg');
-      $x = explode('.', $nama);   // dpt nama tanpa ekstensi file
-      $ekstensi = strtolower(end($x));    // jdiin hruf kecil ekstensinya
-      $ukuran    = $_FILES['img']['size'];   //ukuran brp
-      $file_tmp = $_FILES['img']['tmp_name'];    //temp filenya apa
-      if (in_array($ekstensi, $ekstensi_diperbolehkan) === true) {    // kalau ekstensinya bener
-         if ($ukuran < 4044070) {        // max 4 mb
-            move_uploaded_file($file_tmp, '../admin/images/barang/' . $id_item . $nama);
+   date_default_timezone_set("Asia/Bangkok");
+   $id_item = date("his") . date("Ymd");
+   $nama = $_FILES['img']['name'];
+   $ekstensi_diperbolehkan = array('png', 'jpg', 'jpeg');
+   $x = explode('.', $nama);   // dpt nama tanpa ekstensi file
+   $ekstensi = strtolower(end($x));    // jdiin hruf kecil ekstensinya
+   $ukuran    = $_FILES['img']['size'];   //ukuran brp
+   $file_tmp = $_FILES['img']['tmp_name'];    //temp filenya apa
+   if (in_array($ekstensi, $ekstensi_diperbolehkan) === true) {    // kalau ekstensinya bener
+      if ($ukuran < 4044070) {        // max 4 mb
+         move_uploaded_file($file_tmp, '../admin/images/barang/' . $id_item . $nama);
 
-            $sql = "INSERT INTO `tbl_barang` ( `id_item`,`id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`,`tempo_barang`, `create_date`, `status`) VALUES ('".$id_item."','".$_POST['kategori']."', '".$_POST['supplier']."', '".$_POST['brand']."', '".$_POST['kode']."', '".$_POST['nama']."', '".$_POST['stock']."', '". $id_item.$nama."', '3121231', '".$_POST['deskripsi']."', '".$_POST['harga']."', '".$_POST['tanggal']."',now(),'ACTIVE')";
-            $result = mysqli_query($conn, $sql);
-            $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('".$id_item."', '".$_SESSION['id_petugas']."','".$_POST['stock']."','".$_POST['faktur']."', now()) ";
-            $result = mysqli_query($conn, $sql);
+         $sql = "INSERT INTO `tbl_barang` ( `id_item`,`id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`,`tempo_barang`, `create_date`, `status`) VALUES ('" . $id_item . "','" . $_POST['kategori'] . "', '" . $_POST['supplier'] . "', '" . $_POST['brand'] . "', '" . $_POST['kode'] . "', '" . $_POST['nama'] . "', '" . $_POST['stock'] . "', '" . $id_item . $nama . "', '3121231', '" . $_POST['deskripsi'] . "', '" . $_POST['harga'] . "', '" . $_POST['tanggal'] . "',now(),'ACTIVE')";
+         $result = mysqli_query($conn, $sql);
+         $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('" . $id_item . "', '" . $_SESSION['id_petugas'] . "','" . $_POST['stock'] . "','" . $_POST['faktur'] . "', now()) ";
+         $result = mysqli_query($conn, $sql);
 
 
 
-            if ($result) {
-               msg('Data berhasil ditambah!!', '../admin');
-            } else {
-               msg('Gagal menambah data!!', '../admin');
-            }
+         if ($result) {
+            msg('Data berhasil ditambah!!', '../admin');
          } else {
-            msg('Ukuran file max 4mb!!', '../admin');
+            msg('Gagal menambah data!!', '../admin');
          }
       } else {
-         msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin');
+         msg('Ukuran file max 4mb!!', '../admin');
       }
+   } else {
+      msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin');
+   }
 }
 
 function UpdateBarang($conn)
 {
    $img = $_FILES['img']['name'];
-   if($img){
+   if ($img) {
       date_default_timezone_set("Asia/Bangkok");
       $id_item = date("his") . date("Ymd");
       $nama = $_FILES['img']['name'];
@@ -396,7 +429,7 @@ function UpdateBarang($conn)
          if ($ukuran < 4044070) {        // max 4 mb
             move_uploaded_file($file_tmp, '../admin/images/barang/' . $id_item . $nama);
 
-            $sql = "UPDATE tbl_barang set gambar_barang= '".$id_item.$nama."',nama_barang = '".$_POST['nama']."',kode_barang = '".$_POST['kode']."',deskripsi = '".$_POST['deskripsi']."',harga_barang = '".$_POST['harga']."',create_date = '".$_POST['tanggal']."',id_kategori = '".$_POST['kategori']."',id_supplier = '".$_POST['supplier']."',id_brand = '".$_POST['brand']."' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
+            $sql = "UPDATE tbl_barang set gambar_barang= '" . $id_item . $nama . "',nama_barang = '" . $_POST['nama'] . "',kode_barang = '" . $_POST['kode'] . "',deskripsi = '" . $_POST['deskripsi'] . "',harga_barang = '" . $_POST['harga'] . "',create_date = '" . $_POST['tanggal'] . "',id_kategori = '" . $_POST['kategori'] . "',id_supplier = '" . $_POST['supplier'] . "',id_brand = '" . $_POST['brand'] . "' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
             $result = mysqli_query($conn, $sql);
 
             // $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('".$id_item."', '".$_SESSION['id_petugas']."','".$_POST['stock']."','".$_POST['faktur']."', now()) ";
@@ -415,8 +448,8 @@ function UpdateBarang($conn)
       } else {
          msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin');
       }
-   }else{
-      $sql = "UPDATE tbl_barang set nama_barang = '".$_POST['nama']."',kode_barang = '".$_POST['kode']."',deskripsi = '".$_POST['deskripsi']."',harga_barang = '".$_POST['harga']."',create_date = '".$_POST['tanggal']."',id_kategori = '".$_POST['kategori']."',id_supplier = '".$_POST['supplier']."',id_brand = '".$_POST['brand']."' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
+   } else {
+      $sql = "UPDATE tbl_barang set nama_barang = '" . $_POST['nama'] . "',kode_barang = '" . $_POST['kode'] . "',deskripsi = '" . $_POST['deskripsi'] . "',harga_barang = '" . $_POST['harga'] . "',create_date = '" . $_POST['tanggal'] . "',id_kategori = '" . $_POST['kategori'] . "',id_supplier = '" . $_POST['supplier'] . "',id_brand = '" . $_POST['brand'] . "' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
       $result = mysqli_query($conn, $sql);
 
       if ($result) {
@@ -427,7 +460,8 @@ function UpdateBarang($conn)
    }
 }
 
-function DeleteBarang($conn){
+function DeleteBarang($conn)
+{
 
    $sql = "UPDATE tbl_barang set status = 'IN-ACTIVE' WHERE tbl_barang.id_barang = " . $_POST['id_barang'] . "";
    $result = mysqli_query($conn, $sql);
@@ -439,41 +473,43 @@ function DeleteBarang($conn){
    }
 }
 
-function CheckStock($conn){
-   
+function CheckStock($conn)
+{
+
    $sql = "SELECT * FROM tbl_barang where status = 'ACTIVE' AND stock_barang <= 10";
    $item = mysqli_query($conn, $sql);
    $insert = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
-   if($data){
-   while ($data = mysqli_fetch_assoc($insert)){
-      $sql = "INSERT INTO `tbl_pesan` (`id_barang`, `nama_barang`, `img`, `stock`,`desc`, `create_date`) VALUES ('".$data['id_barang']."', '".$data['nama_barang']."', '".$data['gambar_barang']."', '".$data['stock_barang']."','Stock barang hampir habis', now()) ";
-      $result = mysqli_query($conn, $sql);
-   }
+   if ($data) {
+      while ($data = mysqli_fetch_assoc($insert)) {
+         $sql = "INSERT INTO `tbl_pesan` (`id_barang`, `nama_barang`, `img`, `stock`,`desc`, `create_date`) VALUES ('" . $data['id_barang'] . "', '" . $data['nama_barang'] . "', '" . $data['gambar_barang'] . "', '" . $data['stock_barang'] . "','Stock barang hampir habis', now()) ";
+         $result = mysqli_query($conn, $sql);
+      }
    }
    $sql = "SELECT * FROM tbl_barang where status = 'ACTIVE' AND create_date <= now() ";
    $item = mysqli_query($conn, $sql);
    $insert = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
-   if($data){
-   while ($data = mysqli_fetch_assoc($insert)){
-      $sql = "INSERT INTO `tbl_pesan` (`id_barang`, `nama_barang`, `img`, `stock`,`desc`, `create_date`) VALUES ('".$data['id_barang']."', '".$data['nama_barang']."', '".$data['gambar_barang']."', '".$data['stock_barang']."','Barang Kadaluarsa', now()) ";
-      $result = mysqli_query($conn, $sql);
-   }
+   if ($data) {
+      while ($data = mysqli_fetch_assoc($insert)) {
+         $sql = "INSERT INTO `tbl_pesan` (`id_barang`, `nama_barang`, `img`, `stock`,`desc`, `create_date`) VALUES ('" . $data['id_barang'] . "', '" . $data['nama_barang'] . "', '" . $data['gambar_barang'] . "', '" . $data['stock_barang'] . "','Barang Kadaluarsa', now()) ";
+         $result = mysqli_query($conn, $sql);
+      }
    }
 }
 
-function Laporan($bln,$conn){
-   $sql = "SELECT * FROM tbl_barang where status = 'ACTIVE' AND SUBSTRING(create_date,1, 7) = '".$bln."' ";
+function Laporan($bln, $conn)
+{
+   $sql = "SELECT * FROM tbl_barang where status = 'ACTIVE' AND SUBSTRING(create_date,1, 7) = '" . $bln . "' ";
    $item = mysqli_query($conn, $sql);
    return  $item;
 }
 
-function LaporanRoute($conn){
+function LaporanRoute($conn)
+{
 
    $url = '../admin/laporan.php?bln=' . $_POST['bln'];
    header("location:" . $url);
-
 }
 
 function msg($pesan, $url)
