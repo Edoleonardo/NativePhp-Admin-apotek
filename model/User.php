@@ -221,7 +221,7 @@ function HapusPesan($conn)
 
 function GetDetailPesan($id, $conn)
 {
-   $sql = "SELECT * FROM tbl_pesan where id_barang = '" . $id . "' HAVING COUNT(id_barang) > 1 ";
+   $sql = "SELECT * FROM tbl_pesan where id_barang = '" . $id . "' HAVING COUNT(id_barang) > 0";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    $text = 0;
@@ -230,7 +230,7 @@ function GetDetailPesan($id, $conn)
    if($data['desc'] == 'Stock barang hampir habis'){
       $text = 'background-color:#f54e42;'; 
 
-   } elseif ($data['desc'] == 'Barang Kadaluarsa'){
+   }else{
       $text = 'background-color:#ffa500;';
 
    }
