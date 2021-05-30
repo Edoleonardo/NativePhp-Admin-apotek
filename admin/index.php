@@ -57,6 +57,16 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   h1 {
     text-align: center;
   }
+
+
+  .Stockbaranghampirhabis{
+    background-color:#f54e42;
+  }
+
+  .BarangKadaluarsa{
+    background-color:#ffa500;
+  }
+
 </style>
 
 <body class="nav-md">
@@ -257,8 +267,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             $kategori = GetKategoriDetiail($data['id_kategori'], $conn);
                             $brand = GetBrandDetiail($data['id_brand'], $conn);
                             $supplier = GetSupplierDetiail($data['id_supplier'], $conn);
+                            $pesan = GetDetailPesan($data['id_barang'],$conn);
                           ?>
-                            <tr>
+                            <tr style="<?php echo $pesan ?>">
                               <td><img width="100px" class="responsive" src="../admin/images/barang/<?php echo $data['gambar_barang'] ?>" alt=""></td>
                               <td><?php echo $data['kode_barang'] ?></td>
                               <td><?php echo $data['nama_barang'] ?></td>

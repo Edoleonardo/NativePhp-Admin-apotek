@@ -204,6 +204,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <th>Jumlah</th>
                             <th>Faktur</th>
                             <th>Tanggal Masuk</th>
+                            <th>Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -217,6 +218,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $data['jumlah_barang'] ?></td>
                               <td><?php echo $data['no_faktur'] ?></td>
                               <td><?php echo $data['create_date'] ?></td>
+                              <td>
+                                <form action="../model/User.php" method="post">
+                                  <input type="hidden" name="id" value="<?php echo $data['id_masuk'] ?>">
+                                  <button style="background-color:red;" type="submit" name="deletemsk" class="btn cart_quantity_delete"><i class="fa fa-times"></i></button>
+                                </form>
+                              </td>
                             </tr>
                           <?php } ?>
                         </tbody>

@@ -216,7 +216,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $barang['nama_barang'] ?></td>
                               <td><?php echo $data['jumlah_barang'] ?></td>
                               <td><?php echo $data['date'] ?></td>
-                              <td>2011/04/25</td>
+                              <td>
+                                <form action="../model/User.php" method="post">
+                                  <input type="hidden" name="id" value="<?php echo $data['id_keluar'] ?>">
+                                  <button style="background-color:red;" type="submit" name="deleteklr" class="btn cart_quantity_delete"><i class="fa fa-times"></i></button>
+                                </form>
+                              </td>
                             </tr>
                           <?php } ?>
                         </tbody>

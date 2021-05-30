@@ -15,7 +15,7 @@ if (isset($_POST['tmbhbrand'])) {
 if (isset($_POST['editbrand'])) {
    EditBrand($conn);
 }
-if (isset($_POST['deletesupp'])) {
+if (isset($_POST['deletebrand'])) {
    Deletebrand($conn);
 }
 
@@ -26,7 +26,7 @@ if (isset($_POST['tmbhkategori'])) {
 if (isset($_POST['editkategori'])) {
    EditKategori($conn);
 }
-if (isset($_POST['deletesupp'])) {
+if (isset($_POST['deletekat'])) {
    DeleteKategori($conn);
 }
 
@@ -59,9 +59,15 @@ if (isset($_POST['hapuspesan'])) {
 if (isset($_POST['krngbarang'])) {
    KeluarBarang($conn);
 }
+if (isset($_POST['deleteklr'])) {
+   DeleteKeluar($conn);
+}
 // masuk stock //
 if (isset($_POST['tmbhstock'])) {
    MasukBarang($conn);
+}
+if (isset($_POST['deletemsk'])) {
+   DeleteMasuk($conn);
 }
 //stok saat ini 
 if (isset($_POST['stok_now'])) {
@@ -80,6 +86,7 @@ function GetKategoriDetiail($id, $conn)
    $data = mysqli_fetch_assoc($item);
    return $data;
 }
+
 function GetBrandDetiail($id, $conn)
 {
    $sql = "SELECT * FROM tbl_brand where id_brand = '" . $id . "' ";
@@ -111,13 +118,13 @@ function GetSupplierDetiail($id, $conn)
 
 function GetDataBarangMasuk($conn)
 {
-   $sql = "SELECT * FROM tbl_barang_masuk ";
+   $sql = "SELECT * FROM tbl_barang_masuk ORDER BY create_date desc";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
 function GetDataBarangKeluar($conn)
 {
-   $sql = "SELECT * FROM tbl_barang_keluar ";
+   $sql = "SELECT * FROM tbl_barang_keluar ORDER BY date desc";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
@@ -212,6 +219,24 @@ function HapusPesan($conn)
    header("location: ../admin/index.php");
 }
 
+function GetDetailPesan($id, $conn)
+{
+   $sql = "SELECT * FROM tbl_pesan where id_barang = '" . $id . "' HAVING COUNT(id_barang) > 1 ";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+   $text = 0;
+
+   if (isset($data['desc'])){
+   if($data['desc'] == 'Stock barang hampir habis'){
+      $text = 'background-color:#f54e42;'; 
+
+   } elseif ($data['desc'] == 'Barang Kadaluarsa'){
+      $text = 'background-color:#ffa500;';
+
+   }
+   }
+   return $text;
+}
 
 function KeluarBarang($conn)
 {
@@ -317,6 +342,32 @@ function DeleteKategori($conn)
       msg('Gagal Delete data!!', '../admin/kategori.php');
    }
 }
+
+function DeleteKeluar($conn)
+{
+
+   $sql = "DELETE FROM tbl_barang_keluar WHERE tbl_barang_keluar.id_keluar = " . $_POST['id'] . "";
+   $result = mysqli_query($conn, $sql);
+
+   if ($result) {
+      msg('Berhasil di Delete', '../admin/barang_keluar.php');
+   } else {
+      msg('Gagal Delete data!!', '../admin/barang_keluar.php');
+   }
+}
+function DeleteMasuk($conn)
+{
+
+   $sql = "DELETE FROM tbl_barang_masuk WHERE tbl_barang_masuk.id_masuk = " . $_POST['id'] . "";
+   $result = mysqli_query($conn, $sql);
+
+   if ($result) {
+      msg('Berhasil di Delete', '../admin/barang_masuk.php');
+   } else {
+      msg('Gagal Delete data!!', '../admin/barang_masuk.php');
+   }
+}
+
 
 function InsertKategori($conn)
 {

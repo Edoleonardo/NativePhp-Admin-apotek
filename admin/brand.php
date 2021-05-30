@@ -215,7 +215,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td>
                                 <form action="../model/User.php" method="post">
                                   <input type="hidden" name="id" value="<?php echo $data['id_brand'] ?>">
-                                  <button style="background-color:red;" type="submit" name="deletesupp" class="btn cart_quantity_delete"><i class="fa fa-times"></i></button>
+                                  <button style="background-color:red;" type="submit" name="deletebrand" class="btn cart_quantity_delete"><i class="fa fa-times"></i></button>
                                   <button style="background-color:grey;" type="button" class="btn btn-lg" data-toggle="modal" data-dismiss="modal" data-target="#update_alamat<?php echo $i ?>"><i class="fa fa-edit"></i></button>
                                 </form>
                               </td>
