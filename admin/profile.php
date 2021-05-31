@@ -202,12 +202,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 </div>
                 <div class="x_content">
                   <br />
-                  <form action="../model/user.php" method="post">
                     <div style="text-align: center;">
                       <a type="button" data-toggle="modal" data-target="#modalfoto">
-                        <img style="border: solid;"  src="../admin/images/profile/<?php echo $now['img']?>">
+                        <img style="border: solid; max-width: 150px;"  src="../admin/images/profile/<?php echo $now['img']?>">
                       </a>
                     </div>
+                  <form action="../model/user.php" method="post">
                     <br><br>
                     <div class="item form-group">
                     <input type="hidden" name="id" value="<?php echo $now['id_petugas']?>">
@@ -222,18 +222,18 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                         <input disabled type="email" name="email" class="form-control" value="<?php echo $now['email'] ?>">
                       </div>
                     </div>
-                    <div class="item form-group">
+                    <div class="item form-group" style="text-align: center;">
                       <div class="col-md-6 col-sm-6 offset-md-3">
                         <button type="submit" name="ubahnama" class="btn btn-success">Edit Nama</button>
-                        <button type="submit" class="btn btn-success">Ubah Password</button>
                       </div>
                     </div>
                   </form>
+                        <button class="btn btn-success" data-toggle="modal" data-target="#ubahpass">Ubah Password</button>
                 </div>
               </div>
             </div>
           </div>
-        <!------------------ Modal----------------------->
+        <!------------------ Modal Ubah Foto----------------------->
         <div class="modal fade" id="modalfoto" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -252,6 +252,52 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                   </form>
                   <!-- end form for validations -->
 
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Modal -->
+        <!------------------ Modal Ubah Password----------------------->
+        <div class="modal fade" id="ubahpass" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Upload Foto</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="x_content">
+                  <!-- start form for validation -->
+                  <form action="../model/user.php" method="post">
+                    <br><br>
+                    <div class="item form-group">
+                      <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Password Lama</label>
+                      <div class="col-md-6 col-sm-6 ">
+                        <input type="password" name="passlama" class="form-control"></input>
+                      </div>
+                    </div>
+                    <div class="item form-group">
+                      <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Password Baru</label>
+                      <div class="col-md-6 col-sm-6 ">
+                        <input type="password" name="pass1" class="form-control">
+                      </div>
+                    </div>
+                    <div class="item form-group">
+                      <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Ketik Ulang Password</label>
+                      <div class="col-md-6 col-sm-6 ">
+                        <input type="password" name="pass2" class="form-control">
+                      </div>
+                    </div>
+                    <div class="item form-group" style="text-align: center;">
+                      <div class="col-md-6 col-sm-6 offset-md-3">
+                      <input type="hidden" name="id" value="<?php echo $now['id_petugas']?>">
+                        <button type="submit" name="ubahpassword" class="btn btn-success">Ubah</button>
+                      </div>
+                    </div>
+                  </form>
+                  <!-- end form for validations -->
                 </div>
               </div>
             </div>

@@ -6,7 +6,7 @@ if (isset($_POST['btnlogin'])) {
     $password = trim($_POST['password']);
 
     //create some sql statement             
-    $sql = "SELECT id_petugas FROM  tbl_petugas WHERE  upper(email) =  '" . $email . "' AND  password =  password(" . $password . ")";
+    $sql = "SELECT id_petugas FROM  tbl_petugas WHERE  upper(email) =  '" . $email . "' AND  password =  password('" . $password . "')";
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
@@ -22,6 +22,6 @@ if (isset($_POST['btnlogin'])) {
             msg('Maaf, username / password yang dimasukan salah, silahkan coba kembali.', '../login_admin/login_admin.php');
         }
     } else {
-        msg('Maaf, username / password yang dimasukan salah, silahkan coba kembali.', '../login_admin/login_admin.php');
+        msg('Maaf, username / password yang dimasukan salah, silahkan coba kembali asd.', '../login_admin/login_admin.php');
     }
 }

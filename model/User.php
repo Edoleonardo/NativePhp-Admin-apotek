@@ -86,6 +86,9 @@ if (isset($_POST['fotoprofile'])) {
 if (isset($_POST['ubahnama'])) {
    NamaProfile($conn);
 }
+if (isset($_POST['ubahpassword'])) {
+   UbahPassword($conn);
+}
 
 function GetKategoriDetiail($id, $conn)
 {
@@ -513,6 +516,38 @@ function InsertBarang($conn)
    } else {
       msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin');
    }
+}
+
+function UbahPassword($conn)
+{
+
+   $password = trim($_POST['passlama']);
+
+   //create some sql statement             
+   $sql = "SELECT id_petugas FROM  tbl_petugas WHERE id_petugas = " . $_POST['id'] . " AND  password =  password('" . $password . "')";
+   $result = mysqli_query($conn, $sql);
+
+   if ($result) {
+       $numrows = mysqli_num_rows($result);
+       // get nmbr of result
+       if ($numrows == 1) {   // kalau hasilnya ktmu dan 1
+         if ($_POST['pass1'] == $_POST['pass2']) {
+            $password1 = trim($_POST['pass1']);
+            $sql = "UPDATE tbl_petugas SET password = password('" .  $password1 . "') WHERE id_petugas = " . $_POST['id'] . " ";
+            $result = mysqli_query($conn, $sql);
+
+            msg('Password berhasil diubah!!', '../admin/profile.php');
+         } else {
+            msg('Password tidak sama!!', '../admin/profile.php');
+         }
+       } else {
+           msg('Maaf, Password Lama Salah', '../admin/profile.php');
+       }
+   } else {
+       msg('Maaf, Password Lama Salah', '../admin/profile.php');
+   }
+
+
 }
 
 function UpdateBarang($conn)
