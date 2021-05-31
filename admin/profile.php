@@ -1,7 +1,7 @@
 <?php
 require('../model/User.php');
 checklogin();
-$data_brand = GetDataBrand($conn);
+$data_supplier = GetDataSupplier($conn);
 $pesan = GetDataPesan($conn);
 $totalpesan = GetCountPesan($conn);
 $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
@@ -49,7 +49,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-
+<style>
+    .image {
+        max-height: 200px;
+        max-width: 200px;
+        text-align: center;
+    }
+</style>
 <body class="nav-md">
   <div class="container body">
     <div class="main_container">
@@ -179,102 +185,70 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       <!-- page content -->
       <div class="right_col" role="main">
         <!-- top tiles -->
-        <div class="row" style="display: inline-block;">
-          <h3>Brand</h3>
+        <div class="row" style="display: inline-block; text-align: center;">
+          <h3>Profile</h3>
         </div>
         <!-- /top tiles -->
 
         <br />
 
-        <div class="row">
-          <div class="col-md-12 col-sm-12 ">
-            <div class="x_panel">
-              <div class="x_title">
-                <div class="clearfix"></div>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Brand</button>
-              </div>
-              <div class="x_content">
-                <div class="row">
-                  <div class="col-sm-12">
-                    <div class="card-box table-responsive">
-                      <table id="datatable" class="table table-striped table-bordered" style="width:100%">
-                        <thead>
-                          <tr>
-                            <th>Nama Brand</th>
-                            <th>Tanggal</th>
-                            <th>Aksi</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php
-                          $i = 0;
-                          while ($data = mysqli_fetch_assoc($data_brand)) { ?>
-                            <tr>
-                              <td><?php echo $data['nama_brand'] ?></td>
-                              <td><?php echo $data['create_date'] ?></td>
-                              <td>
-                                <form action="../model/User.php" method="post">
-                                  <input type="hidden" name="id" value="<?php echo $data['id_brand'] ?>">
-                                  <button style="background-color:red;" type="submit" name="deletebrand" class="btn cart_quantity_delete"><i class="fa fa-times"></i></button>
-                                  <button style="background-color:grey;" type="button" class="btn btn-lg" data-toggle="modal" data-dismiss="modal" data-target="#update_alamat<?php echo $i ?>"><i class="fa fa-edit"></i></button>
-                                </form>
-                              </td>
-                            </tr>
-                            <div class="modal fade" id="update_alamat<?php echo $i ?>" role="dialog">
-                              <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <h4 class="modal-title">Edit Data Brand</h4>
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                  </div>
-                                  <div class="modal-body">
-                                    <div class="x_content">
-
-                                      <!-- start form for validation -->
-                                      <form action="../model/user.php" method="post">
-                                        <label for="fullname">Nama Brand :</label>
-                                        <input type="text" name="nama" class="form-control" value="<?php echo $data['nama_brand'] ?>" required />
-                                        <br />
-                                        <input type="hidden" name="id" class="form-control" value="<?php echo $data['id_brand'] ?>" required />
-                                        <button type="submit" class="btn btn-primary" name="editbrand">Edit</button>
-                                      </form>
-                                      <!-- end form for validations -->
-
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          <?php $i += 1;
-                          } ?>
-                        </tbody>
-                      </table>
+          <div class="clearfix"></div>
+          <div class="row">
+            <div class="col-md-12 col-sm-12 ">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2>Profile</h2>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <br />
+                  <form action="../model/user.php" method="post">
+                    <div style="text-align: center;">
+                      <a type="button" data-toggle="modal" data-target="#modalfoto">
+                        <img style="border: solid;"  src="../admin/images/profile/<?php echo $now['img']?>">
+                      </a>
                     </div>
-                  </div>
+                    <br><br>
+                    <div class="item form-group">
+                    <input type="hidden" name="id" value="<?php echo $now['id_petugas']?>">
+                      <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Petugas</label>
+                      <div class="col-md-6 col-sm-6 ">
+                        <input type="text" name="nama" class="form-control" value="<?php echo $now['nama_petugas']?>"></input>
+                      </div>
+                    </div>
+                    <div class="item form-group">
+                      <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Email Petugas</label>
+                      <div class="col-md-6 col-sm-6 ">
+                        <input disabled type="email" name="email" class="form-control" value="<?php echo $now['email'] ?>">
+                      </div>
+                    </div>
+                    <div class="item form-group">
+                      <div class="col-md-6 col-sm-6 offset-md-3">
+                        <button type="submit" name="ubahnama" class="btn btn-success">Edit Nama</button>
+                        <button type="submit" class="btn btn-success">Ubah Password</button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
-        </div>
         <!------------------ Modal----------------------->
-        <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal fade" id="modalfoto" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title">Tambah Brand</h4>
+                <h4 class="modal-title">Upload Foto</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-body">
                 <div class="x_content">
-
                   <!-- start form for validation -->
-                  <form action="../model/user.php" method="post">
-                    <label for="fullname">Nama Brand :</label>
-                    <input type="text" name="nama" class="form-control" required />
-
-                    <br />
-                    <button type="submit" class="btn btn-primary" name="tmbhbrand">Tambah</button>
+                  <form action="../model/user.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="<?php echo $now['id_petugas'] ?>">
+                    <input type="file" name="img"> <span class="text-muted">jpg, png</span></td>
+                        <br><br>
+                    <button type="submit" class="btn btn-primary" name="fotoprofile">Upload</button>
                   </form>
                   <!-- end form for validations -->
 

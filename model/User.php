@@ -79,6 +79,14 @@ if (isset($_POST['laporan'])) {
    LaporanRoute($conn);
 }
 
+//Profile 
+if (isset($_POST['fotoprofile'])) {
+   FotoProfile($conn);
+}
+if (isset($_POST['ubahnama'])) {
+   NamaProfile($conn);
+}
+
 function GetKategoriDetiail($id, $conn)
 {
    $sql = "SELECT * FROM tbl_kategori where id_kategori = '" . $id . "' ";
@@ -317,6 +325,16 @@ function InsertBrand($conn)
    }
 }
 
+function NamaProfile($conn){
+   $sql = "UPDATE tbl_petugas SET nama_petugas = '" . $_POST['nama'] . "' WHERE id_petugas = '" . $_POST['id'] . "' ";
+   $result = mysqli_query($conn, $sql);
+
+   if ($result) {
+      msg('Berhasil di Ubah', '../admin/profile.php');
+   } else {
+      msg('Gagal Ubah data!!', '../admin/profile.php');
+   }
+}
 
 function EditKategori($conn)
 {
@@ -426,6 +444,39 @@ function InsertSupplier($conn)
    } else {
       msg('Gagal Upload data!!', '../admin/supplier.php');
    }
+}
+
+function FotoProfile($conn){
+
+   $img = $_FILES['img']['name'];
+   date_default_timezone_set("Asia/Bangkok");
+   $id_item = date("his") . date("Ymd");
+   $nama = $_FILES['img']['name'];
+   $ekstensi_diperbolehkan = array('png', 'jpg', 'jpeg');
+   $x = explode('.', $nama);   // dpt nama tanpa ekstensi file
+   $ekstensi = strtolower(end($x));    // jdiin hruf kecil ekstensinya
+   $ukuran    = $_FILES['img']['size'];   //ukuran brp
+   $file_tmp = $_FILES['img']['tmp_name'];    //temp filenya apa
+   if (in_array($ekstensi, $ekstensi_diperbolehkan) === true) {    // kalau ekstensinya bener
+      if ($ukuran < 4044070) {        // max 4 mb
+         move_uploaded_file($file_tmp, '../admin/images/profile/' . $id_item . $nama);
+         echo $_POST['id'];
+         $sql = "UPDATE `tbl_petugas` SET `img` = '".$id_item . $nama."' WHERE `tbl_petugas`.`id_petugas` = '".$_POST['id']."';";
+         $result = mysqli_query($conn, $sql);
+
+
+         if ($result) {
+            msg('Data berhasil diubah!!', '../admin/profile.php');
+         } else {
+            msg('Gagal mengubah data!!', '../admin/profile.php');
+         }
+      } else {
+         msg('Ukuran file max 4mb!!', '../admin');
+      }
+   } else {
+      msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin');
+   }
+
 }
 
 function InsertBarang($conn)

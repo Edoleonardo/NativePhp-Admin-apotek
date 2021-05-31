@@ -14,8 +14,8 @@ if (isset($_POST['register'])) {
     } else {
  
  
-       $sql = "INSERT INTO tbl_petugas (nama_petugas, email, password) 
-          VALUES ('" . $_POST['nama'] . "', '" . $_POST['email'] . "',  password('" . $_POST['pass1'] . "')) ";
+       $sql = "INSERT INTO tbl_petugas (nama_petugas, img, email, password) 
+          VALUES ('" . $_POST['nama'] . "','img.jpg' , '" . $_POST['email'] . "',  password('" . $_POST['pass1'] . "')) ";
        $result = mysqli_query($conn, $sql);
  
        if ($result) {

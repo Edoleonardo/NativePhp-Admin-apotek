@@ -63,7 +63,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+              <img src="../admin/images/profile/<?php echo $now['img']?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
@@ -132,9 +132,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <img src="images/img.jpg" alt=""><?php echo $now['nama_petugas'] ?>
+                  <img src="../admin/images/profile/<?php echo $now['img']?>" alt=""><?php echo $now['nama_petugas'] ?>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="javascript:;"> Profile</a>
+                    <a class="dropdown-item" href="../admin/profile.php"> Profile</a>
                     <a class="dropdown-item" href="../login_admin/logout_admin.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                   </div>
               </li>
@@ -203,7 +203,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <th>Nama Barang</th>
                             <th>Jumlah Keluar</th>
                             <th>Tanggal Keluar</th>
-                            <th>Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -216,12 +215,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $barang['nama_barang'] ?></td>
                               <td><?php echo $data['jumlah_barang'] ?></td>
                               <td><?php echo $data['date'] ?></td>
-                              <td>
-                                <form action="../model/User.php" method="post">
-                                  <input type="hidden" name="id" value="<?php echo $data['id_keluar'] ?>">
-                                  <button style="background-color:red;" type="submit" name="deleteklr" class="btn cart_quantity_delete"><i class="fa fa-times"></i></button>
-                                </form>
-                              </td>
                             </tr>
                           <?php } ?>
                         </tbody>
