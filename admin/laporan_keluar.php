@@ -6,9 +6,9 @@ $data_supp = GetDataSupplier($conn);
 $data_brand = GetDataBrand($conn);
 $data_kat = GetDataKategori($conn);
 if (isset($_GET['bln'])) {
-  $data_barang = Laporan($_GET['bln'], $conn);
+  $data_keluar = LaporanBulanKeluar($_GET['bln'], $conn);
 } else {
-  $data_barang = GetDataBarang($conn);
+  $data_keluar = GetDataBarangKeluar($conn);
 }
 $pesan = GetDataPesan($conn);
 $totalpesan = GetCountPesan($conn);
@@ -178,7 +178,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>Laporan Bulanan</h3>
+              <h3>Laporan Keluar Bulanan</h3>
             </div>
 
             <div class="clearfix"></div>
@@ -187,7 +187,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 <div class="x_title">
                   <form action="../model/user.php" method="post">
                     <input type="month" id="start" name="bln">
-                    <button type="submit" class="btn btn-primary" name="laporan">Pilih Bulan</button>
+                    <button type="submit" class="btn btn-primary" name="laporankeluar">Pilih Bulan</button>
                   </form>
                   <div class="clearfix"></div>
                 </div>
@@ -197,37 +197,26 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                       <div class="card-box table-responsive">
                         <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
                           <thead>
-                            <tr>
-                              <th>Kode Barang</th>
-                              <th>Nama Barang</th>
-                              <th>Stock</th>
-                              <th>Deskripsi</th>
-                              <th>Harga Barang</th>
-                              <th>Kategori</th>
-                              <th>Supplier</th>
-                              <th>Brand</th>
-                              <th>Tempo Kadaluarsa</th>
-                            </tr>
+                          <tr>
+                            <th>Nama Petugas</th>
+                            <th>Nama Barang</th>
+                            <th>Jumlah Keluar</th>
+                            <th>Tanggal Keluar</th>
+                          </tr>
                           </thead>
                           <tbody>
-                            <?php while ($data = mysqli_fetch_assoc($data_barang)) {
-                              $kategori = GetKategoriDetiail($data['id_kategori'], $conn);
-                              $brand = GetBrandDetiail($data['id_brand'], $conn);
-                              $supplier = GetSupplierDetiail($data['id_supplier'], $conn);
-                            ?>
-                              <tr>
-                                <td><?php echo $data['kode_barang'] ?></td>
-                                <td><?php echo $data['nama_barang'] ?></td>
-                                <td><?php echo $data['stock_barang'] ?></td>
-                                <td><?php echo $data['deskripsi'] ?></td>
-                                <td><?php echo $data['harga_barang'] ?></td>
-                                <td><?php echo $kategori['nama_kategori'] ?></td>
-                                <td><?php echo $supplier['nama_supplier'] ?></td>
-                                <td><?php echo $brand['nama_brand'] ?></td>
-                                <td><?php echo $data['create_date'] ?></td>
-                              </tr>
-                            <?php }  ?>
-                          </tbody>
+                          <?php while ($data = mysqli_fetch_assoc($data_keluar)) {
+                            $petugas = GetDataPetugas($data['id_petugas'], $conn);
+                            $barang = GetDetailBarang($data['id_item'], $conn);
+                          ?>
+                            <tr>
+                              <td><?php echo $petugas['nama_petugas'] ?></td>
+                              <td><?php echo $barang['nama_barang'] ?></td>
+                              <td><?php echo $data['jumlah_barang'] ?></td>
+                              <td><?php echo $data['date'] ?></td>
+                            </tr>
+                          <?php } ?>
+                        </tbody>
                         </table>
                       </div>
                     </div>

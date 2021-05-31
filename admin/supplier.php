@@ -95,8 +95,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 <li><a><i class="fa fa-print"></i> Cetak Laporan <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
                     <li><a href="laporan.php">Laporan Barang</a></li>
-                    <li><a href="laporan.php">Laporan Barang Masuk</a></li>
-                    <li><a href="laporan.php">Laporan Barang Keluar</a></li>
+                    <li><a href="laporan_masuk.php">Laporan Barang Masuk</a></li>
+                    <li><a href="laporan_keluar.php">Laporan Barang Keluar</a></li>
                   </ul>
                 </li>
               </ul>

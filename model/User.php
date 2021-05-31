@@ -78,6 +78,12 @@ if (isset($_POST['stok_now'])) {
 if (isset($_POST['laporan'])) {
    LaporanRoute($conn);
 }
+if (isset($_POST['laporanmasuk'])) {
+   LaporanRouteMasuk($conn);
+}
+if (isset($_POST['laporankeluar'])) {
+   LaporanRouteKeluar($conn);
+}
 
 //Profile 
 if (isset($_POST['fotoprofile'])) {
@@ -642,10 +648,35 @@ function Laporan($bln, $conn)
    return  $item;
 }
 
+function LaporanBulanMasuk($bln, $conn)
+{
+   $sql = "SELECT * FROM tbl_barang_masuk where SUBSTRING(create_date,1, 7) = '" . $bln . "' ";
+   $item = mysqli_query($conn, $sql);
+   return  $item;
+}
+
+function LaporanBulanKeluar($bln, $conn)
+{
+   $sql = "SELECT * FROM tbl_barang_keluar where SUBSTRING(date,1, 7) = '" . $bln . "' ";
+   $item = mysqli_query($conn, $sql);
+   return  $item;
+}
+
 function LaporanRoute($conn)
 {
 
    $url = '../admin/laporan.php?bln=' . $_POST['bln'];
+   header("location:" . $url);
+}
+function LaporanRouteMasuk($conn)
+{
+   $url = '../admin/laporan_masuk.php?bln=' . $_POST['bln'];
+   header("location:" . $url);
+}
+function LaporanRouteKeluar($conn)
+{
+
+   $url = '../admin/laporan_keluar.php?bln=' . $_POST['bln'];
    header("location:" . $url);
 }
 
