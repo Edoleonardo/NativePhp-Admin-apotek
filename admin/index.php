@@ -59,14 +59,17 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   }
 
 
-  .Stockbaranghampirhabis{
-    background-color:#f54e42;
+  .Stockbaranghampirhabis {
+    background-color: #f54e42;
   }
 
-  .BarangKadaluarsa{
-    background-color:#ffa500;
+  .BarangKadaluarsa {
+    background-color: #ffa500;
   }
 
+  .kanan {
+    margin-left: 60%;
+  }
 </style>
 
 <body class="nav-md">
@@ -83,7 +86,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="../admin/images/profile/<?php echo $now['img']?>" alt="..." class="img-circle profile_img">
+              <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
@@ -151,15 +154,15 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <nav class="nav navbar-nav">
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
-                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <img src="../admin/images/profile/<?php echo $now['img']?>" alt=""><?php echo $now['nama_petugas'] ?>
+                <a class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                  <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt=""><?php echo $now['nama_petugas'] ?>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../admin/profile.php"> Profile</a>
                     <a class="dropdown-item" href="../login_admin/logout_admin.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
                   </div>
               </li>
               <li role="presentation" class="nav-item dropdown open">
-                <a href="javascript:;" class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
+                <a class="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false">
                   <i class="fa fa-envelope-o"></i>
                   <?php if ($totalpesan['total'] != 0) { ?>
                     <span class="badge bg-green"><?php echo $totalpesan['total'] ?></span>
@@ -167,11 +170,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 </a>
                 <ul class="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
                   <?php while ($data_pesan = mysqli_fetch_assoc($pesan)) { ?>
-                    <li class="nav-item" onclick="myFunction()">
+                    <li class="nav-item">
                       <a class="dropdown-item">
                         <span class="image"><img src="../admin/images/barang/<?php echo $data_pesan['img'] ?>" alt="Profile Image" /></span>
                         <span>
                           <span id="namabarang">Barang <?php echo $data_pesan['nama_barang'] ?></span>
+                          <!-- <span class="hide hidden-name"><?php echo $data_pesan['nama_barang'] ?></span> -->
                           <span class="time"><?php echo $data_pesan['create_date'] ?></span>
                         </span>
                         <span class="message">
@@ -227,17 +231,15 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           </div>
         </div>
         <!-- /top tiles -->
-
-        <br />
-        <div class="row" style="display: inline-block;">
-          <h3>Barang</h3>
-        </div>
         <div class="row">
           <div class="col-md-12 col-sm-12 ">
             <div class="x_panel">
               <div class="x_title">
                 <div class="clearfix"></div>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Barang</button>
+                <button type="button" class="btn btn-danger kanan" disabled>Stok kurang</button>
+                <button type="button" class="btn btn-warning" disabled>Kadaluarsa</button>
+
               </div>
               <div class="x_content">
                 <div class="row">
@@ -267,7 +269,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             $kategori = GetKategoriDetiail($data['id_kategori'], $conn);
                             $brand = GetBrandDetiail($data['id_brand'], $conn);
                             $supplier = GetSupplierDetiail($data['id_supplier'], $conn);
-                            $pesan = GetDetailPesan($data['id_barang'],$conn);
+                            $pesan = GetDetailPesan($data['id_barang'], $conn);
                           ?>
                             <tr style="<?php echo $pesan ?>">
                               <td><img width="100px" class="responsive" src="../admin/images/barang/<?php echo $data['gambar_barang'] ?>" alt=""></td>
@@ -516,6 +518,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
     $('#tgl_input').attr("min", today);
     // $('#tgl_edit').attr("min", today);
+
+    $(document).on("click", ".dropdown-item", function() {
+      // var nama = $(".hidden-name").text();
+      var nama = $("#namabarang").text();
+      console.log(nama)
+    });
   </script>
 </body>
 

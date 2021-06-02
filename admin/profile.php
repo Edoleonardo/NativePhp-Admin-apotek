@@ -50,12 +50,18 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <style>
-    .image {
-        max-height: 200px;
-        max-width: 200px;
-        text-align: center;
-    }
+  .image {
+    max-height: 200px;
+    max-width: 200px;
+    text-align: center;
+  }
+
+  .pass {
+    display: inline-block;
+    text-align: center;
+  }
 </style>
+
 <body class="nav-md">
   <div class="container body">
     <div class="main_container">
@@ -70,7 +76,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="../admin/images/profile/<?php echo $now['img']?>" alt="..." class="img-circle profile_img">
+              <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
@@ -139,7 +145,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <img src="../admin/images/profile/<?php echo $now['img']?>" alt=""><?php echo $now['nama_petugas'] ?>
+                  <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt=""><?php echo $now['nama_petugas'] ?>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../admin/profile.php"> Profile</a>
                     <a class="dropdown-item" href="../login_admin/logout_admin.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
@@ -184,55 +190,52 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
       <!-- page content -->
       <div class="right_col" role="main">
-        <!-- top tiles -->
-        <div class="row" style="display: inline-block; text-align: center;">
-          <h3>Profile</h3>
-        </div>
-        <!-- /top tiles -->
 
         <br />
 
-          <div class="clearfix"></div>
-          <div class="row">
-            <div class="col-md-12 col-sm-12 ">
-              <div class="x_panel">
-                <div class="x_title">
-                  <h2>Profile</h2>
-                  <div class="clearfix"></div>
+        <div class="clearfix"></div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2>Profile</h2>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <br />
+                <div style="text-align: center;">
+                  <a type="button" data-toggle="modal" data-target="#modalfoto">
+                    <img style="border: solid; max-width: 150px;" src="../admin/images/profile/<?php echo $now['img'] ?>">
+                  </a>
                 </div>
-                <div class="x_content">
-                  <br />
-                    <div style="text-align: center;">
-                      <a type="button" data-toggle="modal" data-target="#modalfoto">
-                        <img style="border: solid; max-width: 150px;"  src="../admin/images/profile/<?php echo $now['img']?>">
-                      </a>
+                <form action="../model/user.php" method="post">
+                  <br><br>
+                  <div class="item form-group">
+                    <input type="hidden" name="id" value="<?php echo $now['id_petugas'] ?>">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Petugas</label>
+                    <div class="col-md-6 col-sm-6 ">
+                      <input type="text" name="nama" class="form-control" value="<?php echo $now['nama_petugas'] ?>"></input>
                     </div>
-                  <form action="../model/user.php" method="post">
-                    <br><br>
-                    <div class="item form-group">
-                    <input type="hidden" name="id" value="<?php echo $now['id_petugas']?>">
-                      <label class="col-form-label col-md-3 col-sm-3 label-align" for="first-name">Nama Petugas</label>
-                      <div class="col-md-6 col-sm-6 ">
-                        <input type="text" name="nama" class="form-control" value="<?php echo $now['nama_petugas']?>"></input>
-                      </div>
+                  </div>
+                  <div class="item form-group">
+                    <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Email Petugas</label>
+                    <div class="col-md-6 col-sm-6 ">
+                      <input disabled type="email" name="email" class="form-control" value="<?php echo $now['email'] ?>">
                     </div>
-                    <div class="item form-group">
-                      <label class="col-form-label col-md-3 col-sm-3 label-align" for="last-name">Email Petugas</label>
-                      <div class="col-md-6 col-sm-6 ">
-                        <input disabled type="email" name="email" class="form-control" value="<?php echo $now['email'] ?>">
-                      </div>
+                  </div>
+                  <div class="item form-group" style="text-align: center;">
+                    <div class="col-md-6 col-sm-6 offset-md-3">
+                      <button type="submit" name="ubahnama" class="btn btn-success">Simpan</button>
                     </div>
-                    <div class="item form-group" style="text-align: center;">
-                      <div class="col-md-6 col-sm-6 offset-md-3">
-                        <button type="submit" name="ubahnama" class="btn btn-success">Edit Nama</button>
-                      </div>
-                    </div>
-                  </form>
-                        <button class="btn btn-success" data-toggle="modal" data-target="#ubahpass">Ubah Password</button>
+                  </div>
+                </form>
+                <div class="text-center">
+                  <button class="btn btn-success pass" data-toggle="modal" data-target="#ubahpass">Ubah Password</button>
                 </div>
               </div>
             </div>
           </div>
+        </div>
         <!------------------ Modal Ubah Foto----------------------->
         <div class="modal fade" id="modalfoto" role="dialog">
           <div class="modal-dialog">
@@ -247,7 +250,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                   <form action="../model/user.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="<?php echo $now['id_petugas'] ?>">
                     <input type="file" name="img"> <span class="text-muted">jpg, png</span></td>
-                        <br><br>
+                    <br><br>
                     <button type="submit" class="btn btn-primary" name="fotoprofile">Upload</button>
                   </form>
                   <!-- end form for validations -->
@@ -264,7 +267,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title">Upload Foto</h4>
+                <h4 class="modal-title">Ubah Password</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-body">
@@ -292,7 +295,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     </div>
                     <div class="item form-group" style="text-align: center;">
                       <div class="col-md-6 col-sm-6 offset-md-3">
-                      <input type="hidden" name="id" value="<?php echo $now['id_petugas']?>">
+                        <input type="hidden" name="id" value="<?php echo $now['id_petugas'] ?>">
                         <button type="submit" name="ubahpassword" class="btn btn-success">Ubah</button>
                       </div>
                     </div>
