@@ -16,6 +16,7 @@ if (isset($_POST['btnlogin'])) {
             $user = mysqli_fetch_array($result);
             // msukin data yg login ke session
             $_SESSION['id_petugas'] = $user['id_petugas'];
+            DellPesan($conn);
             CheckStock($conn);
             msg('Login Berhasil!!', '../admin/');
         } else {

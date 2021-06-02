@@ -279,7 +279,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $kategori['nama_kategori'] ?></td>
                               <td><?php echo $supplier['nama_supplier'] ?></td>
                               <td><?php echo $brand['nama_brand'] ?></td>
-                              <td><?php echo $data['create_date'] ?></td>
+                              <td><?php echo $data['tempo_barang'] ?></td>
                               <td><button style="background-color:grey;" type="button" class="btn btn-lg" data-toggle="modal" data-dismiss="modal" data-target="#update<?php echo $i ?>"><i class="fa fa-edit"></i></button></td>
                             </tr>
                             <!------------------ Modal UPDATE----------------------->
@@ -317,7 +317,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                                         <!-- <label>Nomor Faktur :</label>
 	      									<input type="text" name="faktur" value="<?php echo $data['nama_barang'] ?>" class="form-control" required /> -->
                                         <label>Tempo Kadaluarsa :</label>
-                                        <input type="date" name="tanggal" id="tgl_edit" min="" value="<?php echo $data['create_date'] ?>" class="form-control" required /><br>
+                                        <input type="date" name="tanggal" id="tgl_edit" min="" value="<?php echo $data['tempo_barang'] ?>" class="form-control" required /><br>
                                         <label>Supplier :</label>
                                         <select class="form-control" name="supplier">
                                           <?php while ($supplier = mysqli_fetch_assoc($data_supp)) { ?>

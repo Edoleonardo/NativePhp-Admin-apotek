@@ -201,6 +201,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <th>Nama Petugas</th>
                             <th>Nama Barang</th>
                             <th>Jumlah Keluar</th>
+                            <th>Tanggal Kadaluarsa</th>
                             <th>Tanggal Keluar</th>
                           </tr>
                           </thead>
@@ -213,6 +214,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $petugas['nama_petugas'] ?></td>
                               <td><?php echo $barang['nama_barang'] ?></td>
                               <td><?php echo $data['jumlah_barang'] ?></td>
+                              <td><?php echo $barang['tempo_barang'] ?></td>
                               <td><?php echo $data['date'] ?></td>
                             </tr>
                           <?php } ?>
