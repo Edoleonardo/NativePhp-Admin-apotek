@@ -59,16 +59,12 @@ if (isset($_POST['hapuspesan'])) {
 if (isset($_POST['krngbarang'])) {
    KeluarBarang($conn);
 }
-if (isset($_POST['deleteklr'])) {
-   DeleteKeluar($conn);
-}
+
 // masuk stock //
 if (isset($_POST['tmbhstock'])) {
    MasukBarang($conn);
 }
-if (isset($_POST['deletemsk'])) {
-   DeleteMasuk($conn);
-}
+
 //stok saat ini 
 if (isset($_POST['stok_now'])) {
    stokNow($conn);
@@ -95,10 +91,13 @@ if (isset($_POST['ubahnama'])) {
 if (isset($_POST['ubahpassword'])) {
    UbahPassword($conn);
 }
+if (isset($_POST['fotologo'])) {
+   UbahLogo($conn);
+}
 
 function GetKategoriDetiail($id, $conn)
 {
-   $sql = "SELECT * FROM tbl_kategori where id_kategori = '" . $id . "' ";
+   $sql = "SELECT * FROM tbl_kategori where id_kategori = '" . $id . "'";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    return $data;
@@ -162,14 +161,14 @@ function GetStokDataBarang($conn)
 
 function GetDataBrand($conn)
 {
-   $sql = "SELECT * FROM tbl_brand ";
+   $sql = "SELECT * FROM tbl_brand WHERE status = 'ACTIVE' ORDER by create_date desc ";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
 
 function GetDataKategori($conn)
 {
-   $sql = "SELECT * FROM tbl_Kategori order by create_date desc";
+   $sql = "SELECT * FROM tbl_Kategori where status = 'ACTIVE' order by create_date desc";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
@@ -187,6 +186,13 @@ function GetDataPesan($conn)
    $sql = "SELECT * FROM tbl_pesan ";
    $item = mysqli_query($conn, $sql);
    return $item;
+}
+function GetDataLogo($conn)
+{
+   $sql = "SELECT * FROM tbl_logo ORDER by create_date DESC LIMIT 1";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+   return $data;
 }
 
 function Getcount($conn)
@@ -208,7 +214,7 @@ function Getcount($conn)
    $data = mysqli_fetch_assoc($item);
    $arr[2] = $data['total'];
 
-   $sql = "SELECT count(id_supplier) as total FROM tbl_supplier ";
+   $sql = "SELECT count(id_supplier) as total FROM tbl_supplier WHERE status = 'ACTIVE' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    $arr[3] = $data['total'];
@@ -274,6 +280,10 @@ function KeluarBarang($conn)
       $stock = $data['stock_barang'] - $_POST['stock'];
       $sql = "UPDATE tbl_barang SET stock_barang = '" . $stock . "' WHERE id_item = '" . $_POST['id_item'] . "' ";
       $result = mysqli_query($conn, $sql);
+
+      DellPesan($conn);
+      CheckStock($conn);
+      
    } else {
       msg('Stock Kurang', '../admin/barang_keluar.php');
    }
@@ -319,7 +329,7 @@ function stokNow($conn)
 function Deletebrand($conn)
 {
 
-   $sql = "DELETE FROM tbl_brand WHERE tbl_brand.id_brand = " . $_POST['id'] . "";
+   $sql = "UPDATE tbl_brand set status = 'IN-ACTIVE' WHERE tbl_brand.id_brand = " . $_POST['id'] . "";
    $result = mysqli_query($conn, $sql);
 
    if ($result) {
@@ -331,8 +341,8 @@ function Deletebrand($conn)
 function InsertBrand($conn)
 {
 
-   $sql = "INSERT INTO tbl_brand ( nama_brand , create_date) 
-     VALUES ( '" . $_POST['nama'] . "', now())";
+   $sql = "INSERT INTO tbl_brand ( nama_brand , create_date, status) 
+     VALUES ( '" . $_POST['nama'] . "', now(), 'ACTIVE')";
    $result = mysqli_query($conn, $sql);
    if ($result) {
       msg('Brand Berhasil Ditambah', '../admin/brand.php');
@@ -367,7 +377,7 @@ function EditKategori($conn)
 function DeleteKategori($conn)
 {
 
-   $sql = "DELETE FROM tbl_Kategori WHERE tbl_Kategori.id_kategori = " . $_POST['id'] . "";
+   $sql = "UPDATE tbl_Kategori set status = 'IN-ACTIVE' WHERE tbl_Kategori.id_kategori = " .$_POST['id'] . "";
    $result = mysqli_query($conn, $sql);
 
    if ($result) {
@@ -377,37 +387,11 @@ function DeleteKategori($conn)
    }
 }
 
-function DeleteKeluar($conn)
-{
-
-   $sql = "DELETE FROM tbl_barang_keluar WHERE tbl_barang_keluar.id_keluar = " . $_POST['id'] . "";
-   $result = mysqli_query($conn, $sql);
-
-   if ($result) {
-      msg('Berhasil di Delete', '../admin/barang_keluar.php');
-   } else {
-      msg('Gagal Delete data!!', '../admin/barang_keluar.php');
-   }
-}
-function DeleteMasuk($conn)
-{
-
-   $sql = "DELETE FROM tbl_barang_masuk WHERE tbl_barang_masuk.id_masuk = " . $_POST['id'] . "";
-   $result = mysqli_query($conn, $sql);
-
-   if ($result) {
-      msg('Berhasil di Delete', '../admin/barang_masuk.php');
-   } else {
-      msg('Gagal Delete data!!', '../admin/barang_masuk.php');
-   }
-}
-
-
 function InsertKategori($conn)
 {
 
-   $sql = "INSERT INTO tbl_kategori ( nama_kategori ,kode_rak, create_date) 
-     VALUES ( '" . $_POST['nama'] . "','" . $_POST['kode'] . "', now())";
+   $sql = "INSERT INTO tbl_kategori ( nama_kategori ,kode_rak, create_date,status) 
+     VALUES ( '" . $_POST['nama'] . "','" . $_POST['kode'] . "', now() , 'ACTIVE')";
    $result = mysqli_query($conn, $sql);
    if ($result) {
       msg('Kategori Berhasil Ditambah', '../admin/kategori.php');
@@ -418,7 +402,7 @@ function InsertKategori($conn)
 
 function GetDataSupplier($conn)
 {
-   $sql = "SELECT * FROM tbl_supplier ";
+   $sql = "SELECT * FROM tbl_supplier WHERE status = 'ACTIVE' ORDER by create_date desc";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
@@ -439,7 +423,7 @@ function EditSupplier($conn)
 function DeleteSupplier($conn)
 {
 
-   $sql = "DELETE FROM tbl_supplier WHERE tbl_supplier.id_supplier = " . $_POST['id'] . "";
+   $sql = "UPDATE tbl_supplier set status = 'IN-ACTIVE' WHERE tbl_supplier.id_supplier = " .$_POST['id']. "";
    $result = mysqli_query($conn, $sql);
 
    if ($result) {
@@ -452,8 +436,8 @@ function DeleteSupplier($conn)
 function InsertSupplier($conn)
 {
 
-   $sql = "INSERT INTO tbl_supplier ( nama_supplier ,alamat_supplier, kontak_supplier, create_date) 
-     VALUES ( '" . $_POST['nama'] . "','" . $_POST['alamat'] . "','" . $_POST['nohp'] . "', now())";
+   $sql = "INSERT INTO tbl_supplier ( nama_supplier ,alamat_supplier, kontak_supplier, create_date, status) 
+     VALUES ( '" . $_POST['nama'] . "','" . $_POST['alamat'] . "','" . $_POST['nohp'] . "', now(),'ACTIVE')";
    $result = mysqli_query($conn, $sql);
    if ($result) {
       msg('supplier Berhasil Ditambah', '../admin/supplier.php');
@@ -476,7 +460,7 @@ function FotoProfile($conn){
    if (in_array($ekstensi, $ekstensi_diperbolehkan) === true) {    // kalau ekstensinya bener
       if ($ukuran < 4044070) {        // max 4 mb
          move_uploaded_file($file_tmp, '../admin/images/profile/' . $id_item . $nama);
-         echo $_POST['id'];
+         
          $sql = "UPDATE `tbl_petugas` SET `img` = '".$id_item . $nama."' WHERE `tbl_petugas`.`id_petugas` = '".$_POST['id']."';";
          $result = mysqli_query($conn, $sql);
 
@@ -487,12 +471,47 @@ function FotoProfile($conn){
             msg('Gagal mengubah data!!', '../admin/profile.php');
          }
       } else {
-         msg('Ukuran file max 4mb!!', '../admin');
+         msg('Ukuran file max 4mb!!', '../admin/profile.php');
       }
    } else {
-      msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin');
+      msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin/profile.php');
    }
 
+}
+
+function UbahLogo($conn){
+   $img = $_FILES['img']['name'];
+   date_default_timezone_set("Asia/Bangkok");
+   $id_item = date("his") . date("Ymd");
+   $nama = $_FILES['img']['name'];
+   $ekstensi_diperbolehkan = array('png', 'jpg', 'jpeg');
+   $x = explode('.', $nama);   // dpt nama tanpa ekstensi file
+   $ekstensi = strtolower(end($x));    // jdiin hruf kecil ekstensinya
+   $ukuran    = $_FILES['img']['size'];   //ukuran brp
+   $file_tmp = $_FILES['img']['tmp_name'];    //temp filenya apa
+   if (in_array($ekstensi, $ekstensi_diperbolehkan) === true) {    // kalau ekstensinya bener
+      if ($ukuran < 4044070) {        // max 4 mb
+         move_uploaded_file($file_tmp, '../admin/images/logo/' . $id_item . $nama);
+
+
+            $sql = "truncate tbl_logo";
+            $result = mysqli_query($conn, $sql);
+
+            $sql = "INSERT INTO `tbl_logo` (`nama_logo`, `create_date`) VALUES ( '" . $id_item . $nama."',  now())";
+            $result = mysqli_query($conn, $sql);
+
+
+         if ($result) {
+            msg('Data berhasil diubah!!', '../admin/profile.php');
+         } else {
+            msg('Gagal mengubah data!!', '../admin/profile.php');
+         }
+      } else {
+         msg('Ukuran file max 4mb!!', '../admin/profile.php');
+      }
+   } else {
+      msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin/profile.php');
+   }
 }
 
 function InsertBarang($conn)

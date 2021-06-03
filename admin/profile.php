@@ -1,6 +1,7 @@
 <?php
 require('../model/User.php');
 checklogin();
+$logo = GetDataLogo($conn);
 $data_supplier = GetDataSupplier($conn);
 $pesan = GetDataPesan($conn);
 $totalpesan = GetCountPesan($conn);
@@ -19,7 +20,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
-  <title>Gentelella Alela! | </title>
+  <title>Apotek Centra Media</title>
 
   <!-- Bootstrap -->
   <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -45,22 +46,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
   <!-- Custom Theme Style -->
   <link href="../build/css/custom.min.css" rel="stylesheet">
-  <!-- Modall -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
-<style>
-  .image {
-    max-height: 200px;
-    max-width: 200px;
-    text-align: center;
-  }
-
-  .pass {
-    display: inline-block;
-    text-align: center;
-  }
-</style>
 
 <body class="nav-md">
   <div class="container body">
@@ -68,7 +54,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>"/> <span>Apotek Centra Medika</span></a>
           </div>
 
           <div class="clearfix"></div>
@@ -76,11 +62,11 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt="..." class="img-circle profile_img">
+              <img src="../admin/images/profile/<?php echo $now['img']?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
-              <h2><?php echo $now['nama_petugas'] ?></h2>
+              <h2> <?php echo $now['nama_petugas'] ?></h2>
             </div>
           </div>
           <!-- /menu profile quick info -->
@@ -115,23 +101,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             </div>
           </div>
           <!-- /sidebar menu -->
-
-          <!-- /menu footer buttons -->
-          <div class="sidebar-footer hidden-small">
-            <a data-toggle="tooltip" data-placement="top" title="Settings">
-              <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-              <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Lock">
-              <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-            </a>
-            <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-              <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-            </a>
-          </div>
-          <!-- /menu footer buttons -->
         </div>
       </div>
 
@@ -145,7 +114,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt=""><?php echo $now['nama_petugas'] ?>
+                  <img src="../admin/images/profile/<?php echo $now['img']?>" alt=""><?php echo $now['nama_petugas'] ?>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../admin/profile.php"> Profile</a>
                     <a class="dropdown-item" href="../login_admin/logout_admin.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
@@ -172,14 +141,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                         </span>
                       </a>
                     </li>
-                    <li class="nav-item">
                     <?php } ?>
-                    <form action="../model/user.php" method="post">
-                      <div class="text-center">
-                        <button class="dropdown-item" type="submit" name="hapuspesan">Hapus Semua Pesan</button>
-                      </div>
-                    </form>
-                    </li>
                 </ul>
               </li>
             </ul>
@@ -201,6 +163,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 <h2>Profile</h2>
                 <div class="clearfix"></div>
               </div>
+              <button  type="button" class="btn btn-primary" data-toggle="modal" data-target="#modallogo">Ganti Logo</button>
               <div class="x_content">
                 <br />
                 <div style="text-align: center;">
@@ -262,6 +225,32 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           </div>
         </div>
         <!-- Modal -->
+                <!------------------ Modal Ubah Logo----------------------->
+        <div class="modal fade" id="modallogo" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Upload Logo</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="x_content">
+                  <!-- start form for validation -->
+                  <form action="../model/user.php" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="id" value="<?php echo $now['id_petugas'] ?>">
+                    <input type="file" name="img"> <span class="text-muted">jpg, png</span></td>
+                    <br><br>
+                    <button type="submit" class="btn btn-primary" name="fotologo">Upload</button>
+                  </form>
+                  <!-- end form for validations -->
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Modal -->
         <!------------------ Modal Ubah Password----------------------->
         <div class="modal fade" id="ubahpass" role="dialog">
           <div class="modal-dialog">
@@ -310,15 +299,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
         <!-- Modal -->
       </div>
       <!-- /page content -->
-
-      <!-- footer content -->
-      <footer>
-        <div class="pull-right">
-          Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-        </div>
-        <div class="clearfix"></div>
-      </footer>
-      <!-- /footer content -->
     </div>
   </div>
 
