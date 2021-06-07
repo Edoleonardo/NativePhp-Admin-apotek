@@ -54,6 +54,9 @@ if (isset($_POST['updatebarang'])) {
 if (isset($_POST['hapuspesan'])) {
    HapusPesan($conn);
 }
+if (isset($_POST['eoq'])) {
+   Eoq($conn);
+}
 
 // keluar //
 if (isset($_POST['krngbarang'])) {
@@ -220,6 +223,17 @@ function Getcount($conn)
    $arr[3] = $data['total'];
 
    return $arr;
+}
+
+function Eoq($conn){
+   echo "Demand " . $_POST['demand'];
+   echo "Demand " . $_POST['cost'];
+   echo "Demand " . $_POST['hold'];
+   $eoq = sqrt((2 * $_POST['demand'] * $_POST['cost']))/$_POST['hold'];
+
+   echo "Hasil ".$eoq;
+    
+
 }
 
 function EditBrand($conn)
