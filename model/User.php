@@ -197,6 +197,12 @@ function GetDataLogo($conn)
    $data = mysqli_fetch_assoc($item);
    return $data;
 }
+function GetDataEoq($conn)
+{
+   $sql = "SELECT * FROM tbl_eoq";
+   $item = mysqli_query($conn, $sql);
+   return $item;
+}
 
 function Getcount($conn)
 {
@@ -226,13 +232,40 @@ function Getcount($conn)
 }
 
 function Eoq($conn){
-   echo "Demand " . $_POST['demand'];
-   echo "Demand " . $_POST['cost'];
-   echo "Demand " . $_POST['hold'];
-   $eoq = sqrt((2 * $_POST['demand'] * $_POST['cost']))/$_POST['hold'];
+   $sql = "SELECT id_item FROM  tbl_barang WHERE id_item = '".$_POST['id_item']."' ";
+   $result = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($result);
 
-   echo "Hasil ".$eoq;
-    
+   $eoq = sqrt((2 * $_POST['demand'] * $_POST['cost'])/$_POST['hold']);
+   $t = $eoq / $_POST['demand'];
+   $rop = ($_POST['lead']-$t)*100;
+   $rop = max($rop,0);
+
+   if(!$data){
+
+      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES ('".$_POST['id_item']."', '".$_POST['demand']."', '".$_POST['hold']."', '".$_POST['cost']."', '".$_POST['lead']."', '".$eoq."', '".$t."', '".$rop."') ";
+      $result = mysqli_query($conn, $sql);
+
+      if ($result) {
+         msg('Berhasil diTambah', '../admin/eoq.php');
+      } else {
+         msg('Gagal Tambah data!!', '../admin/eoq.php');
+      }
+   }else{
+
+      $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_item` = '".$_POST['id_item']."'";
+      $result = mysqli_query($conn, $sql);
+
+      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES ('".$_POST['id_item']."', '".$_POST['demand']."', '".$_POST['hold']."', '".$_POST['cost']."', '".$_POST['lead']."', '".$eoq."', '".$t."', '".$rop."') ";
+      $result = mysqli_query($conn, $sql);
+
+      if ($result) {
+         msg('Berhasil diTambah', '../admin/eoq.php');
+      } else {
+         msg('Gagal Tambah data!!', '../admin/eoq.php');
+      }
+
+   }
 
 }
 

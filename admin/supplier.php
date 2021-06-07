@@ -15,6 +15,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <!-- Meta, title, CSS, favicons, etc. -->
+  <link rel="icon" href="images/logo/<?php echo $logo['nama_logo'] ?>" type="image/ico" />
+
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -95,6 +97,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <li><a href="laporan.php">Laporan Barang</a></li>
                     <li><a href="laporan_masuk.php">Laporan Barang Masuk</a></li>
                     <li><a href="laporan_keluar.php">Laporan Barang Keluar</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <ul class="nav side-menu">
+                <li><a><i class="fa fa-folder-open-o"></i> EOQ <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="eoq.php">Economic Order Quantity</a></li>
                   </ul>
                 </li>
               </ul>

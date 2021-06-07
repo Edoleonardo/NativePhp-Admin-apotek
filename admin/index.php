@@ -21,7 +21,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" href="images/favicon.ico" type="image/ico" />
+  <link rel="icon" href="images/logo/<?php echo $logo['nama_logo'] ?>" type="image/ico" />
 
   <title>Apotek Centra Media</title>
 
@@ -121,6 +121,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <li><a href="laporan.php">Laporan Barang</a></li>
                     <li><a href="laporan_masuk.php">Laporan Barang Masuk</a></li>
                     <li><a href="laporan_keluar.php">Laporan Barang Keluar</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <ul class="nav side-menu">
+                <li><a><i class="fa fa-folder-open-o"></i> EOQ <span class="fa fa-chevron-down"></span></a>
+                  <ul class="nav child_menu">
+                    <li><a href="eoq.php">Economic Order Quantity</a></li>
                   </ul>
                 </li>
               </ul>
@@ -416,10 +423,18 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 <div class="x_content">
                   <!-- start form for validation -->
                   <form action="../model/user.php" method="post">
+                  <label>Pilih Barang :</label>
+                    <select class="form-control" name="id_item" id="id_item">
+                      <?php
+                      $data_barang = GetDataBarang($conn);
+                       while ($allbarang = mysqli_fetch_assoc($data_barang)) { ?>
+                        <option value="<?php echo $allbarang['id_item'] ?>"><?php echo $allbarang['nama_barang'] ?></option>
+                      <?php } ?>
+                    </select>
                     <label>Permintaan Unit /Hari (Demand) :</label>
                     <input type="number" name="demand" class="form-control" required /><br>
                     <label>Harga Penyimpanan /Hari (Holding Cost)</label>
-                    <input type="number" step="0.01" name="hold" class="form-control" required /><br>
+                    <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
                     <label>Harga /Unit (Cost)</label>
                     <input type="number" step="0.01" name="cost" class="form-control" required /><br>
                     <label>Waktu Prose /Hari (Lead Time)</label>
@@ -442,12 +457,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   </div>
 
   <script type="text/javascript">
-    // function myFunction() {
-    //   const barang = document.getElementById("namabarang").innerHTML.substring(7);
-    //   var table = $('#example').DataTable();
-
-    //   console.log(barang);
-    // }
   </script>
   <!-- jQuery -->
   <script src="../vendors/jquery/dist/jquery.min.js"></script>

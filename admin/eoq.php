@@ -2,15 +2,11 @@
 require('../model/User.php');
 checklogin();
 $logo = GetDataLogo($conn);
-$count = Getcount($conn);
-$data_supp = GetDataSupplier($conn);
-$data_brand = GetDataBrand($conn);
-$data_kat = GetDataKategori($conn);
-if (isset($_GET['bln'])) {
-  $data_barang = Laporan($_GET['bln'], $conn);
-} else {
-  $data_barang = GetDataBarang($conn);
-}
+$data_barang = GetDataBarang($conn);
+$data_barang2 = GetStokDataBarang($conn);
+$dataBarangSatuan = mysqli_fetch_assoc($data_barang2);
+
+$data_eoq = GetDataEoq($conn);
 $pesan = GetDataPesan($conn);
 $totalpesan = GetCountPesan($conn);
 $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
@@ -21,7 +17,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <!-- Meta, title, CSS, favicons, etc. -->
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,7 +25,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <title>Apotek Centra Media</title>
 
   <!-- Bootstrap -->
-  <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
   <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
@@ -38,6 +32,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
   <!-- iCheck -->
   <link href="../vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+
+  <!-- bootstrap-progressbar -->
+  <link href="../vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+  <!-- JQVMap -->
+  <link href="../vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />
+  <!-- bootstrap-daterangepicker -->
+  <link href="../vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
   <!-- Datatables -->
 
   <link href="../vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
@@ -45,7 +46,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <link href="../vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
   <link href="../vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
   <link href="../vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-
   <!-- Custom Theme Style -->
   <link href="../build/css/custom.min.css" rel="stylesheet">
 </head>
@@ -68,7 +68,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
-              <h2><?php echo $now['nama_petugas'] ?></h2>
+              <h2> <?php echo $now['nama_petugas'] ?></h2>
             </div>
           </div>
           <!-- /menu profile quick info -->
@@ -161,61 +161,55 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
       <!-- page content -->
       <div class="right_col" role="main">
-        <div class="">
-          <div class="page-title">
-            <div class="title_left">
-              <h3>Laporan Bulanan</h3>
-            </div>
+        <!-- top tiles -->
+        <div class="row" style="display: inline-block;">
+          <h3>Economic Order Quantity</h3>
+        </div>
+        <!-- /top tiles -->
 
-            <div class="clearfix"></div>
-            <div class="col-md-12 col-sm-12 ">
-              <div class="x_panel">
-                <div class="x_title">
-                  <form action="../model/user.php" method="post">
-                    <input type="month" id="start" name="bln">
-                    <button type="submit" class="btn btn-primary" name="laporan">Pilih Bulan</button>
-                  </form>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="card-box table-responsive">
-                        <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
-                          <thead>
+        <br />
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+              <div class="x_title">
+                <div class="clearfix"></div>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#eoqmodal">Economic Order Quantity</button>
+              </div>
+              <div class="x_content">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card-box table-responsive">
+                      <table id="datatable" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                          <tr>
+                            <th>Nama barang</th>
+                            <th>Permintaan /Hari</th>
+                            <th>Harga Simpan</th>
+                            <th>Harga Unit</th>
+                            <th>Waktu Proses Beli</th>
+                            <th>Rekomendasi EOQ</th>
+                            <th>Jarak Pesan Barang</th>
+                            <th>Titik Pesan Ulang</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php while ($data = mysqli_fetch_assoc($data_eoq)) {
+                            $barang = GetDetailBarang($data['id_item'], $conn);
+                          ?>
                             <tr>
-                              <th>Kode Barang</th>
-                              <th>Nama Barang</th>
-                              <th>Stock</th>
-                              <th>Deskripsi</th>
-                              <th>Harga Barang</th>
-                              <th>Kategori</th>
-                              <th>Supplier</th>
-                              <th>Brand</th>
-                              <th>Tempo Kadaluarsa</th>
+                              <td><?php echo $barang['nama_barang'] ?></td>
+                              <td><?php echo $data['demand'] ?> Unit</td>
+                              <td>Rp. <?php echo $data['harga_simpan'] ?></td>
+                              <td>Rp. <?php echo $data['harga_unit'] ?></td>
+                              <td><?php echo $data['lead_time'] ?> Hari</td>
+                              <td><?php echo $data['hasil_eoq'] ?> Unit</td>
+                              <td><?php echo $data['hasil_jarak_pesan'] ?> Hari</td>
+                              <td><?php echo $data['ROP'] ?> Unit</td>
                             </tr>
-                          </thead>
-                          <tbody>
-                            <?php while ($data = mysqli_fetch_assoc($data_barang)) {
-                              $kategori = GetKategoriDetiail($data['id_kategori'], $conn);
-                              $brand = GetBrandDetiail($data['id_brand'], $conn);
-                              $supplier = GetSupplierDetiail($data['id_supplier'], $conn);
-                            ?>
-                              <tr>
-                                <td><?php echo $data['kode_barang'] ?></td>
-                                <td><?php echo $data['nama_barang'] ?></td>
-                                <td><?php echo $data['stock_barang'] ?></td>
-                                <td><?php echo $data['deskripsi'] ?></td>
-                                <td><?php echo $data['harga_barang'] ?></td>
-                                <td><?php echo $kategori['nama_kategori'] ?></td>
-                                <td><?php echo $supplier['nama_supplier'] ?></td>
-                                <td><?php echo $brand['nama_brand'] ?></td>
-                                <td><?php echo $data['create_date'] ?></td>
-                              </tr>
-                            <?php }  ?>
-                          </tbody>
-                        </table>
-                      </div>
+                          <?php } ?>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -223,12 +217,49 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             </div>
           </div>
         </div>
+          <!------------------ Modal----------------------->
+          <div class="modal fade" id="eoqmodal" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Economic Order Quantity</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+              </div>
+              <div class="modal-body">
+                <div class="x_content">
+                  <!-- start form for validation -->
+                  <form action="../model/user.php" method="post">
+                  <label>Pilih Barang :</label>
+                    <select class="form-control" name="id_item" id="id_item">
+                      <?php
+                      $data_barang = GetDataBarang($conn);
+                       while ($allbarang = mysqli_fetch_assoc($data_barang)) { ?>
+                        <option value="<?php echo $allbarang['id_item'] ?>"><?php echo $allbarang['nama_barang'] ?></option>
+                      <?php } ?>
+                    </select>
+                    <label>Permintaan Unit /Hari (Demand) :</label>
+                    <input type="number" name="demand" class="form-control" required /><br>
+                    <label>Harga Penyimpanan /Hari (Holding Cost)</label>
+                    <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
+                    <label>Harga /Unit (Cost)</label>
+                    <input type="number" step="0.01" name="cost" class="form-control" required /><br>
+                    <label>Waktu Prose /Hari (Lead Time)</label>
+                    <input type="number" name="lead" class="form-control" required /><br>
+                    <br />
+                    <button type="submit" class="btn btn-primary" name="eoq">Submit</button>
+                  </form>
+                  <!-- end form for validations -->
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- Modal -->
       </div>
+      <!-- /page content -->
     </div>
-  </div>
-  </div>
-  <!-- /page content -->
-  </div>
   </div>
 
   <!-- jQuery -->
@@ -239,8 +270,35 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script src="../vendors/fastclick/lib/fastclick.js"></script>
   <!-- NProgress -->
   <script src="../vendors/nprogress/nprogress.js"></script>
+  <!-- Chart.js -->
+  <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
+  <!-- gauge.js -->
+  <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+  <!-- bootstrap-progressbar -->
+  <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
   <!-- iCheck -->
   <script src="../vendors/iCheck/icheck.min.js"></script>
+  <!-- Skycons -->
+  <script src="../vendors/skycons/skycons.js"></script>
+  <!-- Flot -->
+  <script src="../vendors/Flot/jquery.flot.js"></script>
+  <script src="../vendors/Flot/jquery.flot.pie.js"></script>
+  <script src="../vendors/Flot/jquery.flot.time.js"></script>
+  <script src="../vendors/Flot/jquery.flot.stack.js"></script>
+  <script src="../vendors/Flot/jquery.flot.resize.js"></script>
+  <!-- Flot plugins -->
+  <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+  <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+  <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
+  <!-- DateJS -->
+  <script src="../vendors/DateJS/build/date.js"></script>
+  <!-- JQVMap -->
+  <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
+  <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+  <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+  <!-- bootstrap-daterangepicker -->
+  <script src="../vendors/moment/min/moment.min.js"></script>
+  <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
   <!-- Datatables -->
   <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
   <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
@@ -257,10 +315,28 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script src="../vendors/jszip/dist/jszip.min.js"></script>
   <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
-
   <!-- Custom Theme Scripts -->
   <script src="../build/js/custom.min.js"></script>
 
+  <script>
+    $('#id_item').change(function() {
+      var id = $(this).val();
+      $.ajax({
+        url: "../model/user.php", //the page containing php script
+        type: "post", //request type,
+        dataType: 'json',
+        data: {
+          stok_now: 1,
+          id: id
+        },
+        success: function(data) {
+          console.log(data)
+          $("#stock_in").val(data.stock_barang);
+          $("#tgl").val(data.tempo_barang);
+        }
+      });
+    })
+  </script>
 </body>
 
 </html>
