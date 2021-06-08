@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2021 at 07:55 AM
+-- Generation Time: Jun 08, 2021 at 06:40 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.18
 
@@ -50,7 +50,7 @@ CREATE TABLE `tbl_barang` (
 --
 
 INSERT INTO `tbl_barang` (`id_barang`, `id_item`, `id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`, `tempo_barang`, `create_date`, `status`) VALUES
-(12, '09254620210528', 6, 7, 7, '23443fds', 'asd', 20, '09254620210528asd1.png', '3121231', 'sadasd asdasd asd asd as', 12000, '2021-06-07', '2021-05-28', 'ACTIVE'),
+(12, '09254620210528', 6, 7, 7, '23443fds', 'asd', 12, '09254620210528asd1.png', '3121231', 'sadasd asdasd asd asd as', 12000, '2021-06-07', '2021-05-28', 'ACTIVE'),
 (13, '10341120210528', 6, 7, 6, '231', 'andi', 125, '10341120210528sandhika.jpeg', '3121231', 'ayam ayam', 10000000, '2021-06-04', '2021-04-15', 'ACTIVE'),
 (14, '07144620210530', 6, 7, 7, '123', 'dinda', 120, '08512620210606test1.png', '3121231', 'sdfdsfsdf', 2000, '2021-05-30', '2021-05-30', 'ACTIVE');
 
@@ -74,7 +74,9 @@ CREATE TABLE `tbl_barang_keluar` (
 
 INSERT INTO `tbl_barang_keluar` (`id_keluar`, `id_petugas`, `id_item`, `jumlah_barang`, `date`) VALUES
 (9, 1, '09254620210528', 1, '2021-05-30'),
-(10, 1, '10341120210528', 211, '2021-06-03');
+(10, 1, '10341120210528', 211, '2021-06-03'),
+(11, 1, '09254620210528', 3, '2021-06-08'),
+(12, 1, '09254620210528', 5, '2021-06-08');
 
 -- --------------------------------------------------------
 
@@ -133,14 +135,23 @@ INSERT INTO `tbl_brand` (`id_brand`, `nama_brand`, `create_date`, `status`) VALU
 
 CREATE TABLE `tbl_eoq` (
   `id_eoq` int(11) NOT NULL,
+  `id_item` varchar(255) NOT NULL,
   `demand` int(11) NOT NULL,
-  `harga_simpan` int(11) NOT NULL,
-  `harga_unit` int(11) NOT NULL,
+  `harga_simpan` float NOT NULL,
+  `harga_unit` float NOT NULL,
   `lead_time` int(11) NOT NULL,
   `hasil_eoq` int(11) NOT NULL,
   `hasil_jarak_pesan` int(11) NOT NULL,
   `ROP` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tbl_eoq`
+--
+
+INSERT INTO `tbl_eoq` (`id_eoq`, `id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES
+(11, '10341120210528', 20, 0.02, 3000000, 12, 77460, 3873, 0),
+(21, '09254620210528', 100, 0.02, 100, 12, 1000, 10, 200);
 
 -- --------------------------------------------------------
 
@@ -205,9 +216,9 @@ CREATE TABLE `tbl_pesan` (
 --
 
 INSERT INTO `tbl_pesan` (`id_pesan`, `id_barang`, `nama_barang`, `img`, `stock`, `desc`, `create_date`) VALUES
-(1, 12, 'asd', '09254620210528asd1.png', 20, 'Barang Kadaluarsa', '2021-06-07'),
-(2, 13, 'andi', '10341120210528sandhika.jpeg', 125, 'Barang Kadaluarsa', '2021-06-07'),
-(3, 14, 'dinda', '08512620210606test1.png', 120, 'Barang Kadaluarsa', '2021-06-07');
+(1, 12, 'asd', '09254620210528asd1.png', 12, 'Barang Kadaluarsa', '2021-06-08'),
+(2, 13, 'andi', '10341120210528sandhika.jpeg', 125, 'Barang Kadaluarsa', '2021-06-08'),
+(3, 14, 'dinda', '08512620210606test1.png', 120, 'Barang Kadaluarsa', '2021-06-08');
 
 -- --------------------------------------------------------
 
@@ -352,7 +363,7 @@ ALTER TABLE `tbl_barang`
 -- AUTO_INCREMENT for table `tbl_barang_keluar`
 --
 ALTER TABLE `tbl_barang_keluar`
-  MODIFY `id_keluar` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_keluar` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tbl_barang_masuk`
@@ -370,7 +381,7 @@ ALTER TABLE `tbl_brand`
 -- AUTO_INCREMENT for table `tbl_eoq`
 --
 ALTER TABLE `tbl_eoq`
-  MODIFY `id_eoq` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_eoq` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `tbl_kategori`
