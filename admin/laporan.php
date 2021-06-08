@@ -27,7 +27,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="images/logo/<?php echo $logo['nama_logo'] ?>" type="image/ico" />
 
-  <title>Apotek Centra Media</title>
+  <title>Apotek Centra Medika</title>
 
   <!-- Bootstrap -->
   <link href="cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
