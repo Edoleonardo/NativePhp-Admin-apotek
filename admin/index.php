@@ -435,7 +435,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <input type="number" name="demand" class="form-control" required /><br>
                     <label>Harga Penyimpanan /Hari (Holding Cost)</label>
                     <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
-                    <label>Harga /Unit (Cost)</label>
+                    <label>Harga Unit /Pesan (Cost)</label>
                     <input type="number" step="0.01" name="cost" class="form-control" required /><br>
                     <label>Waktu Prose /Hari (Lead Time)</label>
                     <input type="number" name="lead" class="form-control" required /><br>

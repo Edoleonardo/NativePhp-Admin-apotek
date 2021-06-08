@@ -57,6 +57,9 @@ if (isset($_POST['hapuspesan'])) {
 if (isset($_POST['eoq'])) {
    Eoq($conn);
 }
+if (isset($_POST['totalhari'])) {
+   TotalEoq($conn);
+}
 
 // keluar //
 if (isset($_POST['krngbarang'])) {
@@ -204,6 +207,16 @@ function GetDataEoq($conn)
    return $item;
 }
 
+function TotalEoq($conn)
+{
+   $sql = "SELECT * FROM tbl_barang_keluar where date = CURRENT_DATE ";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+
+   echo json_encode($data);
+}
+
+
 function Getcount($conn)
 {
    $arr = [];
@@ -238,8 +251,8 @@ function Eoq($conn){
 
    $eoq = sqrt((2 * $_POST['demand'] * $_POST['cost'])/$_POST['hold']);
    $t = $eoq / $_POST['demand'];
-   $rop = ($_POST['lead']-$t)*100;
-   $rop = max($rop,0);
+   $rop = (abs($_POST['lead']-round($t)))*$_POST['demand'];
+   // $rop = max($rop,0);
 
    if(!$data){
 

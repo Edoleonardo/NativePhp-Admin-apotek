@@ -185,8 +185,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                           <tr>
                             <th>Nama barang</th>
                             <th>Permintaan /Hari</th>
-                            <th>Harga Simpan</th>
-                            <th>Harga Unit</th>
+                            <th>Harga Penyimpanan /hari</th>
+                            <th>Harga Unit /Pesan</th>
                             <th>Waktu Proses Beli</th>
                             <th>Rekomendasi EOQ</th>
                             <th>Jarak Pesan Barang</th>
@@ -238,10 +238,10 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                       <?php } ?>
                     </select>
                     <label>Permintaan Unit /Hari (Demand) :</label>
-                    <input type="number" name="demand" class="form-control" required /><br>
+                    <input type="number" id="unit" name="demand" class="form-control" required /><br>
                     <label>Harga Penyimpanan /Hari (Holding Cost)</label>
                     <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
-                    <label>Harga /Unit (Cost)</label>
+                    <label>Harga Unit /Pesan (Cost)</label>
                     <input type="number" step="0.01" name="cost" class="form-control" required /><br>
                     <label>Waktu Prose /Hari (Lead Time)</label>
                     <input type="number" name="lead" class="form-control" required /><br>
@@ -321,18 +321,18 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script>
     $('#id_item').change(function() {
       var id = $(this).val();
+      //console.log(id);
       $.ajax({
         url: "../model/user.php", //the page containing php script
         type: "post", //request type,
         dataType: 'json',
         data: {
-          stok_now: 1,
-          id: id
+          totalhari: 1,
+          //id: id
         },
         success: function(data) {
-          console.log(data)
-          $("#stock_in").val(data.stock_barang);
-          $("#tgl").val(data.tempo_barang);
+          console.log(data);
+          $("#unit").val(data.stock_barang);
         }
       });
     })
