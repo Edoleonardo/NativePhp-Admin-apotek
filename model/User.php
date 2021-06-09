@@ -60,6 +60,9 @@ if (isset($_POST['eoq'])) {
 if (isset($_POST['totalhari'])) {
    TotalEoq($conn);
 }
+if (isset($_POST['deleteeoq'])) {
+   DeleteEoq($conn);
+}
 
 // keluar //
 if (isset($_POST['krngbarang'])) {
@@ -214,6 +217,19 @@ function TotalEoq($conn)
    $data = mysqli_fetch_assoc($item);
 
    echo json_encode($data);
+}
+
+function DeleteEoq($conn){
+
+      $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_eoq` = '".$_POST['id']."'";
+      $result = mysqli_query($conn, $sql);
+
+      if ($result) {
+         msg('Berhasil di Delete', '../admin/eoq.php');
+      } else {
+         msg('Gagal Delete data!!', '../admin/eoq.php');
+      }
+
 }
 
 

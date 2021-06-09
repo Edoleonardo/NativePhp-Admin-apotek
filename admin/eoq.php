@@ -185,6 +185,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <th>Rekomendasi EOQ</th>
                             <th>Jarak Pesan Barang</th>
                             <th>Titik Pesan Ulang</th>
+                            <th>Delete</th>
                           </tr>
                           </thead>
                           <tbody>
@@ -200,6 +201,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $data['hasil_eoq'] ?> Unit</td>
                               <td><?php echo $data['hasil_jarak_pesan'] ?> Hari</td>
                               <td><?php echo $data['ROP'] ?> Unit</td>
+                              <td>
+                                <form action="../model/User.php" method="post">
+                                  <input type="hidden" name="id" value="<?php echo $data['id_eoq'] ?>">
+                                  <button style="background-color:red;" type="submit" name="deleteeoq" class="btn cart_quantity_delete"><i class="fa fa-times"></i></button>
+                                </form>
+                              </td>
                             </tr>
                           <?php } ?>
                         </tbody>

@@ -223,8 +223,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 <div class="clearfix"></div>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Barang</button>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#eoqmodal">EOQ</button>
-                <button type="button" class="btn btn-danger kanan" disabled>Stok kurang</button>
-                <button type="button" class="btn btn-warning" disabled>Kadaluarsa</button>
+                <button type="button" style="font-size: 10px" class="btn btn-danger kanan" disabled>Stok kurang</button>
+                <button type="button" style="font-size: 10px" class="btn btn-warning" disabled>Kadaluarsa</button>
 
               </div>
               <div class="x_content">
