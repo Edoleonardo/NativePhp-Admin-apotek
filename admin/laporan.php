@@ -56,7 +56,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>"/> <span>Apotek Centra Medika</span></a>
+            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>" /> <span>Apotek Centra Medika</span></a>
           </div>
 
           <div class="clearfix"></div>
@@ -64,7 +64,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="../admin/images/profile/<?php echo $now['img']?>" alt="..." class="img-circle profile_img">
+              <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
@@ -123,7 +123,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <img src="../admin/images/profile/<?php echo $now['img']?>" alt=""><?php echo $now['nama_petugas'] ?>
+                  <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt=""><?php echo $now['nama_petugas'] ?>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../admin/profile.php"> Profile</a>
                     <a class="dropdown-item" href="../login_admin/logout_admin.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
@@ -150,7 +150,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                         </span>
                       </a>
                     </li>
-                    <?php } ?>
+                  <?php } ?>
                 </ul>
               </li>
             </ul>
@@ -161,61 +161,55 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
       <!-- page content -->
       <div class="right_col" role="main">
-        <div class="">
-          <div class="page-title">
-            <div class="title_left">
-              <h3>Laporan Bulanan</h3>
-            </div>
-
-            <div class="clearfix"></div>
-            <div class="col-md-12 col-sm-12 ">
-              <div class="x_panel">
-                <div class="x_title">
-                  <form action="../model/user.php" method="post">
-                    <input type="month" id="start" name="bln">
-                    <button type="submit" class="btn btn-primary" name="laporan">Pilih Bulan</button>
-                  </form>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="card-box table-responsive">
-                        <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
-                          <thead>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+              <div class="x_title">
+                <h3>Laporan Bulanan</h3>
+                <form action="../model/user.php" method="post">
+                  <input type="month" id="start" name="bln">
+                  <button type="submit" class="btn btn-primary" name="laporan">Pilih Bulan</button>
+                </form>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card-box table-responsive">
+                      <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                          <tr>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Stock</th>
+                            <th>Deskripsi</th>
+                            <th>Harga Barang</th>
+                            <th>Kategori</th>
+                            <th>Supplier</th>
+                            <th>Brand</th>
+                            <th>Tempo Kadaluarsa</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php while ($data = mysqli_fetch_assoc($data_barang)) {
+                            $kategori = GetKategoriDetiail($data['id_kategori'], $conn);
+                            $brand = GetBrandDetiail($data['id_brand'], $conn);
+                            $supplier = GetSupplierDetiail($data['id_supplier'], $conn);
+                          ?>
                             <tr>
-                              <th>Kode Barang</th>
-                              <th>Nama Barang</th>
-                              <th>Stock</th>
-                              <th>Deskripsi</th>
-                              <th>Harga Barang</th>
-                              <th>Kategori</th>
-                              <th>Supplier</th>
-                              <th>Brand</th>
-                              <th>Tempo Kadaluarsa</th>
+                              <td><?php echo $data['kode_barang'] ?></td>
+                              <td><?php echo $data['nama_barang'] ?></td>
+                              <td><?php echo $data['stock_barang'] ?></td>
+                              <td><?php echo $data['deskripsi'] ?></td>
+                              <td><?php echo $data['harga_barang'] ?></td>
+                              <td><?php echo $kategori['nama_kategori'] ?></td>
+                              <td><?php echo $supplier['nama_supplier'] ?></td>
+                              <td><?php echo $brand['nama_brand'] ?></td>
+                              <td><?php echo $data['create_date'] ?></td>
                             </tr>
-                          </thead>
-                          <tbody>
-                            <?php while ($data = mysqli_fetch_assoc($data_barang)) {
-                              $kategori = GetKategoriDetiail($data['id_kategori'], $conn);
-                              $brand = GetBrandDetiail($data['id_brand'], $conn);
-                              $supplier = GetSupplierDetiail($data['id_supplier'], $conn);
-                            ?>
-                              <tr>
-                                <td><?php echo $data['kode_barang'] ?></td>
-                                <td><?php echo $data['nama_barang'] ?></td>
-                                <td><?php echo $data['stock_barang'] ?></td>
-                                <td><?php echo $data['deskripsi'] ?></td>
-                                <td><?php echo $data['harga_barang'] ?></td>
-                                <td><?php echo $kategori['nama_kategori'] ?></td>
-                                <td><?php echo $supplier['nama_supplier'] ?></td>
-                                <td><?php echo $brand['nama_brand'] ?></td>
-                                <td><?php echo $data['create_date'] ?></td>
-                              </tr>
-                            <?php }  ?>
-                          </tbody>
-                        </table>
-                      </div>
+                          <?php }  ?>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -225,10 +219,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
         </div>
       </div>
     </div>
-  </div>
-  </div>
-  <!-- /page content -->
-  </div>
+    <!-- /page content -->
   </div>
 
   <!-- jQuery -->

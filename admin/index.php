@@ -80,7 +80,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>"/> <span>Apotek Centra Medika</span></a>
+            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>" /> <span>Apotek Centra Medika</span></a>
           </div>
 
           <div class="clearfix"></div>
@@ -175,7 +175,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                         </span>
                       </a>
                     </li>
-                    <?php } ?>
+                  <?php } ?>
                 </ul>
               </li>
             </ul>
@@ -411,8 +411,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           </div>
         </div>
         <!-- Modal -->
-          <!------------------ Modal----------------------->
-          <div class="modal fade" id="eoqmodal" role="dialog">
+        <!------------------ Modal----------------------->
+        <div class="modal fade" id="eoqmodal" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -423,21 +423,22 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 <div class="x_content">
                   <!-- start form for validation -->
                   <form action="../model/user.php" method="post">
-                  <label>Pilih Barang :</label>
+                    <label>Pilih Barang :</label>
                     <select class="form-control" name="id_item" id="id_item">
                       <?php
                       $data_barang = GetDataBarang($conn);
-                       while ($allbarang = mysqli_fetch_assoc($data_barang)) { ?>
+                      while ($allbarang = mysqli_fetch_assoc($data_barang)) { ?>
                         <option value="<?php echo $allbarang['id_item'] ?>"><?php echo $allbarang['nama_barang'] ?></option>
                       <?php } ?>
                     </select>
+                    <br>
                     <label>Permintaan Unit /Hari (Demand) :</label>
                     <input type="number" name="demand" class="form-control" required /><br>
                     <label>Harga Penyimpanan /Hari (Holding Cost)</label>
                     <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
                     <label>Harga Unit /Pesan (Cost)</label>
                     <input type="number" step="0.01" name="cost" class="form-control" required /><br>
-                    <label>Waktu Prose /Hari (Lead Time)</label>
+                    <label>Waktu Proses /Hari (Lead Time)</label>
                     <input type="number" name="lead" class="form-control" required /><br>
                     <br />
                     <button type="submit" class="btn btn-primary" name="eoq">Submit</button>

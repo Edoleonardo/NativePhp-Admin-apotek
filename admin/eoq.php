@@ -52,7 +52,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>"/> <span>Apotek Centra Medika</span></a>          
+            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>" /> <span>Apotek Centra Medika</span></a>
           </div>
 
           <div class="clearfix"></div>
@@ -60,7 +60,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="../admin/images/profile/<?php echo $now['img']?>" alt="..." class="img-circle profile_img">
+              <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
@@ -119,7 +119,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <img src="../admin/images/profile/<?php echo $now['img']?>" alt=""><?php echo $now['nama_petugas'] ?>
+                  <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt=""><?php echo $now['nama_petugas'] ?>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../admin/profile.php"> Profile</a>
                     <a class="dropdown-item" href="../login_admin/logout_admin.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
@@ -146,7 +146,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                         </span>
                       </a>
                     </li>
-                    <?php } ?>
+                  <?php } ?>
                 </ul>
               </li>
             </ul>
@@ -157,25 +157,19 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
       <!-- page content -->
       <div class="right_col" role="main">
-        <div class="">
-          <div class="page-title">
-            <div class="title_left">
-              <h3>Economic Order Quantity</h3>
-            </div>
-
-            <div class="clearfix"></div>
-            <div class="col-md-12 col-sm-12 ">
-              <div class="x_panel">
-                <div class="x_title">
-                  <div class="clearfix"></div>
-                  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#eoqmodal">Economic Order Quantity</button>
-                </div>
-                <div class="x_content">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="card-box table-responsive">
-                        <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
-                          <thead>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 ">
+            <div class="x_panel">
+              <div class="x_title">
+                <h3>Economic Order Quantity</h3>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#eoqmodal">Economic Order Quantity</button>
+              </div>
+              <div class="x_content">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="card-box table-responsive">
+                      <table id="datatable-buttons" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
                           <tr>
                             <th>Nama barang</th>
                             <th>Permintaan /Hari</th>
@@ -187,20 +181,20 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <th>Titik Pesan Ulang</th>
                             <th>Delete</th>
                           </tr>
-                          </thead>
-                          <tbody>
+                        </thead>
+                        <tbody>
                           <?php while ($data = mysqli_fetch_assoc($data_eoq)) {
                             $barang = GetDetailBarang($data['id_item'], $conn);
                           ?>
                             <tr>
                               <td><?php echo $barang['nama_barang'] ?></td>
-                              <td><?php echo $data['demand'] ?> Unit</td>
-                              <td>Rp. <?php echo $data['harga_simpan'] ?></td>
-                              <td>Rp. <?php echo $data['harga_unit'] ?></td>
-                              <td><?php echo $data['lead_time'] ?> Hari</td>
-                              <td><?php echo $data['hasil_eoq'] ?> Unit</td>
-                              <td><?php echo $data['hasil_jarak_pesan'] ?> Hari</td>
-                              <td><?php echo $data['ROP'] ?> Unit</td>
+                              <td><?php echo number_format($data['demand']) ?> Unit</td>
+                              <td>Rp. <?php echo number_format($data['harga_simpan']) ?></td>
+                              <td>Rp. <?php echo number_format($data['harga_unit']) ?></td>
+                              <td><?php echo number_format($data['lead_time']) ?> Hari</td>
+                              <td><?php echo number_format($data['hasil_eoq']) ?> Unit</td>
+                              <td><?php echo number_format($data['hasil_jarak_pesan']) ?> Hari</td>
+                              <td><?php echo number_format($data['ROP']) ?> Unit</td>
                               <td>
                                 <form action="../model/User.php" method="post">
                                   <input type="hidden" name="id" value="<?php echo $data['id_eoq'] ?>">
@@ -210,8 +204,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             </tr>
                           <?php } ?>
                         </tbody>
-                        </table>
-                      </div>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -222,46 +215,47 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       </div>
     </div>
   </div>
-            <!------------------ Modal----------------------->
-            <div class="modal fade" id="eoqmodal" role="dialog">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Economic Order Quantity</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-              <div class="modal-body">
-                <div class="x_content">
-                  <!-- start form for validation -->
-                  <form action="../model/user.php" method="post">
-                  <label>Pilih Barang :</label>
-                    <select class="form-control" name="id_item" id="id_item">
-                      <?php
-                      $data_barang = GetDataBarang($conn);
-                       while ($allbarang = mysqli_fetch_assoc($data_barang)) { ?>
-                        <option value="<?php echo $allbarang['id_item'] ?>"><?php echo $allbarang['nama_barang'] ?></option>
-                      <?php } ?>
-                    </select>
-                    <label>Permintaan Unit /Hari (Demand) :</label>
-                    <input type="number" id="unit" name="demand" class="form-control" required /><br>
-                    <label>Harga Penyimpanan /Hari (Holding Cost)</label>
-                    <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
-                    <label>Harga Unit /Pesan (Cost)</label>
-                    <input type="number" step="0.01" name="cost" class="form-control" required /><br>
-                    <label>Waktu Prose /Hari (Lead Time)</label>
-                    <input type="number" name="lead" class="form-control" required /><br>
-                    <br />
-                    <button type="submit" class="btn btn-primary" name="eoq">Submit</button>
-                  </form>
-                  <!-- end form for validations -->
-
-                </div>
-              </div>
-            </div>
+  <!------------------ Modal----------------------->
+  <div class="modal fade" id="eoqmodal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Economic Order Quantity</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="x_content">
+            <!-- start form for validation -->
+            <form action="../model/user.php" method="post">
+              <label>Pilih Barang :</label>
+              <select class="form-control" name="id_item" id="id_item">
+                <?php
+                $data_barang = GetDataBarang($conn);
+                while ($allbarang = mysqli_fetch_assoc($data_barang)) { ?>
+                  <option value="<?php echo $allbarang['id_item'] ?>"><?php echo $allbarang['nama_barang'] ?></option>
+                <?php } ?>
+              </select>
+              <br>
+              <label>Permintaan Unit /Hari (Demand) :</label>
+              <input type="number" id="unit" name="demand" class="form-control" required /><br>
+              <label>Harga Penyimpanan /Hari (Holding Cost)</label>
+              <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
+              <label>Harga Unit /Pesan (Cost)</label>
+              <input type="number" step="0.01" name="cost" class="form-control" required /><br>
+              <label>Waktu Prose /Hari (Lead Time)</label>
+              <input type="number" name="lead" class="form-control" required /><br>
+              <br />
+              <button type="submit" class="btn btn-primary" name="eoq">Submit</button>
+            </form>
+            <!-- end form for validations -->
 
           </div>
         </div>
-        <!-- Modal -->
+      </div>
+
+    </div>
+  </div>
+  <!-- Modal -->
   </div>
   <!-- /page content -->
   </div>
