@@ -56,7 +56,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       <div class="col-md-3 left_col">
         <div class="left_col scroll-view">
           <div class="navbar nav_title" style="border: 0;">
-            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>"/> <span>Apotek Centra Medika</span></a>
+            <a href="index.php" class="site_title"><img width="50px" src="../admin/images/logo/<?php echo $logo['nama_logo'] ?>" /> <span>Apotek Centra Medika</span></a>
           </div>
 
           <div class="clearfix"></div>
@@ -64,7 +64,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <!-- menu profile quick info -->
           <div class="profile clearfix">
             <div class="profile_pic">
-              <img src="../admin/images/profile/<?php echo $now['img']?>" alt="..." class="img-circle profile_img">
+              <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt="..." class="img-circle profile_img">
             </div>
             <div class="profile_info">
               <span>Welcome,</span>
@@ -123,7 +123,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <ul class=" navbar-right">
               <li class="nav-item dropdown open" style="padding-left: 15px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                  <img src="../admin/images/profile/<?php echo $now['img']?>" alt=""><?php echo $now['nama_petugas'] ?>
+                  <img src="../admin/images/profile/<?php echo $now['img'] ?>" alt=""><?php echo $now['nama_petugas'] ?>
                   <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="../admin/profile.php"> Profile</a>
                     <a class="dropdown-item" href="../login_admin/logout_admin.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
@@ -142,7 +142,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                       <a class="dropdown-item">
                         <span class="image"><img src="../admin/images/barang/<?php echo $data_pesan['img'] ?>" alt="Profile Image" /></span>
                         <span>
-                          <span id="namabarang">Barang <?php echo $data_pesan['nama_barang'] ?></span>
+                          <span id="namabarang" class="<?php echo $data_pesan['nama_barang'] ?>">Barang <?php echo $data_pesan['nama_barang'] ?></span>
                           <span class="time"><?php echo $data_pesan['create_date'] ?></span>
                         </span>
                         <span class="message">
@@ -150,7 +150,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                         </span>
                       </a>
                     </li>
-                    <?php } ?>
+                  <?php } ?>
                 </ul>
               </li>
             </ul>
@@ -286,61 +286,70 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   </div>
 
   <!-- jQuery -->
-  <script src="../vendors/jquery/dist/jquery.min.js"></script>
-  <!-- Bootstrap -->
-  <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- FastClick -->
-  <script src="../vendors/fastclick/lib/fastclick.js"></script>
-  <!-- NProgress -->
-  <script src="../vendors/nprogress/nprogress.js"></script>
-  <!-- Chart.js -->
-  <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
-  <!-- gauge.js -->
-  <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
-  <!-- bootstrap-progressbar -->
-  <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-  <!-- iCheck -->
-  <script src="../vendors/iCheck/icheck.min.js"></script>
-  <!-- Skycons -->
-  <script src="../vendors/skycons/skycons.js"></script>
-  <!-- Flot -->
-  <script src="../vendors/Flot/jquery.flot.js"></script>
-  <script src="../vendors/Flot/jquery.flot.pie.js"></script>
-  <script src="../vendors/Flot/jquery.flot.time.js"></script>
-  <script src="../vendors/Flot/jquery.flot.stack.js"></script>
-  <script src="../vendors/Flot/jquery.flot.resize.js"></script>
-  <!-- Flot plugins -->
-  <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
-  <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
-  <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
-  <!-- DateJS -->
-  <script src="../vendors/DateJS/build/date.js"></script>
-  <!-- JQVMap -->
-  <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
-  <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
-  <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
-  <!-- bootstrap-daterangepicker -->
-  <script src="../vendors/moment/min/moment.min.js"></script>
-  <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
-  <!-- Datatables -->
-  <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-  <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
-  <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
-  <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
-  <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
-  <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
-  <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-  <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-  <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
-  <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
-  <script src="../vendors/jszip/dist/jszip.min.js"></script>
-  <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
-  <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
-  <!-- Custom Theme Scripts -->
-  <script src="../build/js/custom.min.js"></script>
+      <script src="../vendors/jquery/dist/jquery.min.js"></script>
+      <!-- Bootstrap -->
+      <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+      <!-- FastClick -->
+      <script src="../vendors/fastclick/lib/fastclick.js"></script>
+      <!-- NProgress -->
+      <script src="../vendors/nprogress/nprogress.js"></script>
+      <!-- Chart.js -->
+      <script src="../vendors/Chart.js/dist/Chart.min.js"></script>
+      <!-- gauge.js -->
+      <script src="../vendors/gauge.js/dist/gauge.min.js"></script>
+      <!-- bootstrap-progressbar -->
+      <script src="../vendors/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+      <!-- iCheck -->
+      <script src="../vendors/iCheck/icheck.min.js"></script>
+      <!-- Skycons -->
+      <script src="../vendors/skycons/skycons.js"></script>
+      <!-- Flot -->
+      <script src="../vendors/Flot/jquery.flot.js"></script>
+      <script src="../vendors/Flot/jquery.flot.pie.js"></script>
+      <script src="../vendors/Flot/jquery.flot.time.js"></script>
+      <script src="../vendors/Flot/jquery.flot.stack.js"></script>
+      <script src="../vendors/Flot/jquery.flot.resize.js"></script>
+      <!-- Flot plugins -->
+      <script src="../vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+      <script src="../vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+      <script src="../vendors/flot.curvedlines/curvedLines.js"></script>
+      <!-- DateJS -->
+      <script src="../vendors/DateJS/build/date.js"></script>
+      <!-- JQVMap -->
+      <script src="../vendors/jqvmap/dist/jquery.vmap.js"></script>
+      <script src="../vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+      <script src="../vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+      <!-- bootstrap-daterangepicker -->
+      <script src="../vendors/moment/min/moment.min.js"></script>
+      <script src="../vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
+      <!-- Datatables -->
+      <script src="../vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+      <script src="../vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+      <script src="../vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+      <script src="../vendors/datatables.net-buttons-bs/js/buttons.bootstrap.min.js"></script>
+      <script src="../vendors/datatables.net-buttons/js/buttons.flash.min.js"></script>
+      <script src="../vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+      <script src="../vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+      <script src="../vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
+      <script src="../vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+      <script src="../vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+      <script src="../vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
+      <script src="../vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+      <script src="../vendors/jszip/dist/jszip.min.js"></script>
+      <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
+      <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+      <!-- Custom Theme Scripts -->
+      <script src="../build/js/custom.min.js"></script>
 
 </body>
+<script>
+  $(document).on("click", " li>.dropdown-item", function() {
+    var a = $(this).find("#namabarang").attr('class');
+
+    sessionStorage.setItem("key", a);
+
+    window.location.href = 'index.php';
+  });
+</script>
 
 </html>

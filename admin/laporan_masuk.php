@@ -142,7 +142,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                       <a class="dropdown-item">
                         <span class="image"><img src="../admin/images/barang/<?php echo $data_pesan['img'] ?>" alt="Profile Image" /></span>
                         <span>
-                          <span id="namabarang">Barang <?php echo $data_pesan['nama_barang'] ?></span>
+                          <span id="namabarang" class="<?php echo $data_pesan['nama_barang'] ?>">Barang <?php echo $data_pesan['nama_barang'] ?></span>
                           <span class="time"><?php echo $data_pesan['create_date'] ?></span>
                         </span>
                         <span class="message">
@@ -243,7 +243,15 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
   <!-- Custom Theme Scripts -->
   <script src="../build/js/custom.min.js"></script>
+  <script>
+    $(document).on("click", " li>.dropdown-item", function() {
+      var a = $(this).find("#namabarang").attr('class');
 
+      sessionStorage.setItem("key", a);
+
+      window.location.href = 'index.php';
+    });
+  </script>
 </body>
 
 </html>

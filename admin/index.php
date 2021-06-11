@@ -166,7 +166,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                       <a class="dropdown-item">
                         <span class="image"><img src="../admin/images/barang/<?php echo $data_pesan['img'] ?>" alt="Profile Image" /></span>
                         <span>
-                          <span id="namabarang">Barang <?php echo $data_pesan['nama_barang'] ?></span>
+                          <span id="namabarang" class="<?php echo $data_pesan['nama_barang'] ?>">Barang <?php echo $data_pesan['nama_barang'] ?></span>
                           <!-- <span class="hide hidden-name"><?php echo $data_pesan['nama_barang'] ?></span> -->
                           <span class="time"><?php echo $data_pesan['create_date'] ?></span>
                         </span>
@@ -198,13 +198,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
               <div class="tile-stats">
                 <h1><?php echo $count[1] ?></h1>
-                <p><b> Total Barang Masuk</b></p>
+                <p><b> Total Barang Masuk Hari ini</b></p>
               </div>
             </div>
             <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
               <div class="tile-stats">
                 <h1><?php echo $count[2] ?></h1>
-                <p><b> Total Barang Keluar</b></p>
+                <p><b> Total Barang Keluar Hari ini</b></p>
               </div>
             </div>
             <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 ">
@@ -531,10 +531,20 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
     $('#tgl_input').attr("min", today);
     // $('#tgl_edit').attr("min", today);
 
-    $(document).on("click", ".dropdown-item", function() {
+    $(function() {
+      $('#datatable').DataTable().search(sessionStorage.getItem("key")).draw();
+    });
+
+    $(document).on("click", " li>.dropdown-item", function() {
       // var nama = $(".hidden-name").text();
-      var nama = $("#namabarang").text();
-      console.log(nama)
+      var a = $(this).find("#namabarang").attr('class');
+      // $("label>input").val(a);
+      $('#datatable').DataTable().search(a).draw();
+      console.log(a)
+    });
+
+    $(document).on("click", ".child_menu>li>a", function() {
+      sessionStorage.setItem("key", '');
     });
   </script>
 </body>
