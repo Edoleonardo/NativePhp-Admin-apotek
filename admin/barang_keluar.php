@@ -94,6 +94,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <ul class="nav side-menu">
                 <li><a><i class="fa fa-print"></i> Cetak Laporan <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
+                    <li><a href="stock_opname.php">Stock Opname</a></li>
                     <li><a href="laporan.php">Laporan Barang</a></li>
                     <li><a href="laporan_masuk.php">Laporan Barang Masuk</a></li>
                     <li><a href="laporan_keluar.php">Laporan Barang Keluar</a></li>
@@ -186,6 +187,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <th>Nama Petugas</th>
                             <th>Nama Barang</th>
                             <th>Jumlah Keluar</th>
+                            <th>Keterangan</th>
                             <th>Tanggal Kadaluarsa</th>
                             <th>Tanggal Keluar</th>
                           </tr>
@@ -199,6 +201,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $petugas['nama_petugas'] ?></td>
                               <td><?php echo $barang['nama_barang'] ?></td>
                               <td><?php echo $data['jumlah_barang'] ?></td>
+                              <td><?php echo $data['keterangan'] ?></td>
                               <td><?php echo $barang['tempo_barang'] ?></td>
                               <td><?php echo $data['date'] ?></td>
                             </tr>
@@ -236,7 +239,10 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
                     <label>Jumlah Barang:</label>
                     <input type="number" name="stock_in" id="stock_in" class="form-control" value="<?php echo $dataBarangSatuan['stock_barang'] ?>" readonly /><br>
-
+                   
+                    <label>Keterangan:</label><br>
+                    <input type="text" name="keterangan" class="form-control" required />
+                   
                     <label>Jumlah Barang Keluar:</label><br>
                     <input type="number" name="stock" class="form-control" required />
                     <br />

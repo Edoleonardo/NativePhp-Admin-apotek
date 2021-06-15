@@ -350,7 +350,7 @@ function KeluarBarang($conn)
 
    if ($data['stock_barang'] >= $_POST['stock']) {
 
-      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`, `date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "', now()) ";
+      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`, `date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "', now()) ";
       $result = mysqli_query($conn, $sql);
 
       $stock = $data['stock_barang'] - $_POST['stock'];
