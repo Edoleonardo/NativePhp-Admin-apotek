@@ -164,7 +164,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       <div class="right_col" role="main">
         <!-- top tiles -->
         <div class="row" style="display: inline-block;">
-          <h3>Barang Masuk</h3>
+          <h3>Stock Opname</h3>
         </div>
         <!-- /top tiles -->
 
@@ -175,7 +175,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <div class="x_panel">
               <div class="x_title">
                 <div class="clearfix"></div>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Stock</button>
+                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Pilih Data</button>
               </div>
               <div class="x_content">
                 <div class="row">
@@ -220,7 +220,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title">Tambah Barang</h4>
+                <h4 class="modal-title">Pilih Data Stock Opname</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-body">
@@ -234,19 +234,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                       <?php } ?>
                     </select><br>
 
-                    <label>Tempo Kadaluarsa:</label>
-                    <input type="text" name="tgl" id="tgl_ex" class="form-control" value="<?php echo $dataBarangSatuan['tempo_barang'] ?>" readonly /><br>
-
-                    <label>Jumlah Barang:</label>
-                    <input type="number" name="stock_in" id="stock_in" class="form-control" value="<?php echo $dataBarangSatuan['stock_barang'] ?>" readonly /><br>
-
-
-                    <label>Jumlah Barang Masuk:</label>
-                    <input type="number" name="stock" class="form-control" required /><br>
-                    <label>Nomor Faktur :</label>
-                    <input type="text" name="faktur" class="form-control" required />
+                    <label>Pilih Tanggal</label>
+                    <input type="date" name="tgl1" class="form-control" required /><br>
+                    <label>Sampai Tanggal</label>
+                    <input type="date" name="tgl2" class="form-control" required />
                     <br />
-                    <button type="submit" class="btn btn-primary" name="tmbhstock">Tambah</button>
+                    <button type="submit" class="btn btn-primary" name="dataopname">Pilih</button>
                   </form>
                   <!-- end form for validations -->
 

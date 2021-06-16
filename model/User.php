@@ -63,6 +63,9 @@ if (isset($_POST['totalhari'])) {
 if (isset($_POST['deleteeoq'])) {
    DeleteEoq($conn);
 }
+if (isset($_POST['dataopname'])) {
+   DataOpname($conn);
+}
 
 // keluar //
 if (isset($_POST['krngbarang'])) {
@@ -149,7 +152,7 @@ function GetDataBarangMasuk($conn)
 }
 function GetDataBarangKeluar($conn)
 {
-   $sql = "SELECT * FROM tbl_barang_keluar ORDER BY date desc";
+   $sql = "SELECT * FROM tbl_barang_keluar ORDER BY create_date desc";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
@@ -212,7 +215,7 @@ function GetDataEoq($conn)
 
 function TotalEoq($conn)
 {
-   $sql = "SELECT * FROM tbl_barang_keluar where date = CURRENT_DATE ";
+   $sql = "SELECT * FROM tbl_barang_keluar where create_date = CURRENT_DATE ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
 
@@ -232,6 +235,15 @@ function DeleteEoq($conn){
 
 }
 
+function DataOpname($conn){
+
+   $sql = "SELECT * FROM tbl_barang_keluar where create_date = CURRENT_DATE ";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+
+
+}
+
 
 function Getcount($conn)
 {
@@ -247,7 +259,7 @@ function Getcount($conn)
    $data = mysqli_fetch_assoc($item);
    $arr[1] = $data['total'];
 
-   $sql = "SELECT count(id_keluar) as total FROM tbl_barang_keluar where date = CURDATE()";
+   $sql = "SELECT count(id_keluar) as total FROM tbl_barang_keluar where create_date = CURDATE()";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
    $arr[2] = $data['total'];
@@ -350,12 +362,18 @@ function KeluarBarang($conn)
 
    if ($data['stock_barang'] >= $_POST['stock']) {
 
-      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`, `date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "', now()) ";
-      $result = mysqli_query($conn, $sql);
-
       $stock = $data['stock_barang'] - $_POST['stock'];
       $sql = "UPDATE tbl_barang SET stock_barang = '" . $stock . "' WHERE id_item = '" . $_POST['id_item'] . "' ";
       $result = mysqli_query($conn, $sql);
+
+      $sql = "SELECT * FROM tbl_barang where id_item = '" . $_POST['id_item'] . "' ";
+      $item = mysqli_query($conn, $sql);
+      $data = mysqli_fetch_assoc($item);
+
+      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`,`sisah_stock`, `create_date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "','" .$data['stock_barang'] . "', now()) ";
+      $result = mysqli_query($conn, $sql);
+
+
 
       DellPesan($conn);
       CheckStock($conn);
@@ -377,12 +395,18 @@ function MasukBarang($conn)
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
 
-   $sql = "INSERT INTO `tbl_barang_masuk` ( `id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('" . $_POST['id_item'] . "', '" . $_SESSION['id_petugas'] . "', '" . $_POST['stock'] . "', '" . $_POST['faktur'] . "', now())  ";
-   $result = mysqli_query($conn, $sql);
-
    $stock = $data['stock_barang'] + $_POST['stock'];
    $sql = "UPDATE tbl_barang SET stock_barang = '" . $stock . "' WHERE id_item = '" . $_POST['id_item'] . "' ";
    $result = mysqli_query($conn, $sql);
+
+   $sql = "SELECT * FROM tbl_barang where id_item = '" . $_POST['id_item'] . "' ";
+   $item = mysqli_query($conn, $sql);
+   $data = mysqli_fetch_assoc($item);
+
+   $sql = "INSERT INTO `tbl_barang_masuk` ( `id_item`, `id_petugas`, `jumlah_barang`,`sisah_stock`,`no_faktur`, `create_date`) VALUES ('" . $_POST['id_item'] . "', '" . $_SESSION['id_petugas'] . "', '" . $_POST['stock'] . "','" . $data['stock_barang'] . "', '" . $_POST['faktur'] . "', now())  ";
+   $result = mysqli_query($conn, $sql);
+
+
    DellPesan($conn);
    CheckStock($conn);
 
@@ -608,7 +632,7 @@ function InsertBarang($conn)
 
          $sql = "INSERT INTO `tbl_barang` ( `id_item`,`id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`,`tempo_barang`, `create_date`, `status`) VALUES ('" . $id_item . "','" . $_POST['kategori'] . "', '" . $_POST['supplier'] . "', '" . $_POST['brand'] . "', '" . $_POST['kode'] . "', '" . $_POST['nama'] . "', '" . $_POST['stock'] . "', '" . $id_item . $nama . "', '3121231', '" . $_POST['deskripsi'] . "', '" . $_POST['harga'] . "', '" . $_POST['tanggal'] . "',now(),'ACTIVE')";
          $result = mysqli_query($conn, $sql);
-         $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `no_faktur`, `create_date`) VALUES ('" . $id_item . "', '" . $_SESSION['id_petugas'] . "','" . $_POST['stock'] . "','" . $_POST['faktur'] . "', now()) ";
+         $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `sisah_stock`, `no_faktur`, `create_date`) VALUES ('" . $id_item . "', '" . $_SESSION['id_petugas'] . "','" . $_POST['stock'] . "','" . $_POST['stock'] . "','" . $_POST['faktur'] . "', now()) ";
          $result = mysqli_query($conn, $sql);
 
          DellPesan($conn);
@@ -761,7 +785,7 @@ function LaporanBulanMasuk($bln, $conn)
 
 function LaporanBulanKeluar($bln, $conn)
 {
-   $sql = "SELECT * FROM tbl_barang_keluar where SUBSTRING(date,1, 7) = '" . $bln . "' ";
+   $sql = "SELECT * FROM tbl_barang_keluar where SUBSTRING(create_date,1, 7) = '" . $bln . "' ";
    $item = mysqli_query($conn, $sql);
    return  $item;
 }
