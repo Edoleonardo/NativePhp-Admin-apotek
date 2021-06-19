@@ -2,9 +2,13 @@
 require('../model/User.php');
 checklogin();
 $logo = GetDataLogo($conn);
-$data_barang = GetDataBarangMasuk($conn);
-$data_barang2 = GetStokDataBarang($conn);
-$dataBarangSatuan = mysqli_fetch_assoc($data_barang2);
+
+if(isset($_GET['id_item'])){
+  $data_barang = DataOpname1($conn,$_GET['tgl1'],$_GET['tgl2'],$_GET['id_item']);
+}else{
+  $data_barang = DataOpname($conn);
+}
+
 
 $data_allbarang = GetDataBarang($conn);
 $pesan = GetDataPesan($conn);
@@ -184,26 +188,26 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                       <table id="datatable" class="table table-striped table-bordered" style="width:100%">
                         <thead>
                           <tr>
-                            <th>Nama Petugas</th>
+                            <th>Tanggal</th>
                             <th>Nama Barang</th>
-                            <th>Jumlah</th>
-                            <th>Faktur</th>
-                            <th>Tanggal Kadaluarsa</th>
-                            <th>Tanggal Masuk</th>
+                            <th>Status</th>
+                            <th>Faktur/Keterangan</th>
+                            <th>Jumlah Barang</th>
+                            <th>Sisa</th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php while ($data = mysqli_fetch_assoc($data_barang)) {
-                            $petugas = GetDataPetugas($data['id_petugas'], $conn);
+                            //$petugas = GetDataPetugas($data['id_petugas'], $conn);
                             $barang = GetDetailBarang($data['id_item'], $conn);
                           ?>
                             <tr>
-                              <td><?php echo $petugas['nama_petugas'] ?></td>
-                              <td><?php echo $barang['nama_barang'] ?></td>
-                              <td><?php echo $data['jumlah_barang'] ?></td>
-                              <td><?php echo $data['no_faktur'] ?></td>
-                              <td><?php echo $barang['tempo_barang'] ?></td>
                               <td><?php echo $data['create_date'] ?></td>
+                              <td><?php echo $barang['nama_barang'] ?></td>
+                              <td><?php echo $data['status'] ?></td>
+                              <td><?php echo $data['no_faktur'] ?></td>
+                              <td><?php echo $data['jumlah_barang'] ?></td>
+                              <td><?php echo $data['sisah_stock'] ?></td>
                             </tr>
                           <?php } ?>
                         </tbody>

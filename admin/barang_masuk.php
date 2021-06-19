@@ -242,11 +242,11 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <label>Jumlah Barang:</label>
                     <input type="number" name="stock_in" id="stock_in" class="form-control" value="<?php echo $dataBarangSatuan['stock_barang'] ?>" readonly /><br>
 
-
-                    <label>Jumlah Barang Masuk:</label>
-                    <input type="number" name="stock" class="form-control" required /><br>
                     <label>Nomor Faktur :</label>
                     <input type="text" name="faktur" class="form-control" required />
+                   
+                    <label>Jumlah Barang Masuk:</label>
+                    <input type="number" name="stock" class="form-control" required /><br>
                     <br />
                     <button type="submit" class="btn btn-primary" name="tmbhstock">Tambah</button>
                   </form>
