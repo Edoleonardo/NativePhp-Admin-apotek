@@ -244,13 +244,21 @@ function DataOpname($conn){
 
 }
 function DataOpname1($conn,$tgl1,$tgl2,$id_item){
-
+   if($id_item == 'all'){
+      $sql = "SELECT create_date,id_item, status, no_faktur,jumlah_barang, sisah_stock FROM tbl_barang_masuk 
+      WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' 
+      UNION ALL SELECT create_date, id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar 
+      WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."'  ";
+      $item = mysqli_query($conn, $sql);
+      return $item;
+   }else{
       $sql = "SELECT create_date,id_item, status, no_faktur,jumlah_barang, sisah_stock FROM tbl_barang_masuk 
       WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' AND id_item = '".$id_item."'
       UNION ALL SELECT create_date, id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar 
       WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' AND id_item = '".$id_item."' ";
       $item = mysqli_query($conn, $sql);
       return $item;
+   }
 
 }
 

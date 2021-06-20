@@ -3,7 +3,7 @@ require('../model/User.php');
 checklogin();
 $logo = GetDataLogo($conn);
 
-if(isset($_GET['id_item'])){
+if(isset($_GET['tgl1'])){
   $data_barang = DataOpname1($conn,$_GET['tgl1'],$_GET['tgl2'],$_GET['id_item']);
 }else{
   $data_barang = DataOpname($conn);
@@ -180,6 +180,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <div class="x_title">
                 <div class="clearfix"></div>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Pilih Data</button>
+                <?php 
+                if(isset($_GET['id_item'])){
+                ?>
+                <a href="pdf_laporan_opname.php?tgl1=<?php echo $_GET['tgl1']?>&tgl2=<?php echo $_GET['tgl2']?>&id_item=<?php echo $_GET['id_item']?>" class="btn btn-success">PDF</a>
+                <?php }else {?>
+                  <a href="pdf_laporan_opname.php" class="btn btn-success">PDF</a>
+                  <?php }?>
               </div>
               <div class="x_content">
                 <div class="row">
@@ -233,6 +240,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                   <form action="../model/user.php" method="post">
                     <label>Pilih Barang :</label>
                     <select class="form-control" name="id_item" id="id_item">
+                      <option value="all">Semua Barang</option>
                       <?php while ($allbarang = mysqli_fetch_assoc($data_allbarang)) { ?>
                         <option value="<?php echo $allbarang['id_item'] ?>"><?php echo $allbarang['nama_barang'] ?></option>
                       <?php } ?>

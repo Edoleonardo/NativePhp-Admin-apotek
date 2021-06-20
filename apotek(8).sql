@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 16, 2021 at 08:03 AM
+-- Generation Time: Jun 20, 2021 at 05:48 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.18
 
@@ -50,11 +50,11 @@ CREATE TABLE `tbl_barang` (
 --
 
 INSERT INTO `tbl_barang` (`id_barang`, `id_item`, `id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`, `tempo_barang`, `create_date`, `status`) VALUES
-(12, '09254620210528', 6, 7, 7, '23443fds', 'asd', 5, '09254620210528asd1.png', '3121231', 'sadasd asdasd asd asd as', 12000, '2021-06-07', '2021-05-28', 'ACTIVE'),
-(13, '10341120210528', 6, 7, 6, '231', 'andi', 125, '10341120210528sandhika.jpeg', '3121231', 'ayam ayam', 10000000, '2021-06-04', '2021-04-15', 'ACTIVE'),
+(12, '09254620210528', 6, 7, 7, '23443fds', 'asd', 22, '09254620210528asd1.png', '3121231', 'sadasd asdasd asd asd as', 12000, '2021-06-07', '2021-05-28', 'ACTIVE'),
+(13, '10341120210528', 6, 7, 6, '231', 'andi', 123, '10341120210528sandhika.jpeg', '3121231', 'ayam ayam', 10000000, '2021-06-04', '2021-04-15', 'ACTIVE'),
 (14, '07144620210530', 6, 7, 7, '123', 'dinda', 120, '08512620210606test1.png', '3121231', 'sdfdsfsdf', 2000, '2021-05-30', '2021-05-30', 'ACTIVE'),
 (15, '12512720210616', 6, 7, 7, '231', 'anjayy', 15, '12512720210616Untitled-2.png', '3121231', 'kebesaran', 13000, '2021-06-17', '2021-06-16', 'IN-ACTIVE'),
-(16, '12535120210616', 6, 7, 7, '231', 'anjayy', 12, '12535120210616Untitled-2.png', '3121231', 'asdasdasdasdasdasdasdasd', 13000, '2021-07-01', '2021-06-16', 'ACTIVE');
+(16, '12535120210616', 6, 7, 7, '231', 'anjayy', 10, '12535120210616Untitled-2.png', '3121231', 'asdasdasdasdasdasdasdasd', 13000, '2021-07-01', '2021-06-16', 'ACTIVE');
 
 -- --------------------------------------------------------
 
@@ -68,6 +68,7 @@ CREATE TABLE `tbl_barang_keluar` (
   `id_item` varchar(255) NOT NULL,
   `jumlah_barang` int(200) NOT NULL,
   `keterangan` text NOT NULL,
+  `status` varchar(255) NOT NULL,
   `sisah_stock` int(11) NOT NULL,
   `create_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -76,12 +77,13 @@ CREATE TABLE `tbl_barang_keluar` (
 -- Dumping data for table `tbl_barang_keluar`
 --
 
-INSERT INTO `tbl_barang_keluar` (`id_keluar`, `id_petugas`, `id_item`, `jumlah_barang`, `keterangan`, `sisah_stock`, `create_date`) VALUES
-(9, 1, '09254620210528', 1, 'asd', 0, '2021-05-30'),
-(10, 1, '10341120210528', 211, 'asdasd123', 0, '2021-06-03'),
-(11, 1, '09254620210528', 3, 'asdasd', 0, '2021-06-08'),
-(12, 1, '09254620210528', 5, 'adssad2213 aew', 0, '2021-06-08'),
-(13, 1, '09254620210528', 12, 'salah input', 5, '2021-06-16');
+INSERT INTO `tbl_barang_keluar` (`id_keluar`, `id_petugas`, `id_item`, `jumlah_barang`, `keterangan`, `status`, `sisah_stock`, `create_date`) VALUES
+(14, 1, '09254620210528', 3, 'asddsadsa', 'Barang Keluar', 3, '2021-06-01'),
+(15, 1, '09254620210528', 1, 'ads', 'Barang Keluar', 2, '2021-06-01'),
+(16, 1, '10341120210528', 1, 'adas', 'Barang Keluar', 124, '2021-06-17'),
+(17, 1, '12535120210616', 2, 'ads', 'Barang Keluar', 10, '2021-06-17'),
+(18, 1, '10341120210528', 3, 'asddsadsa', 'Barang Keluar', 121, '2021-06-19'),
+(19, 1, '07144620210530', 3, 'asd', 'Barang Keluar', 120, '2021-06-19');
 
 -- --------------------------------------------------------
 
@@ -96,6 +98,7 @@ CREATE TABLE `tbl_barang_masuk` (
   `jumlah_barang` int(200) NOT NULL,
   `sisah_stock` int(11) NOT NULL,
   `no_faktur` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
   `create_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -103,17 +106,12 @@ CREATE TABLE `tbl_barang_masuk` (
 -- Dumping data for table `tbl_barang_masuk`
 --
 
-INSERT INTO `tbl_barang_masuk` (`id_masuk`, `id_item`, `id_petugas`, `jumlah_barang`, `sisah_stock`, `no_faktur`, `create_date`) VALUES
-(11, '09254620210528', 1, 20, 0, '234erw', '2021-05-28'),
-(12, '10341120210528', 1, 213, 0, '213das', '2021-05-28'),
-(14, '09254620210528', 1, 1, 0, 'asdasd5645', '2021-05-30'),
-(15, '09254620210528', 1, 10, 0, '123123adsasd', '2021-06-06'),
-(16, '10341120210528', 1, 123, 0, '213321 adsda', '2021-06-06'),
-(17, '09254620210528', 1, 1, 1, '213das', '2021-06-16'),
-(18, '09254620210528', 1, 1, 16, '213das', '2021-06-16'),
-(19, '09254620210528', 1, 2, 17, '213das', '2021-06-16'),
-(20, '12512720210616', 1, 15, 15, '213das', '2021-06-16'),
-(21, '12535120210616', 1, 12, 12, '213das', '2021-06-16');
+INSERT INTO `tbl_barang_masuk` (`id_masuk`, `id_item`, `id_petugas`, `jumlah_barang`, `sisah_stock`, `no_faktur`, `status`, `create_date`) VALUES
+(22, '09254620210528', 1, 1, 6, 'asdadsd adas', 'Barang Masuk', '2021-06-01'),
+(23, '10341120210528', 1, 2, 123, 'asdadsd adas', 'Barang Masuk', '2021-06-01'),
+(24, '07144620210530', 1, 1, 121, 'asd213', 'Barang Masuk', '2021-06-17'),
+(25, '07144620210530', 1, 2, 123, 'asdasd', 'Barang Masuk', '2021-06-17'),
+(26, '09254620210528', 1, 20, 22, '234432', 'Barang Masuk', '2021-06-19');
 
 -- --------------------------------------------------------
 
@@ -227,10 +225,10 @@ CREATE TABLE `tbl_pesan` (
 --
 
 INSERT INTO `tbl_pesan` (`id_pesan`, `id_barang`, `nama_barang`, `img`, `stock`, `desc`, `create_date`) VALUES
-(1, 12, 'asd', '09254620210528asd1.png', 5, 'Stock barang hampir habis', '2021-06-16'),
-(2, 12, 'asd', '09254620210528asd1.png', 5, 'Barang Kadaluarsa', '2021-06-16'),
-(3, 13, 'andi', '10341120210528sandhika.jpeg', 125, 'Barang Kadaluarsa', '2021-06-16'),
-(4, 14, 'dinda', '08512620210606test1.png', 120, 'Barang Kadaluarsa', '2021-06-16');
+(1, 16, 'anjayy', '12535120210616Untitled-2.png', 10, 'Stock barang hampir habis', '2021-06-20'),
+(2, 12, 'asd', '09254620210528asd1.png', 22, 'Barang Kadaluarsa', '2021-06-20'),
+(3, 13, 'andi', '10341120210528sandhika.jpeg', 123, 'Barang Kadaluarsa', '2021-06-20'),
+(4, 14, 'dinda', '08512620210606test1.png', 120, 'Barang Kadaluarsa', '2021-06-20');
 
 -- --------------------------------------------------------
 
@@ -243,6 +241,7 @@ CREATE TABLE `tbl_petugas` (
   `nama_petugas` varchar(255) NOT NULL,
   `img` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `alamat_petugas` text NOT NULL,
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -250,10 +249,11 @@ CREATE TABLE `tbl_petugas` (
 -- Dumping data for table `tbl_petugas`
 --
 
-INSERT INTO `tbl_petugas` (`id_petugas`, `nama_petugas`, `img`, `email`, `password`) VALUES
-(1, 'asd', '08505820210606test1.png', 'asd@asd.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257'),
-(2, 'aa', 'img.jpg', 'a@a.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257'),
-(3, 'dinda', 'img.jpg', 'wahyuhaw@gmail.com', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257');
+INSERT INTO `tbl_petugas` (`id_petugas`, `nama_petugas`, `img`, `email`, `alamat_petugas`, `password`) VALUES
+(1, 'asd', '08505820210606test1.png', 'asd@asd.com', 'asdasddas', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257'),
+(2, 'aa', 'img.jpg', 'a@a.com', 'asddas asddsadsa asddasd', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257'),
+(3, 'dinda', 'img.jpg', 'wahyuhaw@gmail.com', 'asdasd asdas asdasd asd', '*23AE809DDACAF96AF0FD78ED04B6A265E05AA257'),
+(4, 'indah', 'img.jpg', 'indah@asd.com', 'asdads asasd asdasd asda sd', '*F6DD0C0AC75395CB5BFC12C46B8880CD156B4799');
 
 -- --------------------------------------------------------
 
@@ -375,13 +375,13 @@ ALTER TABLE `tbl_barang`
 -- AUTO_INCREMENT for table `tbl_barang_keluar`
 --
 ALTER TABLE `tbl_barang_keluar`
-  MODIFY `id_keluar` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_keluar` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tbl_barang_masuk`
 --
 ALTER TABLE `tbl_barang_masuk`
-  MODIFY `id_masuk` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id_masuk` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `tbl_brand`
@@ -417,7 +417,7 @@ ALTER TABLE `tbl_pesan`
 -- AUTO_INCREMENT for table `tbl_petugas`
 --
 ALTER TABLE `tbl_petugas`
-  MODIFY `id_petugas` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_petugas` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_satuan_barang`

@@ -33,6 +33,9 @@
                 <input type="text" class="form-control" name="nama" placeholder="Nama" required="" />
               </div>
               <div>
+                <input type="text" class="form-control" name="alamat" placeholder="Alamat" required="" />
+              </div>
+              <div>
                 <input type="email" class="form-control" name="email" placeholder="Email" required="" />
               </div>
               <div>
