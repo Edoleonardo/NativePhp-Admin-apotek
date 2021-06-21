@@ -212,7 +212,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $data['create_date'] ?></td>
                               <td><?php echo $barang['nama_barang'] ?></td>
                               <td><?php echo $data['status'] ?></td>
-                              <td><?php echo $data['no_faktur'] ?></td>
+                              <td><?php echo $data['keterangan'] ?></td>
                               <td><?php echo $data['jumlah_barang'] ?></td>
                               <td><?php echo $data['sisah_stock'] ?></td>
                             </tr>

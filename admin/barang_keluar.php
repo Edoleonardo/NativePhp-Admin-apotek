@@ -188,6 +188,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <th>Nama Barang</th>
                             <th>Jumlah Keluar</th>
                             <th>Keterangan</th>
+                            <th>Status</th>
                             <th>Sisah Stock</th>
                             <th>Tanggal Kadaluarsa</th>
                             <th>Tanggal Keluar</th>
@@ -203,6 +204,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $barang['nama_barang'] ?></td>
                               <td><?php echo $data['jumlah_barang'] ?></td>
                               <td><?php echo $data['keterangan'] ?></td>
+                              <td><?php echo $data['status'] ?></td>
                               <td><?php echo $data['sisah_stock'] ?></td>
                               <td><?php echo $barang['tempo_barang'] ?></td>
                               <td><?php echo $data['create_date'] ?></td>
@@ -244,6 +246,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                    
                     <label>Keterangan:</label><br>
                     <input type="text" name="keterangan" class="form-control" required />
+
+                    <label>Satus:</label>
+                    <select class="form-control" name="status" id="id_item">
+                        <option value="Barang Masuk">Barang Masuk</option>
+                        <option value="Salah Input">Salah Input</option>
+                    </select><br>
                    
                     <label>Jumlah Barang Keluar:</label><br>
                     <input type="number" name="stock" class="form-control" required />

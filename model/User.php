@@ -237,7 +237,7 @@ function DeleteEoq($conn){
 
 function DataOpname($conn){
 
-      $sql = "SELECT create_date,id_item, status, no_faktur,jumlah_barang, sisah_stock FROM tbl_barang_masuk UNION ALL SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar ";
+      $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_masuk UNION ALL SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar ";
       $item = mysqli_query($conn, $sql);
       return $item;
    
@@ -245,14 +245,14 @@ function DataOpname($conn){
 }
 function DataOpname1($conn,$tgl1,$tgl2,$id_item){
    if($id_item == 'all'){
-      $sql = "SELECT create_date,id_item, status, no_faktur,jumlah_barang, sisah_stock FROM tbl_barang_masuk 
+      $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_masuk 
       WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' 
       UNION ALL SELECT create_date, id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar 
       WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."'  ";
       $item = mysqli_query($conn, $sql);
       return $item;
    }else{
-      $sql = "SELECT create_date,id_item, status, no_faktur,jumlah_barang, sisah_stock FROM tbl_barang_masuk 
+      $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_masuk 
       WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' AND id_item = '".$id_item."'
       UNION ALL SELECT create_date, id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar 
       WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' AND id_item = '".$id_item."' ";
@@ -394,7 +394,7 @@ function KeluarBarang($conn)
       $item = mysqli_query($conn, $sql);
       $data = mysqli_fetch_assoc($item);
 
-      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`,`status`,`sisah_stock`, `create_date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "','Barang Keluar','" .$data['stock_barang'] . "', now()) ";
+      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`,`status`,`sisah_stock`, `create_date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "','" . $_POST['status'] . "','" .$data['stock_barang'] . "', now()) ";
       $result = mysqli_query($conn, $sql);
 
 
@@ -427,7 +427,7 @@ function MasukBarang($conn)
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
 
-   $sql = "INSERT INTO `tbl_barang_masuk` ( `id_item`, `id_petugas`, `jumlah_barang`,`sisah_stock`,`no_faktur`,`status`, `create_date`) VALUES ('" . $_POST['id_item'] . "', '" . $_SESSION['id_petugas'] . "', '" . $_POST['stock'] . "','" . $data['stock_barang'] . "', '" . $_POST['faktur'] . "','Barang Masuk', now())  ";
+   $sql = "INSERT INTO `tbl_barang_masuk` ( `id_item`, `id_petugas`, `jumlah_barang`,`sisah_stock`,`no_faktur`,`status`,`keterangan`, `create_date`) VALUES ('" . $_POST['id_item'] . "', '" . $_SESSION['id_petugas'] . "', '" . $_POST['stock'] . "','" . $data['stock_barang'] . "', '" . $_POST['faktur'] . "','Barang Masuk','" . $_POST['keterangan'] . "', now())  ";
    $result = mysqli_query($conn, $sql);
 
 
