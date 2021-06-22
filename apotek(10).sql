@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2021 at 06:07 PM
+-- Generation Time: Jun 22, 2021 at 03:13 PM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.18
 
@@ -228,10 +228,10 @@ CREATE TABLE `tbl_pesan` (
 --
 
 INSERT INTO `tbl_pesan` (`id_pesan`, `id_barang`, `nama_barang`, `img`, `stock`, `desc`, `create_date`) VALUES
-(1, 16, 'anjayy', '12535120210616Untitled-2.png', 10, 'Stock barang hampir habis', '2021-06-21'),
-(2, 12, 'asd', '09254620210528asd1.png', 20, 'Barang Kadaluarsa', '2021-06-21'),
-(3, 13, 'andi', '10341120210528sandhika.jpeg', 123, 'Barang Kadaluarsa', '2021-06-21'),
-(4, 14, 'dinda', '08512620210606test1.png', 120, 'Barang Kadaluarsa', '2021-06-21');
+(1, 16, 'anjayy', '12535120210616Untitled-2.png', 10, 'Stock barang hampir habis', '2021-06-22'),
+(2, 12, 'asd', '09254620210528asd1.png', 20, 'Barang Kadaluarsa', '2021-06-22'),
+(3, 13, 'andi', '10341120210528sandhika.jpeg', 123, 'Barang Kadaluarsa', '2021-06-22'),
+(4, 14, 'dinda', '08512620210606test1.png', 120, 'Barang Kadaluarsa', '2021-06-22');
 
 -- --------------------------------------------------------
 
@@ -281,6 +281,7 @@ CREATE TABLE `tbl_supplier` (
   `nama_supplier` varchar(255) NOT NULL,
   `alamat_supplier` text NOT NULL,
   `kontak_supplier` varchar(255) NOT NULL,
+  `lead_time` int(11) NOT NULL,
   `create_date` date NOT NULL,
   `status` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -289,10 +290,11 @@ CREATE TABLE `tbl_supplier` (
 -- Dumping data for table `tbl_supplier`
 --
 
-INSERT INTO `tbl_supplier` (`id_supplier`, `nama_supplier`, `alamat_supplier`, `kontak_supplier`, `create_date`, `status`) VALUES
-(4, 'johan', 'as asd asdda asd asdasd assda  asd as 123 qad 12 asd 132 asas', '123123123321', '2021-05-22', ''),
-(5, 'amobaa', 'asd', '213323213', '2021-05-22', ''),
-(7, 'dinda', '123', '1321233', '2021-06-03', 'ACTIVE');
+INSERT INTO `tbl_supplier` (`id_supplier`, `nama_supplier`, `alamat_supplier`, `kontak_supplier`, `lead_time`, `create_date`, `status`) VALUES
+(4, 'johan', 'as asd asdda asd asdasd assda  asd as 123 qad 12 asd 132 asas', '123123123321', 3, '2021-05-22', 'ACTIVE'),
+(5, 'amobaa', 'asd', '213323213', 7, '2021-05-22', 'ACTIVE'),
+(7, 'dinda', '123', '1321233', 1, '2021-06-03', 'ACTIVE'),
+(8, 'asd', 'asdads asasd asdasd asda sd', '123231', 12, '2021-06-22', 'ACTIVE');
 
 --
 -- Indexes for dumped tables
@@ -432,7 +434,7 @@ ALTER TABLE `tbl_satuan_barang`
 -- AUTO_INCREMENT for table `tbl_supplier`
 --
 ALTER TABLE `tbl_supplier`
-  MODIFY `id_supplier` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_supplier` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
