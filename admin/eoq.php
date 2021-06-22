@@ -238,7 +238,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               </select>
               <br>
               <label>Permintaan Unit /Hari (Demand) :</label>
-              <input type="number" id="unit" name="demand" class="form-control" required /><br>
+              <input type="number" id="vall" name="demand" class="form-control" required /><br>
               <label>Harga Penyimpanan /Hari (Holding Cost)</label>
               <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
               <label>Harga Unit /Pesan (Cost)</label>
@@ -292,6 +292,25 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <!-- Custom Theme Scripts -->
   <script src="../build/js/custom.min.js"></script>
   <script>
+    $('#id_item').change(function() {
+      var id = $(this).val();
+      console.log(id);
+      $.ajax({
+        url: "../model/user.php", //the page containing php script
+        type: "post", //request type,
+        dataType: 'json',
+        data: {
+          permintaan: 1,
+          id: id
+        },
+        success: function(data) {
+          console.log(data)
+          $("#vall").val(data.jumlah);
+          //$("#tgl_ex").val(data.tempo_barang);
+        }
+      });
+    })
+
     $(document).on("click", " li>.dropdown-item", function() {
       var a = $(this).find("#namabarang").attr('class');
 

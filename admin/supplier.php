@@ -187,6 +187,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <th>Nama Supplier</th>
                             <th>Alamat Supplier</th>
                             <th>Kontak Supplier</th>
+                            <th>Waktu Proses</th>
                             <th>Tanggal</th>
                             <th>Aksi</th>
                           </tr>
@@ -199,6 +200,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $data['nama_supplier'] ?></td>
                               <td><?php echo $data['alamat_supplier'] ?></td>
                               <td><?php echo $data['kontak_supplier'] ?></td>
+                              <td><?php echo $data['lead_time'] ?> Hari</td>
                               <td><?php echo $data['create_date'] ?></td>
                               <td>
                                 <form action="../model/User.php" method="post">
@@ -227,6 +229,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                                         <input type="text" name="alamat" class="form-control" value="<?php echo $data['alamat_supplier'] ?>" required />
                                         <label for="email">No Hp :</label>
                                         <input type="number" name="nohp" class="form-control" value="<?php echo $data['kontak_supplier'] ?>" required />
+                                        <label for="email">No Hp :</label>
+                                        <input type="number" name="lead" min="0" class="form-control" value="<?php echo $data['lead_time'] ?>" required />
                                         <br />
                                         <input type="hidden" name="id" class="form-control" value="<?php echo $data['id_supplier'] ?>" required />
                                         <button type="submit" class="btn btn-primary" name="editsupplier">Edit</button>
@@ -268,6 +272,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <input type="text" name="alamat" class="form-control" required />
                     <label for="email">No Hp :</label>
                     <input type="number" name="nohp" class="form-control" required />
+                    <label for="email">Waktu Proses Pembelian (Hari):</label>
+                    <input type="number" min="0" name="lead" class="form-control" required />
 
                     <br />
                     <button type="submit" class="btn btn-primary" name="tmbhsupplier">Tambah</button>

@@ -82,6 +82,10 @@ if (isset($_POST['stok_now'])) {
    stokNow($conn);
 }
 
+if (isset($_POST['permintaan'])) {
+   permintaan($conn);
+}
+
 // Laporan//
 if (isset($_POST['laporan'])) {
    LaporanRoute($conn);
@@ -213,14 +217,6 @@ function GetDataEoq($conn)
    return $item;
 }
 
-function TotalEoq($conn)
-{
-   $sql = "SELECT * FROM tbl_barang_keluar where create_date = CURRENT_DATE ";
-   $item = mysqli_query($conn, $sql);
-   $data = mysqli_fetch_assoc($item);
-
-   echo json_encode($data);
-}
 
 function DeleteEoq($conn){
 
@@ -450,6 +446,14 @@ function stokNow($conn)
    echo json_encode($result);
 }
 
+function permintaan($conn)
+{
+   $sql = "SELECT sum(jumlah_barang) as jumlah FROM tbl_barang_keluar where id_item = '" . $_POST['id'] . "' ";
+   $result = mysqli_query($conn, $sql);
+   $result = mysqli_fetch_assoc($result);
+   echo json_encode($result);
+}
+
 function Deletebrand($conn)
 {
 
@@ -534,7 +538,7 @@ function GetDataSupplier($conn)
 
 function EditSupplier($conn)
 {
-   $sql = "UPDATE tbl_supplier SET nama_supplier = '" . $_POST['nama'] . "', alamat_supplier = '" . $_POST['alamat'] . "', kontak_supplier = '" . $_POST['nohp'] . "' WHERE id_supplier = '" . $_POST['id'] . "' ";
+   $sql = "UPDATE tbl_supplier SET nama_supplier = '" . $_POST['nama'] . "', alamat_supplier = '" . $_POST['alamat'] . "', kontak_supplier = '" . $_POST['nohp'] . "', lead_time = '" . $_POST['lead'] . "' WHERE id_supplier = '" . $_POST['id'] . "' ";
    $result = mysqli_query($conn, $sql);
 
    if ($result) {
@@ -560,8 +564,8 @@ function DeleteSupplier($conn)
 function InsertSupplier($conn)
 {
 
-   $sql = "INSERT INTO tbl_supplier ( nama_supplier ,alamat_supplier, kontak_supplier, create_date, status) 
-     VALUES ( '" . $_POST['nama'] . "','" . $_POST['alamat'] . "','" . $_POST['nohp'] . "', now(),'ACTIVE')";
+   $sql = "INSERT INTO tbl_supplier ( nama_supplier ,alamat_supplier, kontak_supplier, lead_time, create_date, status) 
+     VALUES ( '" . $_POST['nama'] . "','" . $_POST['alamat'] . "','" . $_POST['nohp'] . "','" . $_POST['lead'] . "', now(),'ACTIVE')";
    $result = mysqli_query($conn, $sql);
    if ($result) {
       msg('supplier Berhasil Ditambah', '../admin/supplier.php');
