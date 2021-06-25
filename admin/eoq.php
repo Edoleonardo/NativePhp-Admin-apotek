@@ -237,6 +237,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 <?php } ?>
               </select>
               <br>
+              <label>Pilih Hari Data Permintaan :</label>
+              <input type="date" name="hari" class="form-control" required /><br>
               <label>Permintaan Unit /Hari (Demand) :</label>
               <input type="number" id="vall" name="demand" class="form-control" required /><br>
               <label>Harga Penyimpanan /Hari (Holding Cost)</label>
