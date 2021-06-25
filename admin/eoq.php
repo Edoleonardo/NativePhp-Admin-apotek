@@ -244,7 +244,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <label>Harga Unit /Pesan (Cost)</label>
               <input type="number" step="0.01" name="cost" class="form-control" required /><br>
               <label>Waktu Prose /Hari (Lead Time)</label>
-              <input type="number" name="lead" class="form-control" required /><br>
+              <input type="number" id="lead" name="lead" class="form-control" required /><br>
               <br />
               <button type="submit" class="btn btn-primary" name="eoq">Submit</button>
             </form>
@@ -306,7 +306,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
         success: function(data) {
           console.log(data)
           $("#vall").val(data.jumlah);
-          //$("#tgl_ex").val(data.tempo_barang);
+          $("#lead").val(data.lead_time);
         }
       });
     })

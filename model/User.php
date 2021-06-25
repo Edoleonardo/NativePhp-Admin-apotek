@@ -448,7 +448,10 @@ function stokNow($conn)
 
 function permintaan($conn)
 {
-   $sql = "SELECT sum(jumlah_barang) as jumlah FROM tbl_barang_keluar where id_item = '" . $_POST['id'] . "' ";
+   $sql = "SELECT tbl_barang_keluar.id_item, sum(jumlah_barang) as jumlah, tbl_supplier.lead_time FROM tbl_barang_keluar 
+   INNER JOIN tbl_barang ON tbl_barang.id_item = tbl_barang_keluar.id_item 
+   INNER JOIN tbl_supplier ON tbl_barang.id_supplier = tbl_supplier.id_supplier where tbl_barang_keluar.id_item = '" . $_POST['id'] . "' ";
+   
    $result = mysqli_query($conn, $sql);
    $result = mysqli_fetch_assoc($result);
    echo json_encode($result);
