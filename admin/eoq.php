@@ -163,7 +163,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
             <div class="x_panel">
               <div class="x_title">
                 <h3>Economic Order Quantity</h3>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#eoqmodal">Economic Order Quantity</button>
+                <button id="eoq" type="button" class="btn btn-success" data-toggle="modal" data-target="#eoqmodal">Economic Order Quantity</button>
               </div>
               <div class="x_content">
                 <div class="row">
@@ -238,7 +238,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               </select>
               <br>
               <label>Pilih Hari Data Permintaan :</label>
-              <input type="date" name="hari" class="form-control" required /><br>
+              <input type="date" name="hari" id="hari" class="form-control" required /><br>
               <label>Permintaan Unit /Hari (Demand) :</label>
               <input type="number" id="vall" name="demand" class="form-control" required /><br>
               <label>Harga Penyimpanan /Hari (Holding Cost)</label>
@@ -294,9 +294,23 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <!-- Custom Theme Scripts -->
   <script src="../build/js/custom.min.js"></script>
   <script>
+    $(document).on("click", "#eoq", function() {
+      getTime()
+    });
+
     $('#id_item').change(function() {
-      var id = $(this).val();
-      console.log(id);
+      getTime();
+      getDemand();
+    });
+
+    $('#hari').change(function() {
+      getTime();
+      getDemand();
+    });
+
+
+    function getTime() {
+      var id = $('#id_item').val();
       $.ajax({
         url: "../model/user.php", //the page containing php script
         type: "post", //request type,
@@ -306,20 +320,29 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           id: id
         },
         success: function(data) {
-          console.log(data)
-          $("#vall").val(data.jumlah);
           $("#lead").val(data.lead_time);
         }
       });
-    })
+    }
 
-    $(document).on("click", " li>.dropdown-item", function() {
-      var a = $(this).find("#namabarang").attr('class');
+    function getDemand() {
+      var id = $('#id_item').val();
+      var hari = $('#hari').val();
 
-      sessionStorage.setItem("key", a);
-
-      window.location.href = 'index.php';
-    });
+      $.ajax({
+        url: "../model/user.php", //the page containing php script
+        type: "post", //request type,
+        dataType: 'json',
+        data: {
+          getEOQ: 1,
+          itemID: id,
+          hari: hari
+        },
+        success: function(data) {
+          $("#vall").val(data.jml);
+        }
+      });
+    }
   </script>
 </body>
 

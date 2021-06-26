@@ -60,6 +60,7 @@ if (isset($_POST['eoq'])) {
 if (isset($_POST['totalhari'])) {
    TotalEoq($conn);
 }
+
 if (isset($_POST['deleteeoq'])) {
    DeleteEoq($conn);
 }
@@ -109,6 +110,22 @@ if (isset($_POST['ubahpassword'])) {
 }
 if (isset($_POST['fotologo'])) {
    UbahLogo($conn);
+}
+if (isset($_POST['getEOQ'])) {
+   getDataItem($conn);
+}
+
+function getDataItem($conn)
+{
+   $id = $_POST['itemID'];
+   $hari = $_POST['hari'];
+
+   $sql = "SELECT sum(jumlah_barang) jml FROM tbl_barang_keluar where id_item = " . $id . " and create_date = '" . $hari . "' ORDER BY create_date desc";
+   $result = mysqli_query($conn, $sql);
+
+   // die($sql);
+   $result = mysqli_fetch_assoc($result);
+   echo json_encode($result);
 }
 
 function GetKategoriDetiail($id, $conn)
@@ -218,50 +235,49 @@ function GetDataEoq($conn)
 }
 
 
-function DeleteEoq($conn){
+function DeleteEoq($conn)
+{
 
-      $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_eoq` = '".$_POST['id']."'";
-      $result = mysqli_query($conn, $sql);
+   $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_eoq` = '" . $_POST['id'] . "'";
+   $result = mysqli_query($conn, $sql);
 
-      if ($result) {
-         msg('Berhasil di Delete', '../admin/eoq.php');
-      } else {
-         msg('Gagal Delete data!!', '../admin/eoq.php');
-      }
-
+   if ($result) {
+      msg('Berhasil di Delete', '../admin/eoq.php');
+   } else {
+      msg('Gagal Delete data!!', '../admin/eoq.php');
+   }
 }
 
-function DataOpname($conn){
+function DataOpname($conn)
+{
 
-      $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_masuk UNION ALL SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar ";
-      $item = mysqli_query($conn, $sql);
-      return $item;
-   
-
+   $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_masuk UNION ALL SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar ";
+   $item = mysqli_query($conn, $sql);
+   return $item;
 }
-function DataOpname1($conn,$tgl1,$tgl2,$id_item){
-   if($id_item == 'all'){
+function DataOpname1($conn, $tgl1, $tgl2, $id_item)
+{
+   if ($id_item == 'all') {
       $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_masuk 
-      WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' 
+      WHERE create_date >= '" . $tgl1 . "' AND create_date <= '" . $tgl2 . "' 
       UNION ALL SELECT create_date, id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar 
-      WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."'  ";
+      WHERE create_date >= '" . $tgl1 . "' AND create_date <= '" . $tgl2 . "'  ";
       $item = mysqli_query($conn, $sql);
       return $item;
-   }else{
+   } else {
       $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_masuk 
-      WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' AND id_item = '".$id_item."'
+      WHERE create_date >= '" . $tgl1 . "' AND create_date <= '" . $tgl2 . "' AND id_item = '" . $id_item . "'
       UNION ALL SELECT create_date, id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar 
-      WHERE create_date >= '".$tgl1."' AND create_date <= '".$tgl2."' AND id_item = '".$id_item."' ";
+      WHERE create_date >= '" . $tgl1 . "' AND create_date <= '" . $tgl2 . "' AND id_item = '" . $id_item . "' ";
       $item = mysqli_query($conn, $sql);
       return $item;
    }
-
 }
 
-function DataOpnameRoute($conn){
+function DataOpnameRoute($conn)
+{
 
-   header("location: ../admin/stock_opname.php?tgl1=".$_POST['tgl1']."&tgl2=".$_POST['tgl2']."&id_item=".$_POST['id_item']);
-
+   header("location: ../admin/stock_opname.php?tgl1=" . $_POST['tgl1'] . "&tgl2=" . $_POST['tgl2'] . "&id_item=" . $_POST['id_item']);
 }
 
 
@@ -292,19 +308,20 @@ function Getcount($conn)
    return $arr;
 }
 
-function Eoq($conn){
-   $sql = "SELECT id_item FROM  tbl_barang WHERE id_item = '".$_POST['id_item']."' ";
+function Eoq($conn)
+{
+   $sql = "SELECT id_item FROM  tbl_barang WHERE id_item = '" . $_POST['id_item'] . "' ";
    $result = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($result);
 
-   $eoq = sqrt((2 * $_POST['demand'] * $_POST['cost'])/$_POST['hold']);
+   $eoq = sqrt((2 * $_POST['demand'] * $_POST['cost']) / $_POST['hold']);
    $t = $eoq / $_POST['demand'];
-   $rop = (abs($_POST['lead']-round($t)))*$_POST['demand'];
+   $rop = (abs($_POST['lead'] - round($t))) * $_POST['demand'];
    // $rop = max($rop,0);
 
-   if(!$data){
+   if (!$data) {
 
-      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES ('".$_POST['id_item']."', '".$_POST['demand']."', '".$_POST['hold']."', '".$_POST['cost']."', '".$_POST['lead']."', '".$eoq."', '".$t."', '".$rop."') ";
+      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES ('" . $_POST['id_item'] . "', '" . $_POST['demand'] . "', '" . $_POST['hold'] . "', '" . $_POST['cost'] . "', '" . $_POST['lead'] . "', '" . $eoq . "', '" . $t . "', '" . $rop . "') ";
       $result = mysqli_query($conn, $sql);
 
       if ($result) {
@@ -312,12 +329,12 @@ function Eoq($conn){
       } else {
          msg('Gagal Tambah data!!', '../admin/eoq.php');
       }
-   }else{
+   } else {
 
-      $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_item` = '".$_POST['id_item']."'";
+      $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_item` = '" . $_POST['id_item'] . "'";
       $result = mysqli_query($conn, $sql);
 
-      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES ('".$_POST['id_item']."', '".$_POST['demand']."', '".$_POST['hold']."', '".$_POST['cost']."', '".$_POST['lead']."', '".$eoq."', '".$t."', '".$rop."') ";
+      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES ('" . $_POST['id_item'] . "', '" . $_POST['demand'] . "', '" . $_POST['hold'] . "', '" . $_POST['cost'] . "', '" . $_POST['lead'] . "', '" . $eoq . "', '" . $t . "', '" . $rop . "') ";
       $result = mysqli_query($conn, $sql);
 
       if ($result) {
@@ -325,9 +342,7 @@ function Eoq($conn){
       } else {
          msg('Gagal Tambah data!!', '../admin/eoq.php');
       }
-
    }
-
 }
 
 function EditBrand($conn)
@@ -362,14 +377,12 @@ function GetDetailPesan($id, $conn)
    $data = mysqli_fetch_assoc($item);
    $text = 0;
 
-   if (isset($data['desc'])){
-   if($data['desc'] == 'Stock barang hampir habis'){
-      $text = 'background-color:#f54e42;'; 
-
-   }else{
-      $text = 'background-color:#ffa500;';
-
-   }
+   if (isset($data['desc'])) {
+      if ($data['desc'] == 'Stock barang hampir habis') {
+         $text = 'background-color:#f54e42;';
+      } else {
+         $text = 'background-color:#ffa500;';
+      }
    }
    return $text;
 }
@@ -390,14 +403,13 @@ function KeluarBarang($conn)
       $item = mysqli_query($conn, $sql);
       $data = mysqli_fetch_assoc($item);
 
-      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`,`status`,`sisah_stock`, `create_date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "','" . $_POST['status'] . "','" .$data['stock_barang'] . "', now()) ";
+      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`,`status`,`sisah_stock`, `create_date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "','" . $_POST['status'] . "','" . $data['stock_barang'] . "', now()) ";
       $result = mysqli_query($conn, $sql);
 
 
 
       DellPesan($conn);
       CheckStock($conn);
-      
    } else {
       msg('Stock Kurang', '../admin/barang_keluar.php');
    }
@@ -451,7 +463,7 @@ function permintaan($conn)
    $sql = "SELECT tbl_barang_keluar.id_item, sum(jumlah_barang) as jumlah, tbl_supplier.lead_time FROM tbl_barang_keluar 
    INNER JOIN tbl_barang ON tbl_barang.id_item = tbl_barang_keluar.id_item 
    INNER JOIN tbl_supplier ON tbl_barang.id_supplier = tbl_supplier.id_supplier where tbl_barang_keluar.id_item = '" . $_POST['id'] . "' ";
-   
+
    $result = mysqli_query($conn, $sql);
    $result = mysqli_fetch_assoc($result);
    echo json_encode($result);
@@ -482,7 +494,8 @@ function InsertBrand($conn)
    }
 }
 
-function NamaProfile($conn){
+function NamaProfile($conn)
+{
    $sql = "UPDATE tbl_petugas SET nama_petugas = '" . $_POST['nama'] . "' WHERE id_petugas = '" . $_POST['id'] . "' ";
    $result = mysqli_query($conn, $sql);
 
@@ -508,7 +521,7 @@ function EditKategori($conn)
 function DeleteKategori($conn)
 {
 
-   $sql = "UPDATE tbl_Kategori set status = 'IN-ACTIVE' WHERE tbl_Kategori.id_kategori = " .$_POST['id'] . "";
+   $sql = "UPDATE tbl_Kategori set status = 'IN-ACTIVE' WHERE tbl_Kategori.id_kategori = " . $_POST['id'] . "";
    $result = mysqli_query($conn, $sql);
 
    if ($result) {
@@ -554,7 +567,7 @@ function EditSupplier($conn)
 function DeleteSupplier($conn)
 {
 
-   $sql = "UPDATE tbl_supplier set status = 'IN-ACTIVE' WHERE tbl_supplier.id_supplier = " .$_POST['id']. "";
+   $sql = "UPDATE tbl_supplier set status = 'IN-ACTIVE' WHERE tbl_supplier.id_supplier = " . $_POST['id'] . "";
    $result = mysqli_query($conn, $sql);
 
    if ($result) {
@@ -577,7 +590,8 @@ function InsertSupplier($conn)
    }
 }
 
-function FotoProfile($conn){
+function FotoProfile($conn)
+{
 
    $img = $_FILES['img']['name'];
    date_default_timezone_set("Asia/Bangkok");
@@ -591,8 +605,8 @@ function FotoProfile($conn){
    if (in_array($ekstensi, $ekstensi_diperbolehkan) === true) {    // kalau ekstensinya bener
       if ($ukuran < 4044070) {        // max 4 mb
          move_uploaded_file($file_tmp, '../admin/images/profile/' . $id_item . $nama);
-         
-         $sql = "UPDATE `tbl_petugas` SET `img` = '".$id_item . $nama."' WHERE `tbl_petugas`.`id_petugas` = '".$_POST['id']."';";
+
+         $sql = "UPDATE `tbl_petugas` SET `img` = '" . $id_item . $nama . "' WHERE `tbl_petugas`.`id_petugas` = '" . $_POST['id'] . "';";
          $result = mysqli_query($conn, $sql);
 
 
@@ -607,10 +621,10 @@ function FotoProfile($conn){
    } else {
       msg('Ekstensi File yang diupload hanya diperbolehkan png / jpg!!', '../admin/profile.php');
    }
-
 }
 
-function UbahLogo($conn){
+function UbahLogo($conn)
+{
    $img = $_FILES['img']['name'];
    date_default_timezone_set("Asia/Bangkok");
    $id_item = date("his") . date("Ymd");
@@ -625,11 +639,11 @@ function UbahLogo($conn){
          move_uploaded_file($file_tmp, '../admin/images/logo/' . $id_item . $nama);
 
 
-            $sql = "truncate tbl_logo";
-            $result = mysqli_query($conn, $sql);
+         $sql = "truncate tbl_logo";
+         $result = mysqli_query($conn, $sql);
 
-            $sql = "INSERT INTO `tbl_logo` (`nama_logo`, `create_date`) VALUES ( '" . $id_item . $nama."',  now())";
-            $result = mysqli_query($conn, $sql);
+         $sql = "INSERT INTO `tbl_logo` (`nama_logo`, `create_date`) VALUES ( '" . $id_item . $nama . "',  now())";
+         $result = mysqli_query($conn, $sql);
 
 
          if ($result) {
@@ -667,7 +681,7 @@ function InsertBarang($conn)
          $result = mysqli_query($conn, $sql);
 
          DellPesan($conn);
-         CheckStock($conn);        
+         CheckStock($conn);
 
          if ($result) {
             msg('Data berhasil ditambah!!', '../admin');
@@ -692,9 +706,9 @@ function UbahPassword($conn)
    $result = mysqli_query($conn, $sql);
 
    if ($result) {
-       $numrows = mysqli_num_rows($result);
-       // get nmbr of result
-       if ($numrows == 1) {   // kalau hasilnya ktmu dan 1
+      $numrows = mysqli_num_rows($result);
+      // get nmbr of result
+      if ($numrows == 1) {   // kalau hasilnya ktmu dan 1
          if ($_POST['pass1'] == $_POST['pass2']) {
             $password1 = trim($_POST['pass1']);
             $sql = "UPDATE tbl_petugas SET password = password('" .  $password1 . "') WHERE id_petugas = " . $_POST['id'] . " ";
@@ -704,14 +718,12 @@ function UbahPassword($conn)
          } else {
             msg('Password tidak sama!!', '../admin/profile.php');
          }
-       } else {
-           msg('Maaf, Password Lama Salah', '../admin/profile.php');
-       }
+      } else {
+         msg('Maaf, Password Lama Salah', '../admin/profile.php');
+      }
    } else {
-       msg('Maaf, Password Lama Salah', '../admin/profile.php');
+      msg('Maaf, Password Lama Salah', '../admin/profile.php');
    }
-
-
 }
 
 function UpdateBarang($conn)
