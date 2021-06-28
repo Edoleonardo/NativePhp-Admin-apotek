@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2021 at 03:13 PM
+-- Generation Time: Jun 25, 2021 at 11:08 AM
 -- Server version: 10.4.18-MariaDB
 -- PHP Version: 7.4.18
 
@@ -54,7 +54,7 @@ INSERT INTO `tbl_barang` (`id_barang`, `id_item`, `id_kategori`, `id_supplier`, 
 (13, '10341120210528', 6, 7, 6, '231', 'andi', 123, '10341120210528sandhika.jpeg', '3121231', 'ayam ayam', 10000000, '2021-06-04', '2021-04-15', 'ACTIVE'),
 (14, '07144620210530', 6, 7, 7, '123', 'dinda', 120, '08512620210606test1.png', '3121231', 'sdfdsfsdf', 2000, '2021-05-30', '2021-05-30', 'ACTIVE'),
 (15, '12512720210616', 6, 7, 7, '231', 'anjayy', 15, '12512720210616Untitled-2.png', '3121231', 'kebesaran', 13000, '2021-06-17', '2021-06-16', 'IN-ACTIVE'),
-(16, '12535120210616', 6, 7, 7, '231', 'anjayy', 10, '12535120210616Untitled-2.png', '3121231', 'asdasdasdasdasdasdasdasd', 13000, '2021-07-01', '2021-06-16', 'ACTIVE');
+(16, '12535120210616', 6, 5, 7, '231', 'anjayy', 10, '12535120210616Untitled-2.png', '3121231', 'asdasdasdasdasdasdasdasd', 13000, '2021-07-01', '2021-06-16', 'ACTIVE');
 
 -- --------------------------------------------------------
 
@@ -228,10 +228,10 @@ CREATE TABLE `tbl_pesan` (
 --
 
 INSERT INTO `tbl_pesan` (`id_pesan`, `id_barang`, `nama_barang`, `img`, `stock`, `desc`, `create_date`) VALUES
-(1, 16, 'anjayy', '12535120210616Untitled-2.png', 10, 'Stock barang hampir habis', '2021-06-22'),
-(2, 12, 'asd', '09254620210528asd1.png', 20, 'Barang Kadaluarsa', '2021-06-22'),
-(3, 13, 'andi', '10341120210528sandhika.jpeg', 123, 'Barang Kadaluarsa', '2021-06-22'),
-(4, 14, 'dinda', '08512620210606test1.png', 120, 'Barang Kadaluarsa', '2021-06-22');
+(1, 16, 'anjayy', '12535120210616Untitled-2.png', 10, 'Stock barang hampir habis', '2021-06-25'),
+(2, 12, 'asd', '09254620210528asd1.png', 20, 'Barang Kadaluarsa', '2021-06-25'),
+(3, 13, 'andi', '10341120210528sandhika.jpeg', 123, 'Barang Kadaluarsa', '2021-06-25'),
+(4, 14, 'dinda', '08512620210606test1.png', 120, 'Barang Kadaluarsa', '2021-06-25');
 
 -- --------------------------------------------------------
 

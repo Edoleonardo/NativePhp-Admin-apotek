@@ -171,6 +171,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                   <input type="month" id="start" name="bln">
                   <button type="submit" class="btn btn-primary" name="laporanmasuk">Pilih Bulan</button>
                 </form>
+                <?php 
+                if(isset($_GET['bln'])){
+                ?>
+                <a href="pdf_laporan_barang_masuk.php?bln=<?php echo $_GET['bln']?>" class="btn btn-success">PDF</a>
+                <?php }else {?>
+                  <a href="pdf_laporan_barang_masuk.php" class="btn btn-success">PDF</a>
+                  <?php }?>
                 <div class="clearfix"></div>
               </div>
               <div class="x_content">

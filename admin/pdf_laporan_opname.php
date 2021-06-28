@@ -53,8 +53,8 @@ ob_start();
                 <td colspan="4" align="center" style="font-size: 20px; border:none;">
                     <h1>Apotek Centra Medika</h1>
                     <h4>Laporan Stock Opname</h4>
-                    <p>Jl. Dr. Sukardjo, Tawangsari, Kec. Tawang, 
-                    <br>Tasikmalaya, Jawa Barat 46112</p>
+                    <p>Jl. Daan Mogot No. 29 B
+                    <br>Telp : 5522347 Tangerang</p>
                     <?php
                     if(isset($_GET['tgl1'])){
                     ?>

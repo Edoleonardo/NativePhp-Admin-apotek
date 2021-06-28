@@ -7,9 +7,9 @@ $data_supp = GetDataSupplier($conn);
 $data_brand = GetDataBrand($conn);
 $data_kat = GetDataKategori($conn);
 if (isset($_GET['bln'])) {
-  $data_barang = Laporan($_GET['bln'], $conn);
+  $data_keluar = LaporanBulanKeluar($_GET['bln'], $conn);
 } else {
-  $data_barang = GetDataBarang($conn);
+  $data_keluar = GetDataBarangKeluar($conn);
 }
 $pesan = GetDataPesan($conn);
 $totalpesan = GetCountPesan($conn);
@@ -53,7 +53,7 @@ ob_start();
                 </td>
                 <td colspan="4" align="center" style="font-size: 20px; border:none;">
                     <h1>Apotek Centra Medika</h1>
-                    <h3>Laporan Barang</h3>
+                    <h3>Laporan Barang Keluar</h3>
                     <p>Jl. Daan Mogot No. 29 B
                     <br>Telp : 5522347 Tangerang</p>
                     <?php
@@ -68,34 +68,33 @@ ob_start();
                 <td style="border:none;">&nbsp;</td>
                 <td style="border:none;">&nbsp;</td>
             </tr>
-            <tr align="center">
-              <th>Kode Barang</th>
-              <th>Nama Barang</th>
-              <th>Stock</th>
-              <th>Harga</th>
-              <th>Kategori</th>
-              <th>Supplier</th>
-              <th>Brand</th>
-              <th>Kadaluarsa</th>
-            </tr>
+             <tr align="center">
+               <th>Nama Petugas</th>
+               <th>Nama Barang</th>
+               <th>Jumlah Keluar</th>
+               <th>Keterangan</th>
+               <th>Status</th>
+               <th>Sisah Stock</th>
+               <th>Tanggal Kadaluarsa</th>
+               <th>Tanggal Keluar</th>
+             </tr>
         </thead>
-        <tbody  align="center">
-          <?php while ($data = mysqli_fetch_assoc($data_barang)) {
-            $kategori = GetKategoriDetiail($data['id_kategori'], $conn);
-            $brand = GetBrandDetiail($data['id_brand'], $conn);
-            $supplier = GetSupplierDetiail($data['id_supplier'], $conn);
-          ?>
-            <tr>
-              <td><?php echo $data['kode_barang'] ?></td>
-              <td><?php echo $data['nama_barang'] ?></td>
-              <td><?php echo $data['stock_barang'] ?></td>
-              <td><?php echo number_format($data['harga_barang']) ?></td>
-              <td><?php echo $kategori['nama_kategori'] ?></td>
-              <td><?php echo $supplier['nama_supplier'] ?></td>
-              <td><?php echo $brand['nama_brand'] ?></td>
-              <td><?php echo $data['create_date'] ?></td>
-            </tr>
-          <?php }  ?>
+        <tbody>
+         <?php while ($data = mysqli_fetch_assoc($data_keluar)) {
+           $petugas = GetDataPetugas($data['id_petugas'], $conn);
+           $barang = GetDetailBarang($data['id_item'], $conn);
+         ?>
+           <tr>
+             <td><?php echo $petugas['nama_petugas'] ?></td>
+             <td><?php echo $barang['nama_barang'] ?></td>
+             <td><?php echo $data['jumlah_barang'] ?></td>
+             <td><?php echo $data['keterangan'] ?></td>
+             <td><?php echo $data['status'] ?></td>
+             <td><?php echo $data['sisah_stock'] ?></td>
+             <td><?php echo $barang['tempo_barang'] ?></td>
+             <td><?php echo $data['create_date'] ?></td>
+           </tr>
+         <?php } ?>
         </tbody>
             
         <tfoot>
@@ -104,7 +103,7 @@ ob_start();
                 <td style="border:none;" >&nbsp;</td>
             </tr>
             <tr>
-                <td style="border:none;" colspan="7"></td>
+                <td style="border:none;" colspan="6"></td>
                 <td style="border:none;" align="center">Dibuat Oleh</td>
             </tr>
             <tr>
@@ -120,7 +119,7 @@ ob_start();
                 <td style="border:none;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="border:none;" colspan="7"></td>
+                <td style="border:none;" colspan="6"></td>
                 <td style="border:none;" align="center"><?php echo $now['nama_petugas'] ?></td>
             </tr>
         </tfoot>
@@ -137,5 +136,5 @@ use Spipu\Html2Pdf\Html2Pdf;
 
 $html2pdf = new Html2Pdf('P', 'A4', 'en');
 $html2pdf->writeHTML($html);
-$html2pdf->output('pdf_laporan_barang.pdf', 'D');
+$html2pdf->output('pdf_laporan_barang_keluar.pdf', 'D');
 ?>
