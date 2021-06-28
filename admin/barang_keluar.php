@@ -249,7 +249,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
                     <label>Satus:</label>
                     <select class="form-control" name="status">
-                        <option value="Barang Masuk">Barang Masuk</option>
+                        <option value="Barang Keluar">Barang Keluar</option>
                         <option value="Salah Input">Salah Input</option>
                     </select><br>
                    
