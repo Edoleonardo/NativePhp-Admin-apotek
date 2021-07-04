@@ -90,7 +90,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <ul class="nav side-menu">
                 <li><a><i class="fa fa-print"></i> Cetak Laporan <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="stock_opname.php">Stock Opname</a></li>
+                    <li><a href="kartu_stock.php">Kartu Stock</a></li>
                     <li><a href="laporan.php">Laporan Barang</a></li>
                     <li><a href="laporan_masuk.php">Laporan Barang Masuk</a></li>
                     <li><a href="laporan_keluar.php">Laporan Barang Keluar</a></li>
@@ -164,6 +164,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <div class="x_title">
                 <h3>Economic Order Quantity</h3>
                 <button id="eoq" type="button" class="btn btn-success" data-toggle="modal" data-target="#eoqmodal">Economic Order Quantity</button>
+                <a href="pdf_laporan_eoq.php" class="btn btn-success">PDF</a>
               </div>
               <div class="x_content">
                 <div class="row">

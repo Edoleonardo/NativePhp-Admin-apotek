@@ -2,19 +2,14 @@
 require('../model/User.php');
 checklogin();
 $logo = GetDataLogo($conn);
+$data_barang = GetDataBarang($conn);
+$data_barang2 = GetStokDataBarang($conn);
+$dataBarangSatuan = mysqli_fetch_assoc($data_barang2);
 
-if(isset($_GET['tgl1'])){
-  $data_barang = DataOpname1($conn,$_GET['tgl1'],$_GET['tgl2'],$_GET['id_item']);
-}else{
-  $data_barang = DataOpname($conn);
-}
-
-
-$data_allbarang = GetDataBarang($conn);
+$data_eoq = GetDataEoq($conn);
 $pesan = GetDataPesan($conn);
 $totalpesan = GetCountPesan($conn);
 $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
-
 ob_start();
 ?>
 <style>
@@ -44,62 +39,58 @@ ob_start();
 </style>
 <div style="text-align:center">
     <!-- <img width="100" src="images/home/logo.png"/> -->
-    <table id="example1" class="table table-bordered table-striped" align="center">
+    <table id="example1" class="table table-bordered table-striped" align="center" style="width: 100%; border-bottom-style: none; border-right-style: none; border-left-style: none;">
         <thead>
             <tr>
+            <td style="border:none;">&nbsp;</td>
                 <td style="border:none;" >
                     <img width="100" src="images/logo/<?php echo $logo['nama_logo'] ?>" />
                 </td>
                 <td colspan="4" align="center" style="font-size: 20px; border:none;">
                     <h1>Apotek Centra Medika</h1>
-                    <h4>Laporan Kartu Stock</h4>
+                    <h3>Laporan Barang</h3>
                     <p>Jl. Daan Mogot No. 29 B
                     <br>Telp : 5522347 Tangerang</p>
-                    <?php
-                    if(isset($_GET['tgl1'])){
-                    ?>
-                    <h4>Periode : <?php echo $_GET['tgl1']." Sampai ".$_GET['tgl2']?></h4>
-                    <?php }else{?>
-                    <h4>Semua Data</h4>
-                   <?php } ?>
+                    <br>
+                    <!-- <h4><?php //echo 'Periode ' . $getStart . ' s/d ' . $getEnd ?></h4> -->
                 </td>
                 <td style="border:none;">&nbsp;</td>
                 <td style="border:none;">&nbsp;</td>
             </tr>
             <tr align="center">
-                <th>Tanggal</th>
-                <th>Nama Barang</th>
-                <th>Harga</th>
-                <th>Keterangan</th>
-                <th>Status</th>
-                <th>Jumlah</th>
-                <th>Sisa</th>
+                <th style="width:12%;">Nama barang</th>
+                <th style="width:12%;">Permintaan /Hari</th>
+                <th style="width:12%;">Harga Penyimpanan /hari</th>
+                <th style="width:12%;">Harga Unit /Pesan</th>
+                <th style="width:12%;">Waktu Proses Beli</th>
+                <th style="width:12%;">Rekomendasi EOQ</th>
+                <th style="width:12%;">Jarak Pesan Barang</th>
+                <th style="width:12%;">Titik Pesan Ulang</th>
             </tr>
         </thead>
-        <tbody >
-        <?php while ($data = mysqli_fetch_assoc($data_barang)) {
-              //$petugas = GetDataPetugas($data['id_petugas'], $conn);
+        <tbody  align="center">
+            <?php while ($data = mysqli_fetch_assoc($data_eoq)) {
               $barang = GetDetailBarang($data['id_item'], $conn);
             ?>
               <tr>
-                <td><?php echo $data['create_date'] ?></td>
-                <td><?php echo $barang['nama_barang'] ?></td>
-                <td><?php echo number_format($barang['harga_barang']) ?></td>
-                <td><?php echo $data['keterangan'] ?></td>
-                <td><?php echo $data['status'] ?></td>
-                <td><?php echo $data['jumlah_barang'] ?></td>
-                <td><?php echo $data['sisah_stock'] ?></td>
+                <td  style="width:5%;"><?php echo $barang['nama_barang'] ?></td>
+                <td  style="width:5%;"><?php echo number_format($data['demand']) ?> Unit</td>
+                <td  style="width:5%;">Rp. <?php echo number_format($data['harga_simpan']) ?></td>
+                <td  style="width:5%;">Rp. <?php echo number_format($data['harga_unit']) ?></td>
+                <td  style="width:5%;"><?php echo number_format($data['lead_time']) ?> Hari</td>
+                <td  style="width:5%;"><?php echo number_format($data['hasil_eoq']) ?> Unit</td>
+                <td  style="width:5%;"><?php echo number_format($data['hasil_jarak_pesan']) ?> Hari</td>
+                <td  style="width:5%;"><?php echo number_format($data['ROP']) ?> Unit</td>
               </tr>
             <?php } ?>
         </tbody>
-
         <tfoot>
 
             <tr>
                 <td style="border:none;" >&nbsp;</td>
             </tr>
             <tr>
-                <td style="border:none;" colspan="5"></td>
+                <td style="border:none;" colspan="6"></td>
                 <td style="border:none;" align="center">Dibuat Oleh</td>
             </tr>
             <tr>
@@ -115,11 +106,8 @@ ob_start();
                 <td style="border:none;">&nbsp;</td>
             </tr>
             <tr>
-                <td style="border:none;" colspan="5"></td>
+                <td style="border:none;" colspan="6"></td>
                 <td style="border:none;" align="center"><?php echo $now['nama_petugas'] ?></td>
-            </tr>
-            <tr>
-                <td style="border:none;">&nbsp;</td>
             </tr>
         </tfoot>
     </table>
@@ -135,5 +123,5 @@ use Spipu\Html2Pdf\Html2Pdf;
 
 $html2pdf = new Html2Pdf('P', 'A4', 'en');
 $html2pdf->writeHTML($html);
-$html2pdf->output('pdf_laporan_kartustock.pdf', 'D');
+$html2pdf->output('pdf_laporan_eoq.pdf', 'D');
 ?>

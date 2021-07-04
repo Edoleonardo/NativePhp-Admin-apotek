@@ -94,7 +94,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <ul class="nav side-menu">
                 <li><a><i class="fa fa-print"></i> Cetak Laporan <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="stock_opname.php">Stock Opname</a></li>
+                    <li><a href="kartu_stock.php">Kartu Stock</a></li>
                     <li><a href="laporan.php">Laporan Barang</a></li>
                     <li><a href="laporan_masuk.php">Laporan Barang Masuk</a></li>
                     <li><a href="laporan_keluar.php">Laporan Barang Keluar</a></li>
@@ -250,7 +250,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <label>Satus:</label>
                     <select class="form-control" name="status">
                         <option value="Barang Keluar">Barang Keluar</option>
-                        <option value="Salah Input">Salah Input</option>
+                        <option value="Koreksi Keluar">Koreksi Keluar</option>
                     </select><br>
                    
                     <label>Jumlah Barang Keluar:</label><br>

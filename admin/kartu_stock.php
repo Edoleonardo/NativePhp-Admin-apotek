@@ -98,7 +98,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <ul class="nav side-menu">
                 <li><a><i class="fa fa-print"></i> Cetak Laporan <span class="fa fa-chevron-down"></span></a>
                   <ul class="nav child_menu">
-                    <li><a href="stock_opname.php">Stock Opname</a></li>
+                    <li><a href="kartu_stock.php">Kartu Stock</a></li>
                     <li><a href="laporan.php">Laporan Barang</a></li>
                     <li><a href="laporan_masuk.php">Laporan Barang Masuk</a></li>
                     <li><a href="laporan_keluar.php">Laporan Barang Keluar</a></li>
@@ -168,7 +168,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       <div class="right_col" role="main">
         <!-- top tiles -->
         <div class="row" style="display: inline-block;">
-          <h3>Stock Opname</h3>
+          <h3>Kartu Stock</h3>
         </div>
         <!-- /top tiles -->
 
@@ -231,7 +231,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title">Pilih Data Stock Opname</h4>
+                <h4 class="modal-title">Pilih Data Kartu Stock</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
               </div>
               <div class="modal-body">

@@ -120,7 +120,7 @@ function getDataItem($conn)
    $id = $_POST['itemID'];
    $hari = $_POST['hari'];
 
-   $sql = "SELECT sum(jumlah_barang) jml FROM tbl_barang_keluar where id_item = " . $id . " and create_date = '" . $hari . "' and status != 'Salah Input' ORDER BY create_date desc";
+   $sql = "SELECT sum(jumlah_barang) jml FROM tbl_barang_keluar where id_item = " . $id . " and create_date = '" . $hari . "' and status != 'Koreksi Keluar' ORDER BY create_date desc";
    $result = mysqli_query($conn, $sql);
 
    // die($sql);
@@ -277,7 +277,7 @@ function DataOpname1($conn, $tgl1, $tgl2, $id_item)
 function DataOpnameRoute($conn)
 {
 
-   header("location: ../admin/stock_opname.php?tgl1=" . $_POST['tgl1'] . "&tgl2=" . $_POST['tgl2'] . "&id_item=" . $_POST['id_item']);
+   header("location: ../admin/kartu_stock.php?tgl1=" . $_POST['tgl1'] . "&tgl2=" . $_POST['tgl2'] . "&id_item=" . $_POST['id_item']);
 }
 
 
