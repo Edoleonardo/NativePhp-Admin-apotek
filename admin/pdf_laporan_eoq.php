@@ -59,14 +59,14 @@ ob_start();
             </tr>
             <tr align="center">
                 <th style="width:12%;">Nama barang</th>
-                <th style="width:12%;">Permintaan /Hari</th>
-                <th style="width:12%;">Harga Penyimpanan /hari</th>
-                <th style="width:12%;">Harga Unit /Pesan</th>
-                <th style="width:12%;">Waktu Proses Beli</th>
+                <th style="width:12%;">Permintaan (D)</th>
+                <th style="width:12%;">Harga Penyimpanan (H)</th>
+                <th style="width:12%;">Waktu Proses (L)</th>
+                <th style="width:12%;">Biaya Pesan (S)</th>
                 <th style="width:12%;">Rekomendasi EOQ</th>
-                <th style="width:12%;">Jarak Pesan Barang</th>
-                <th style="width:12%;">Titik Pesan Ulang</th>
-            </tr>
+                <th style="width:12%;">TIC</th>
+                <th style="width:12%;">ROP</th>
+                        </tr>
         </thead>
         <tbody  align="center">
             <?php while ($data = mysqli_fetch_assoc($data_eoq)) {
@@ -76,10 +76,10 @@ ob_start();
                 <td  style="width:5%;"><?php echo $barang['nama_barang'] ?></td>
                 <td  style="width:5%;"><?php echo number_format($data['demand']) ?> Unit</td>
                 <td  style="width:5%;">Rp. <?php echo number_format($data['harga_simpan']) ?></td>
-                <td  style="width:5%;">Rp. <?php echo number_format($data['harga_unit']) ?></td>
                 <td  style="width:5%;"><?php echo number_format($data['lead_time']) ?> Hari</td>
+                <td  style="width:5%;">Rp. <?php echo number_format($data['harga_pesan']) ?></td>
                 <td  style="width:5%;"><?php echo number_format($data['hasil_eoq']) ?> Unit</td>
-                <td  style="width:5%;"><?php echo number_format($data['hasil_jarak_pesan']) ?> Hari</td>
+                <td  style="width:5%;"><?php echo number_format($data['TIC']) ?></td>
                 <td  style="width:5%;"><?php echo number_format($data['ROP']) ?> Unit</td>
               </tr>
             <?php } ?>

@@ -119,8 +119,9 @@ function getDataItem($conn)
 {
    $id = $_POST['itemID'];
    $hari = $_POST['hari'];
+   $hari2 = $_POST['hari2'];
 
-   $sql = "SELECT sum(jumlah_barang) jml FROM tbl_barang_keluar where id_item = " . $id . " and create_date = '" . $hari . "' and status != 'Koreksi Keluar' ORDER BY create_date desc";
+   $sql = "SELECT sum(jumlah_barang) jml FROM tbl_barang_keluar where id_item = " . $id . " and create_date >= '" . $hari . "' and create_date <= '" . $hari2 . "'  and status != 'Koreksi Keluar' ORDER BY create_date desc";
    $result = mysqli_query($conn, $sql);
 
    // die($sql);
@@ -314,14 +315,20 @@ function Eoq($conn)
    $result = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($result);
 
-   $eoq = sqrt((2 * $_POST['demand'] * $_POST['cost']) / $_POST['hold']);
-   $t = $eoq / $_POST['demand'];
-   $rop = (abs($_POST['lead'] - round($t))) * $_POST['demand'];
-   // $rop = max($rop,0);
+   $s = $_POST['setup'] / $_POST['frekuensi'];
+   $eoq = round(sqrt((2 * $_POST['demand'] * $s) / $_POST['hold']));
+   $f =  $_POST['demand']/$eoq;
+   $tic = round((($_POST['demand']/$eoq)*$s)+(($eoq/2)*$_POST['hold']));
+   $dt = $_POST['demand']/300;
+   $rop = round($dt *  $_POST['lead']);
+   echo "Hasil = ",$rop;
+   //$t = $eoq / $_POST['demand'];
+   // $rop = (abs($_POST['lead'] - round($t))) * $_POST['demand'];
+   
 
    if (!$data) {
 
-      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES ('" . $_POST['id_item'] . "', '" . $_POST['demand'] . "', '" . $_POST['hold'] . "', '" . $_POST['cost'] . "', '" . $_POST['lead'] . "', '" . $eoq . "', '" . $t . "', '" . $rop . "') ";
+      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_pesan`, `lead_time`, `hasil_eoq`, `TIC`, `ROP`) VALUES ('" . $_POST['id_item'] . "', '" . $_POST['demand'] . "', '" . $_POST['hold'] . "', '" . $s . "', '" . $_POST['lead'] . "', '" . $eoq . "', '" . $tic . "', '" . $rop . "') ";
       $result = mysqli_query($conn, $sql);
 
       if ($result) {
@@ -334,7 +341,7 @@ function Eoq($conn)
       $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_item` = '" . $_POST['id_item'] . "'";
       $result = mysqli_query($conn, $sql);
 
-      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_unit`, `lead_time`, `hasil_eoq`, `hasil_jarak_pesan`, `ROP`) VALUES ('" . $_POST['id_item'] . "', '" . $_POST['demand'] . "', '" . $_POST['hold'] . "', '" . $_POST['cost'] . "', '" . $_POST['lead'] . "', '" . $eoq . "', '" . $t . "', '" . $rop . "') ";
+      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_pesan`, `lead_time`, `hasil_eoq`, `TIC`, `ROP`) VALUES ('" . $_POST['id_item'] . "', '" . $_POST['demand'] . "', '" . $_POST['hold'] . "', '" . $s . "', '" . $_POST['lead'] . "', '" . $eoq . "', '" . $tic . "', '" . $rop . "') ";
       $result = mysqli_query($conn, $sql);
 
       if ($result) {

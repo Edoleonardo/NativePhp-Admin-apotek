@@ -174,13 +174,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                         <thead>
                           <tr>
                             <th>Nama barang</th>
-                            <th>Permintaan /Hari</th>
-                            <th>Harga Penyimpanan /hari</th>
-                            <th>Harga Unit /Pesan</th>
-                            <th>Waktu Proses Beli</th>
+                            <th>Permintaan (D)</th>
+                            <th>Harga Penyimpanan (H)</th>
+                            <th>Waktu Proses (L)</th>
+                            <th>Biaya Pesan (S)</th>
                             <th>Rekomendasi EOQ</th>
-                            <th>Jarak Pesan Barang</th>
-                            <th>Titik Pesan Ulang</th>
+                            <th>TIC</th>
+                            <th>ROP</th>
                             <th>Delete</th>
                           </tr>
                         </thead>
@@ -192,10 +192,10 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><?php echo $barang['nama_barang'] ?></td>
                               <td><?php echo number_format($data['demand']) ?> Unit</td>
                               <td>Rp. <?php echo number_format($data['harga_simpan']) ?></td>
-                              <td>Rp. <?php echo number_format($data['harga_unit']) ?></td>
                               <td><?php echo number_format($data['lead_time']) ?> Hari</td>
+                              <td>Rp. <?php echo number_format($data['harga_pesan']) ?></td>
                               <td><?php echo number_format($data['hasil_eoq']) ?> Unit</td>
-                              <td><?php echo number_format($data['hasil_jarak_pesan']) ?> Hari</td>
+                              <td><?php echo number_format($data['TIC']) ?></td>
                               <td><?php echo number_format($data['ROP']) ?> Unit</td>
                               <td>
                                 <form action="../model/User.php" method="post">
@@ -238,15 +238,19 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                 <?php } ?>
               </select>
               <br>
-              <label>Pilih Hari Data Permintaan :</label>
-              <input type="date" name="hari" id="hari" class="form-control" required /><br>
-              <label>Permintaan Unit /Hari (Demand) :</label>
+              <label>Pilih Hari Tanggal Data Permintaan :</label>
+              <input type="date" name="hari1" id="hari" class="form-control" required /><br>
+              <label>Sampai Tanggal Data Permintaan :</label>
+              <input type="date" name="hari2" id="hari2" class="form-control" required /><br>
+              <label>Permintaan Unit (Demand) :</label>
               <input type="number" id="vall" name="demand" class="form-control" required /><br>
-              <label>Harga Penyimpanan /Hari (Holding Cost)</label>
+              <label>Harga Penyimpanan (Holding Cost)</label>
               <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
-              <label>Harga Unit /Pesan (Cost)</label>
-              <input type="number" step="0.01" name="cost" class="form-control" required /><br>
-              <label>Waktu Prose /Hari (Lead Time)</label>
+              <label>Harga Pesan (Setup Cost)</label>
+              <input type="number" step="0.01" name="setup" class="form-control" required /><br>
+              <label>Frekuensi</label>
+              <input type="number" step="0.01" name="frekuensi" class="form-control" required /><br>
+              <label>Waktu Prose (Lead Time)</label>
               <input type="number" id="lead" name="lead" class="form-control" required /><br>
               <br />
               <button type="submit" class="btn btn-primary" name="eoq">Submit</button>
@@ -308,6 +312,10 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       getTime();
       getDemand();
     });
+    $('#hari2').change(function() {
+      getTime();
+      getDemand();
+    });
 
 
     $(document).on("click", " li>.dropdown-item", function() {
@@ -338,6 +346,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
     function getDemand() {
       var id = $('#id_item').val();
       var hari = $('#hari').val();
+      var hari2 = $('#hari2').val();
 
       $.ajax({
         url: "../model/user.php", //the page containing php script
@@ -346,7 +355,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
         data: {
           getEOQ: 1,
           itemID: id,
-          hari: hari
+          hari: hari,
+          hari2: hari2
         },
         success: function(data) {
           $("#vall").val(data.jml);
