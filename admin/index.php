@@ -375,6 +375,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <input type="number" name="stock" class="form-control" required /><br>
                     <label>Deskripsi :</label>
                     <input type="text" name="deskripsi" class="form-control" required /><br>
+                    <label>Keterangan Barang Masuk :</label>
+                    <input type="text" name="keterangan" class="form-control" required /><br>
                     <label>Harga Barang :</label>
                     <input type="number" name="harga" class="form-control" required /><br>
                     <label>Nomor Faktur :</label>

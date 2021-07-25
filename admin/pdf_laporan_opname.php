@@ -71,6 +71,7 @@ ob_start();
                 <th>Nama Barang</th>
                 <th>Harga</th>
                 <th>Keterangan</th>
+                <th>Nomor Faktur</th>
                 <th>Status</th>
                 <th>Jumlah</th>
                 <th>Sisa</th>
@@ -86,6 +87,7 @@ ob_start();
                 <td><?php echo $barang['nama_barang'] ?></td>
                 <td><?php echo number_format($barang['harga_barang']) ?></td>
                 <td><?php echo $data['keterangan'] ?></td>
+                <td><?php echo $data['no_faktur'] ?></td>
                 <td><?php echo $data['status'] ?></td>
                 <td><?php echo $data['jumlah_barang'] ?></td>
                 <td><?php echo $data['sisah_stock'] ?></td>

@@ -252,7 +252,7 @@ function DeleteEoq($conn)
 function DataOpname($conn)
 {
 
-   $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_masuk UNION ALL SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock FROM tbl_barang_keluar ";
+   $sql = "SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock, no_faktur FROM tbl_barang_masuk UNION ALL SELECT create_date,id_item, status, keterangan,jumlah_barang, sisah_stock, no_faktur FROM tbl_barang_keluar ";
    $item = mysqli_query($conn, $sql);
    return $item;
 }
@@ -409,7 +409,7 @@ function KeluarBarang($conn)
       $item = mysqli_query($conn, $sql);
       $data = mysqli_fetch_assoc($item);
 
-      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`,`status`,`sisah_stock`, `create_date`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "','" . $_POST['status'] . "','" . $data['stock_barang'] . "', now()) ";
+      $sql = "INSERT INTO `tbl_barang_keluar` (`id_petugas`, `id_item`, `jumlah_barang`,`keterangan`,`status`,`sisah_stock`, `create_date`,`no_faktur`) VALUES ('" . $_SESSION['id_petugas'] . "', '" . $_POST['id_item'] . "', '" . $_POST['stock'] . "','" . $_POST['keterangan'] . "','" . $_POST['status'] . "','" . $data['stock_barang'] . "', now(),'-') ";
       $result = mysqli_query($conn, $sql);
 
 
@@ -683,7 +683,7 @@ function InsertBarang($conn)
 
          $sql = "INSERT INTO `tbl_barang` ( `id_item`,`id_kategori`, `id_supplier`, `id_brand`, `kode_barang`, `nama_barang`, `stock_barang`, `gambar_barang`, `qr_code`, `deskripsi`, `harga_barang`,`tempo_barang`, `create_date`, `status`) VALUES ('" . $id_item . "','" . $_POST['kategori'] . "', '" . $_POST['supplier'] . "', '" . $_POST['brand'] . "', '" . $_POST['kode'] . "', '" . $_POST['nama'] . "', '" . $_POST['stock'] . "', '" . $id_item . $nama . "', '3121231', '" . $_POST['deskripsi'] . "', '" . $_POST['harga'] . "', '" . $_POST['tanggal'] . "',now(),'ACTIVE')";
          $result = mysqli_query($conn, $sql);
-         $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `sisah_stock`, `no_faktur`,`status`, `create_date`) VALUES ('" . $id_item . "', '" . $_SESSION['id_petugas'] . "','" . $_POST['stock'] . "','" . $_POST['stock'] . "','" . $_POST['faktur'] . "', 'Barang Masuk' ,now()) ";
+         $sql = "INSERT INTO `tbl_barang_masuk` (`id_item`, `id_petugas`, `jumlah_barang`, `sisah_stock`, `no_faktur`,`status`,`keterangan`, `create_date`) VALUES ('" . $id_item . "', '" . $_SESSION['id_petugas'] . "','" . $_POST['stock'] . "','" . $_POST['stock'] . "','" . $_POST['faktur'] . "', 'Barang Masuk' ,'" . $_POST['keterangan'] . "',now()) ";
          $result = mysqli_query($conn, $sql);
 
          DellPesan($conn);
