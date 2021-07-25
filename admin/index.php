@@ -223,7 +223,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <div class="x_title">
                 <div class="clearfix"></div>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Tambah Barang</button>
-                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#eoqmodal">EOQ</button>
                 <button type="button" style="font-size: 10px" class="btn btn-danger kanan" disabled>Stok kurang</button>
                 <button type="button" style="font-size: 10px" class="btn btn-warning" disabled>Kadaluarsa</button>
 
@@ -402,47 +401,6 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     </select>
                     <br />
                     <button type="submit" class="btn btn-primary" name="tmbhbarang">Tambah</button>
-                  </form>
-                  <!-- end form for validations -->
-
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-        <!-- Modal -->
-        <!------------------ Modal----------------------->
-        <div class="modal fade" id="eoqmodal" role="dialog">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Economic Order Quantity</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-              </div>
-              <div class="modal-body">
-                <div class="x_content">
-                  <!-- start form for validation -->
-                  <form action="../model/user.php" method="post">
-                    <label>Pilih Barang :</label>
-                    <select class="form-control" name="id_item" id="id_item">
-                      <?php
-                      $data_barang = GetDataBarang($conn);
-                      while ($allbarang = mysqli_fetch_assoc($data_barang)) { ?>
-                        <option value="<?php echo $allbarang['id_item'] ?>"><?php echo $allbarang['nama_barang'] ?></option>
-                      <?php } ?>
-                    </select>
-                    <br>
-                    <label>Permintaan Unit /Hari (Demand) :</label>
-                    <input type="number" name="demand" class="form-control" required /><br>
-                    <label>Harga Penyimpanan /Hari (Holding Cost)</label>
-                    <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
-                    <label>Harga Unit /Pesan (Cost)</label>
-                    <input type="number" step="0.01" name="cost" class="form-control" required /><br>
-                    <label>Waktu Proses /Hari (Lead Time)</label>
-                    <input type="number" name="lead" class="form-control" required /><br>
-                    <br />
-                    <button type="submit" class="btn btn-primary" name="eoq">Submit</button>
                   </form>
                   <!-- end form for validations -->
 
