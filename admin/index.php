@@ -491,7 +491,11 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
     // $('#tgl_edit').attr("min", today);
 
     $(function() {
-      $('#datatable').DataTable().search(sessionStorage.getItem("key")).draw();
+      var a = sessionStorage.getItem("key");
+      if (!a) {
+        a = "";
+      }
+      $('#datatable').DataTable().search(a).draw();
     });
 
     $(document).on("click", " li>.dropdown-item", function() {
