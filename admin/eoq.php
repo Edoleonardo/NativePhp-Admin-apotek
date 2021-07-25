@@ -250,7 +250,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <input type="number" step="0.01" name="setup" class="form-control" required /><br>
               <label>Frekuensi</label>
               <input type="number" step="0.01" name="frekuensi" class="form-control" required /><br>
-              <label>Waktu Prose (Lead Time)</label>
+              <label>Waktu Proses (Lead Time)</label>
               <input type="number" id="lead" name="lead" class="form-control" required /><br>
               <br />
               <button type="submit" class="btn btn-primary" name="eoq">Submit</button>
