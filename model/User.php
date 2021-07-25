@@ -321,7 +321,6 @@ function Eoq($conn)
    $tic = round((($_POST['demand']/$eoq)*$s)+(($eoq/2)*$_POST['hold']));
    $dt = $_POST['demand']/300;
    $rop = round($dt *  $_POST['lead']);
-   echo "Hasil = ",$rop;
    //$t = $eoq / $_POST['demand'];
    // $rop = (abs($_POST['lead'] - round($t))) * $_POST['demand'];
    
