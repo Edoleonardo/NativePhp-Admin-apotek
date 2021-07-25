@@ -171,13 +171,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                   <input type="month" id="start" name="bln">
                   <button type="submit" class="btn btn-primary" name="laporankeluar">Pilih Bulan</button>
                 </form>
-                <?php 
-                if(isset($_GET['bln'])){
+                <?php
+                if (isset($_GET['bln'])) {
                 ?>
-                <a href="pdf_laporan_barang_keluar.php?bln=<?php echo $_GET['bln']?>" class="btn btn-success">PDF</a>
-                <?php }else {?>
+                  <a href="pdf_laporan_barang_keluar.php?bln=<?php echo $_GET['bln'] ?>" class="btn btn-success">PDF</a>
+                <?php } else { ?>
                   <a href="pdf_laporan_barang_keluar.php" class="btn btn-success">PDF</a>
-                  <?php }?>
+                <?php } ?>
                 <div class="clearfix"></div>
               </div>
               <div class="x_content">
@@ -258,7 +258,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script>
     $(document).on("click", " li>.dropdown-item", function() {
       var a = $(this).find("#namabarang").attr('class');
-
+      if (!a) {
+        a = "";
+      }
       sessionStorage.setItem("key", a);
 
       window.location.href = 'index.php';

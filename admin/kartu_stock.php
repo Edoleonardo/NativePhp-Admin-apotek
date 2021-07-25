@@ -3,9 +3,9 @@ require('../model/User.php');
 checklogin();
 $logo = GetDataLogo($conn);
 
-if(isset($_GET['tgl1'])){
-  $data_barang = DataOpname1($conn,$_GET['tgl1'],$_GET['tgl2'],$_GET['id_item']);
-}else{
+if (isset($_GET['tgl1'])) {
+  $data_barang = DataOpname1($conn, $_GET['tgl1'], $_GET['tgl2'], $_GET['id_item']);
+} else {
   $data_barang = DataOpname($conn);
 }
 
@@ -180,13 +180,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <div class="x_title">
                 <div class="clearfix"></div>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModal">Pilih Data</button>
-                <?php 
-                if(isset($_GET['id_item'])){
+                <?php
+                if (isset($_GET['id_item'])) {
                 ?>
-                <a href="pdf_laporan_opname.php?tgl1=<?php echo $_GET['tgl1']?>&tgl2=<?php echo $_GET['tgl2']?>&id_item=<?php echo $_GET['id_item']?>" class="btn btn-success">PDF</a>
-                <?php }else {?>
+                  <a href="pdf_laporan_opname.php?tgl1=<?php echo $_GET['tgl1'] ?>&tgl2=<?php echo $_GET['tgl2'] ?>&id_item=<?php echo $_GET['id_item'] ?>" class="btn btn-success">PDF</a>
+                <?php } else { ?>
                   <a href="pdf_laporan_opname.php" class="btn btn-success">PDF</a>
-                  <?php }?>
+                <?php } ?>
               </div>
               <div class="x_content">
                 <div class="row">
@@ -344,7 +344,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
     $(document).on("click", " li>.dropdown-item", function() {
       var a = $(this).find("#namabarang").attr('class');
-
+      if (!a) {
+        a = "";
+      }
       sessionStorage.setItem("key", a);
 
       window.location.href = 'index.php';

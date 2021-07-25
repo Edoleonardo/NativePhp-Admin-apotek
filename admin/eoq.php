@@ -320,7 +320,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
     $(document).on("click", " li>.dropdown-item", function() {
       var a = $(this).find("#namabarang").attr('class');
-
+      if (!a) {
+        a = "";
+      }
       sessionStorage.setItem("key", a);
 
       window.location.href = 'index.php';

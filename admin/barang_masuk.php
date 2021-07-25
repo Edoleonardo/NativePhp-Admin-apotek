@@ -249,7 +249,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
                     <label>Nomor Faktur :</label>
                     <input type="text" name="faktur" class="form-control" required />
-                   
+
                     <label>Jumlah Barang Masuk:</label>
                     <input type="number" name="stock" class="form-control" required /><br>
                     <br />
@@ -346,7 +346,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
     $(document).on("click", " li>.dropdown-item", function() {
       var a = $(this).find("#namabarang").attr('class');
-
+      if (!a) {
+        a = "";
+      }
       sessionStorage.setItem("key", a);
 
       window.location.href = 'index.php';

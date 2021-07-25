@@ -243,16 +243,16 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
                     <label>Jumlah Barang:</label>
                     <input type="number" name="stock_in" id="stock_in" class="form-control" value="<?php echo $dataBarangSatuan['stock_barang'] ?>" readonly /><br>
-                   
+
                     <label>Keterangan:</label><br>
                     <input type="text" name="keterangan" class="form-control" required />
 
                     <label>Satus:</label>
                     <select class="form-control" name="status">
-                        <option value="Barang Keluar">Barang Keluar</option>
-                        <option value="Koreksi Keluar">Koreksi Keluar</option>
+                      <option value="Barang Keluar">Barang Keluar</option>
+                      <option value="Koreksi Keluar">Koreksi Keluar</option>
                     </select><br>
-                   
+
                     <label>Jumlah Barang Keluar:</label><br>
                     <input type="number" name="stock" class="form-control" required />
                     <br />
@@ -342,14 +342,16 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
         success: function(data) {
           console.log(data)
           $("#stock_in").val(data.stock_barang);
-          $("#tgl").val(data.tempo_barang);
+          $("#tgl_ex").val(data.tempo_barang);
         }
       });
     })
 
     $(document).on("click", " li>.dropdown-item", function() {
       var a = $(this).find("#namabarang").attr('class');
-
+      if (!a) {
+        a = "";
+      }
       sessionStorage.setItem("key", a);
 
       window.location.href = 'index.php';

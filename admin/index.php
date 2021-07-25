@@ -497,6 +497,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
     $(document).on("click", " li>.dropdown-item", function() {
       // var nama = $(".hidden-name").text();
       var a = $(this).find("#namabarang").attr('class');
+      if (!a) {
+        a = "";
+      }
       // $("label>input").val(a);
       $('#datatable').DataTable().search(a).draw();
       console.log(a)
