@@ -243,15 +243,15 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
               <label>Sampai Tanggal Data Permintaan :</label>
               <input type="date" name="hari2" id="hari2" class="form-control" required /><br>
               <label>Permintaan Unit (Demand) :</label>
-              <input type="number" id="vall" name="demand" class="form-control" required /><br>
+              <input type="text" id="vall" name="demand" class="form-control" required /><br>
               <label>Harga Penyimpanan (Holding Cost)</label>
-              <input type="number" step="0.01" min="0.01" name="hold" class="form-control" required /><br>
+              <input type="text" step="0.01" min="0.01" name="hold" class="form-control" id="tes_stock2" required /><br>
               <label>Harga Pesan (Setup Cost)</label>
-              <input type="number" step="0.01" name="setup" class="form-control" required /><br>
+              <input type="text" step="0.01" name="setup" class="form-control" id="tes_stock3" required /><br>
               <label>Frekuensi</label>
-              <input type="number" step="0.01" name="frekuensi" class="form-control" required /><br>
+              <input type="text" step="0.01" name="frekuensi" class="form-control" id="tes_stock4" required /><br>
               <label>Waktu Proses (Lead Time)</label>
-              <input type="number" id="lead" name="lead" class="form-control" required /><br>
+              <input type="text" id="lead" name="lead" class="form-control" required /><br>
               <br />
               <button type="submit" class="btn btn-primary" name="eoq">Submit</button>
             </form>
@@ -295,7 +295,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script src="../vendors/jszip/dist/jszip.min.js"></script>
   <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
   <!-- Custom Theme Scripts -->
   <script src="../build/js/custom.min.js"></script>
   <script>
@@ -340,7 +340,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           id: id
         },
         success: function(data) {
-          $("#lead").val(data.lead_time);
+          $("#lead").val(numeral(data.lead_time).format('0,0'));
         }
       });
     }
@@ -361,10 +361,36 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
           hari2: hari2
         },
         success: function(data) {
-          $("#vall").val(data.jml);
+          $("#vall").val(numeral(data.jml).format('0,0'));
         }
       });
     }
+
+    $("#vall").on('keyup', function() {
+      var n = numeral($(this).val()).format('0,0')
+      $(this).val(n);
+    });
+
+    $("#tes_stock2").on('keyup', function() {
+      var n = numeral($(this).val()).format('0,0')
+      $(this).val(n);
+    });
+
+    $("#tes_stock3").on('keyup', function() {
+      var n = numeral($(this).val()).format('0,0')
+      $(this).val(n);
+    });
+
+    $("#tes_stock4").on('keyup', function() {
+      var n = numeral($(this).val()).format('0,0')
+      $(this).val(n);
+    });
+
+    $("#lead").on('keyup', function() {
+      var n = numeral($(this).val()).format('0,0')
+      $(this).val(n);
+      console.log('asd')
+    });
   </script>
 </body>
 

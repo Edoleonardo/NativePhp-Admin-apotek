@@ -202,10 +202,10 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <tr>
                               <td><?php echo $petugas['nama_petugas'] ?></td>
                               <td><?php echo $barang['nama_barang'] ?></td>
-                              <td><?php echo $data['jumlah_barang'] ?></td>
+                              <td><?php echo number_format($data['jumlah_barang']) ?></td>
                               <td><?php echo $data['no_faktur'] ?></td>
                               <td><?php echo $data['keterangan'] ?></td>
-                              <td><?php echo $data['sisah_stock'] ?></td>
+                              <td><?php echo number_format($data['sisah_stock']) ?></td>
                               <td><?php echo $barang['tempo_barang'] ?></td>
                               <td><?php echo $data['create_date'] ?></td>
                             </tr>
@@ -242,7 +242,7 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <input type="text" name="tgl" id="tgl_ex" class="form-control" value="<?php echo $dataBarangSatuan['tempo_barang'] ?>" readonly /><br>
 
                     <label>Jumlah Barang:</label>
-                    <input type="number" name="stock_in" id="stock_in" class="form-control" value="<?php echo $dataBarangSatuan['stock_barang'] ?>" readonly /><br>
+                    <input type="text" name="stock_in" id="stock_in" class="form-control" value="<?php echo number_format($dataBarangSatuan['stock_barang']) ?>" readonly /><br>
 
                     <label>Keterangan :</label>
                     <input type="text" name="keterangan" class="form-control" required />
@@ -251,9 +251,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <input type="text" name="faktur" class="form-control" required />
 
                     <label>Jumlah Barang Masuk:</label>
-                    <input type="number" name="stock" class="form-control" required /><br>
+                    <input type="text" name="stock" class="form-control" id="tes_stock" required /><br>
                     <br />
-                    <button type="submit" class="btn btn-primary" name="tmbhstock">Tambah</button>
+                    <button type="submit" class="btn btn-primary" name="tmbhstock" id="tmbhstock">Tambah</button>
                   </form>
                   <!-- end form for validations -->
 
@@ -323,6 +323,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script src="../vendors/jszip/dist/jszip.min.js"></script>
   <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
   <!-- Custom Theme Scripts -->
   <script src="../build/js/custom.min.js"></script>
   <script>
@@ -352,6 +354,12 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
       sessionStorage.setItem("key", a);
 
       window.location.href = 'index.php';
+    });
+
+
+    $("#tes_stock").on('keyup', function() {
+      var n = numeral($(this).val()).format('0,0')
+      $(this).val(n);
     });
   </script>
 </body>

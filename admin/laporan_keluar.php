@@ -205,10 +205,10 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <tr>
                               <td><?php echo $petugas['nama_petugas'] ?></td>
                               <td><?php echo $barang['nama_barang'] ?></td>
-                              <td><?php echo $data['jumlah_barang'] ?></td>
+                              <td><?php echo number_format($data['jumlah_barang']) ?></td>
                               <td><?php echo $data['keterangan'] ?></td>
                               <td><?php echo $data['status'] ?></td>
-                              <td><?php echo $data['sisah_stock'] ?></td>
+                              <td><?php echo number_format($data['sisah_stock']) ?></td>
                               <td><?php echo $barang['tempo_barang'] ?></td>
                               <td><?php echo $data['create_date'] ?></td>
                             </tr>

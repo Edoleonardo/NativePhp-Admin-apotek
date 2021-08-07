@@ -261,9 +261,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                               <td><img width="100px" class="responsive" src="../admin/images/barang/<?php echo $data['gambar_barang'] ?>" alt=""></td>
                               <td><?php echo $data['kode_barang'] ?></td>
                               <td><?php echo $data['nama_barang'] ?></td>
-                              <td><?php echo $data['stock_barang'] ?></td>
+                              <td><?php echo number_format($data['stock_barang']) ?></td>
                               <td><?php echo $data['deskripsi'] ?></td>
-                              <td><?php echo $data['harga_barang'] ?></td>
+                              <td><?php echo 'Rp ' . number_format($data['harga_barang']) ?></td>
                               <td><?php echo $kategori['nama_kategori'] ?></td>
                               <td><?php echo $supplier['nama_supplier'] ?></td>
                               <td><?php echo $brand['nama_brand'] ?></td>
@@ -372,13 +372,13 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                     <label>Kode Barang :</label>
                     <input type="text" name="kode" class="form-control" required /><br>
                     <label>Stock Barang :</label>
-                    <input type="number" name="stock" class="form-control" required /><br>
+                    <input type="text" name="stock" class="form-control" id="tes_stock" required /><br>
                     <label>Deskripsi :</label>
                     <input type="text" name="deskripsi" class="form-control" required /><br>
                     <label>Keterangan Barang Masuk :</label>
                     <input type="text" name="keterangan" class="form-control" required /><br>
                     <label>Harga Barang :</label>
-                    <input type="number" name="harga" class="form-control" required /><br>
+                    <input type="text" name="harga" class="form-control" id="tes_stock2" required /><br>
                     <label>Nomor Faktur :</label>
                     <input type="text" name="faktur" class="form-control" required /><br>
                     <label>Tempo Kadaluarsa :</label>
@@ -473,6 +473,8 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
   <script src="../vendors/jszip/dist/jszip.min.js"></script>
   <script src="../vendors/pdfmake/build/pdfmake.min.js"></script>
   <script src="../vendors/pdfmake/build/vfs_fonts.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script>
   <!-- Custom Theme Scripts -->
   <script src="../build/js/custom.min.js"></script>
   <script>
@@ -513,6 +515,19 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
 
     $(document).on("click", ".child_menu>li>a", function() {
       sessionStorage.setItem("key", '');
+    });
+
+
+
+    $("#tes_stock").on('keyup', function() {
+      var n = numeral($(this).val()).format('0,0')
+      $(this).val(n);
+    });
+
+
+    $("#tes_stock2").on('keyup', function() {
+      var n = numeral($(this).val()).format('0,0')
+      $(this).val(n);
     });
   </script>
 </body>

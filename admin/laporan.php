@@ -207,9 +207,9 @@ $now = GetDataPetugas($_SESSION['id_petugas'], $conn);
                             <tr>
                               <td><?php echo $data['kode_barang'] ?></td>
                               <td><?php echo $data['nama_barang'] ?></td>
-                              <td><?php echo $data['stock_barang'] ?></td>
+                              <td><?php echo number_format($data['stock_barang']) ?></td>
                               <td><?php echo $data['deskripsi'] ?></td>
-                              <td><?php echo $data['harga_barang'] ?></td>
+                              <td><?php echo 'Rp ' . number_format($data['harga_barang']) ?></td>
                               <td><?php echo $kategori['nama_kategori'] ?></td>
                               <td><?php echo $supplier['nama_supplier'] ?></td>
                               <td><?php echo $brand['nama_brand'] ?></td>

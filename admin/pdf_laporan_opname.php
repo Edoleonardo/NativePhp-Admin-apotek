@@ -3,10 +3,10 @@ require('../model/User.php');
 checklogin();
 $logo = GetDataLogo($conn);
 
-if(isset($_GET['tgl1'])){
-  $data_barang = DataOpname1($conn,$_GET['tgl1'],$_GET['tgl2'],$_GET['id_item']);
-}else{
-  $data_barang = DataOpname($conn);
+if (isset($_GET['tgl1'])) {
+    $data_barang = DataOpname1($conn, $_GET['tgl1'], $_GET['tgl2'], $_GET['id_item']);
+} else {
+    $data_barang = DataOpname($conn);
 }
 
 
@@ -47,21 +47,22 @@ ob_start();
     <table id="example1" class="table table-bordered table-striped" align="center">
         <thead>
             <tr>
-                <td style="border:none;" >
+                <td style="border:none;">
                     <img width="100" src="images/logo/<?php echo $logo['nama_logo'] ?>" />
                 </td>
                 <td colspan="4" align="center" style="font-size: 20px; border:none;">
                     <h1>Apotek Centra Medika</h1>
                     <h4>Laporan Kartu Stock</h4>
                     <p>Jl. Daan Mogot No. 29 B
-                    <br>Telp : 5522347 Tangerang</p>
+                        <br>Telp : 5522347 Tangerang
+                    </p>
                     <?php
-                    if(isset($_GET['tgl1'])){
+                    if (isset($_GET['tgl1'])) {
                     ?>
-                    <h4>Periode : <?php echo $_GET['tgl1']." Sampai ".$_GET['tgl2']?></h4>
-                    <?php }else{?>
-                    <h4>Semua Data</h4>
-                   <?php } ?>
+                        <h4>Periode : <?php echo $_GET['tgl1'] . " Sampai " . $_GET['tgl2'] ?></h4>
+                    <?php } else { ?>
+                        <h4>Semua Data</h4>
+                    <?php } ?>
                 </td>
                 <td style="border:none;">&nbsp;</td>
                 <td style="border:none;">&nbsp;</td>
@@ -76,27 +77,27 @@ ob_start();
                 <th>Sisa</th>
             </tr>
         </thead>
-        <tbody >
-        <?php while ($data = mysqli_fetch_assoc($data_barang)) {
-              //$petugas = GetDataPetugas($data['id_petugas'], $conn);
-              $barang = GetDetailBarang($data['id_item'], $conn);
+        <tbody>
+            <?php while ($data = mysqli_fetch_assoc($data_barang)) {
+                //$petugas = GetDataPetugas($data['id_petugas'], $conn);
+                $barang = GetDetailBarang($data['id_item'], $conn);
             ?>
-              <tr>
-                <td><?php echo $data['create_date'] ?></td>
-                <td><?php echo $barang['nama_barang'] ?></td>
-                <td><?php echo number_format($barang['harga_barang']) ?></td>
-                <td><?php echo $data['keterangan'] ?></td>
-                <td><?php echo $data['status'] ?></td>
-                <td><?php echo $data['jumlah_barang'] ?></td>
-                <td><?php echo $data['sisah_stock'] ?></td>
-              </tr>
+                <tr>
+                    <td><?php echo $data['create_date'] ?></td>
+                    <td><?php echo $barang['nama_barang'] ?></td>
+                    <td><?php echo 'RP ' . number_format($barang['harga_barang']) ?></td>
+                    <td><?php echo $data['keterangan'] ?></td>
+                    <td><?php echo $data['status'] ?></td>
+                    <td><?php echo number_format($data['jumlah_barang']) ?></td>
+                    <td><?php echo number_format($data['sisah_stock']) ?></td>
+                </tr>
             <?php } ?>
         </tbody>
 
         <tfoot>
 
             <tr>
-                <td style="border:none;" >&nbsp;</td>
+                <td style="border:none;">&nbsp;</td>
             </tr>
             <tr>
                 <td style="border:none;" colspan="5"></td>
