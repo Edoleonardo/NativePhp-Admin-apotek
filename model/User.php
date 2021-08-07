@@ -311,30 +311,28 @@ function Getcount($conn)
 
 function Eoq($conn)
 {
-   $_POST['demand'] = (int)str_replace(",", "", $_POST['demand']);
-   $_POST['hold'] = (int)str_replace(",", "", $_POST['hold']);
-   $_POST['setup'] = (int)str_replace(",", "", $_POST['setup']);
-   $_POST['frekuensi'] = (int)str_replace(",", "", $_POST['frekuensi']);
-   $_POST['lead'] = (int)str_replace(",", "", $_POST['lead']);
-
    $sql = "SELECT id_item FROM  tbl_barang WHERE id_item = '" . $_POST['id_item'] . "' ";
    $result = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($result);
 
-   $s = $_POST['setup'] / $_POST['frekuensi'];
-   $eoq = round(sqrt((2 * $_POST['demand'] * $s) / $_POST['hold']));
-   $f =  $_POST['demand'] / $eoq;
-   $tic = round((($_POST['demand'] / $eoq) * $s) + (($eoq / 2) * $_POST['hold']));
-   $dt = $_POST['demand'] / 300;
-   $rop = round($dt *  $_POST['lead']);
+  
+   $s = (float)$_POST['setup'] / (float)$_POST['frekuensi'];
+   $eoq = round(sqrt((2 * (float)$_POST['demand'] * $s) / (float)$_POST['hold']));
+   $f =  (float)$_POST['demand']/$eoq;
+   $tic = round((((float)$_POST['demand']/$eoq)*$s)+(($eoq/2)*(float)$_POST['hold']));
+   $dt = (float)$_POST['demand']/300;
+   $rop = round($dt *  (float)$_POST['lead']);
    //$t = $eoq / $_POST['demand'];
    // $rop = (abs($_POST['lead'] - round($t))) * $_POST['demand'];
 
+   //var_dump((int)$_POST['setup']);
 
    if (!$data) {
 
-      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_pesan`, `lead_time`, `hasil_eoq`, `TIC`, `ROP`) VALUES ('" . $_POST['id_item'] . "', '" . $_POST['demand'] . "', '" . $_POST['hold'] . "', '" . $s . "', '" . $_POST['lead'] . "', '" . $eoq . "', '" . $tic . "', '" . $rop . "') ";
+      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_pesan`, `lead_time`, `hasil_eoq`, `TIC`, `ROP`) VALUES ('" . (string)$_POST['id_item'] . "', '" . (int)$_POST['demand'] . "', '" . (float)$_POST['hold'] . "', '" . $s . "', '" . (int)$_POST['lead'] . "', '" . (int)$eoq . "', '" . (int)$tic . "', '" . (int)$rop . "') ";
+      echo $sql;
       $result = mysqli_query($conn, $sql);
+
 
       if ($result) {
          msg('Berhasil diTambah', '../admin/eoq.php');
@@ -343,11 +341,12 @@ function Eoq($conn)
       }
    } else {
 
-      $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_item` = '" . $_POST['id_item'] . "'";
+      $sql = "DELETE FROM `tbl_eoq` WHERE `tbl_eoq`.`id_item` = '" . (string)$_POST['id_item'] . "'";
       $result = mysqli_query($conn, $sql);
 
-      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_pesan`, `lead_time`, `hasil_eoq`, `TIC`, `ROP`) VALUES ('" . $_POST['id_item'] . "', '" . $_POST['demand'] . "', '" . $_POST['hold'] . "', '" . $s . "', '" . $_POST['lead'] . "', '" . $eoq . "', '" . $tic . "', '" . $rop . "') ";
+      $sql = "INSERT INTO `tbl_eoq` (`id_item`, `demand`, `harga_simpan`, `harga_pesan`, `lead_time`, `hasil_eoq`, `TIC`, `ROP`) VALUES ('" . (string)$_POST['id_item'] . "', '" . (int)$_POST['demand'] . "', '" . (float)$_POST['hold'] . "', '" . $s . "', '" . (int)$_POST['lead'] . "', '" . (int)$eoq . "', '" . (int)$tic . "', '" . (int)$rop . "') ";
       $result = mysqli_query($conn, $sql);
+
 
       if ($result) {
          msg('Berhasil diTambah', '../admin/eoq.php');
@@ -401,10 +400,6 @@ function GetDetailPesan($id, $conn)
 
 function KeluarBarang($conn)
 {
-
-   $_POST['stock'] = (int)str_replace(",", "", $_POST['stock']);
-
-
    $sql = "SELECT * FROM tbl_barang where id_item = '" . $_POST['id_item'] . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
@@ -439,8 +434,6 @@ function KeluarBarang($conn)
 
 function MasukBarang($conn)
 {
-   $_POST['stock'] = (int)str_replace(",", "", $_POST['stock']);
-
    $sql = "SELECT * FROM tbl_barang where id_item = '" . $_POST['id_item'] . "' ";
    $item = mysqli_query($conn, $sql);
    $data = mysqli_fetch_assoc($item);
@@ -679,9 +672,6 @@ function UbahLogo($conn)
 
 function InsertBarang($conn)
 {
-
-   $_POST['stock'] = (int)str_replace(",", "", $_POST['stock']);
-   $_POST['harga'] = (int)str_replace(",", "", $_POST['harga']);
 
    $img = $_FILES['img']['name'];
    date_default_timezone_set("Asia/Bangkok");
